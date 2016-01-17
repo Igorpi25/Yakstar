@@ -1,0 +1,3 @@
+[submodule "Connection"]
+	path = Connection
+	url = https://github.com/Igorpi25/Connection.git
