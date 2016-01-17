@@ -1,0 +1,21 @@
+<resources>
+
+    <string name="app_name">Ivanov\'s Tech Session</string>
+    <string name="logo">com.ivanov.tech.session</string>
+    <string name="subs">(demo activity)</string>
+
+    <string name="session_login_edittext_email_hint">email</string>
+    <string name="session_login_edittext_password_hint">password</string>    
+    <string name="session_login_button_login_text">Sign in</string>
+    <string name="session_login_button_to_register_text">Create account</string>  
+    
+    <string name="session_register_edittext_name_hint">name</string>
+    <string name="session_register_edittext_email_hint">email</string>
+    <string name="session_register_edittext_password_hint">password</string>    
+    <string name="session_register_button_register_text">Sign Up</string>
+    <string name="session_register_button_to_login_text">I\'ve an account already</string>
+    
+    <string name="session_tester_button_logout">Sign Out</string>
+    <string name="session_tester_textview_info">Api-Key:</string>
+    
+</resources>

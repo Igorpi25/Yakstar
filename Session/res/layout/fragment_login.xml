@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/window_pading" >
+
+    <EditText
+        android:id="@+id/fragment_login_edittext_email"
+        style="@style/style_edittext_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/session_login_edittext_email_hint"
+        android:inputType="textEmailAddress" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/fragment_login_edittext_password"
+        style="@style/style_edittext_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/session_login_edittext_password_hint"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/fragment_login_button_login"
+        style="@style/style_button_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/window_pading"
+        android:text="@string/session_login_button_login_text" />
+
+    <Button
+        android:id="@+id/fragment_login_button_to_register"
+        style="@style/style_button_dialog_alter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/session_login_button_to_register_text" />
+
+</LinearLayout>

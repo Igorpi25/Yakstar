@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="@dimen/window_pading" >
+
+    <TextView
+        android:id="@+id/fragment_tester_textview_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/session_tester_textview_info"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Button
+        android:id="@+id/fragment_tester_button_logout"
+        style="@style/style_button_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_tester_textview_info"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/window_pading"
+        android:text="@string/session_tester_button_logout" />
+
+</RelativeLayout>
