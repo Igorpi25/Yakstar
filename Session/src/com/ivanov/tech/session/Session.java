@@ -44,7 +44,7 @@ public class Session {
     public static final int PREF_USER_ID_DEFAULT=0;
     
     //Your server's ip
-    private final static String testApiKeyUrl = "http://121.127.248.83/v1/testapikey";
+    private final static String testApiKeyUrl = "http://"+YourDomen+"/v1/testapikey";
 
 
     static private SharedPreferences preferences=null;
