@@ -32,7 +32,7 @@ private static String TAG = SessionFragmentRegister.class.getSimpleName();
     EditText edittext_name,edittext_email,edittext_password;
     
     
-    public static final String registerUrl="http://www.letsrace.in/v1/register";
+    public static final String registerUrl="http://"+YourDomen+"/v1/register";
     
     Session.Status statuslistener;
     ViewGroup container;
