@@ -44,7 +44,7 @@ public class SessionFragmentLogin extends SherlockDialogFragment implements OnCl
     EditText edittext_email,edittext_password;
     
     
-    public static final String loginUrl="http://www.letsrace.in/v1/login";
+    public static final String loginUrl="http://"+YourDomen+"/v1/login";
     
     Session.Status statuslistener;
     ViewGroup container;
