@@ -20,6 +20,9 @@ public class ActivityDemo extends SherlockFragmentActivity {
 
         setContentView(R.layout.activity_demo);
         
+        //Init app preferences
+        Session.Initialize(getApplicationContext());
+        
         showFragmentDemo();        
     }
 
@@ -29,8 +32,8 @@ public class ActivityDemo extends SherlockFragmentActivity {
 			
 			@Override
 			public void onCanceled() {
-				// TODO Auto-generated method stub
-				
+				//Приложение не запустится, пока пользователь не будет авторизован
+				finish();
 			}
 			
 			@Override
