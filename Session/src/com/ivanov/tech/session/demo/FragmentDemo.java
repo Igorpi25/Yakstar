@@ -1,4 +1,4 @@
-package com.ivanov.tech.session.tester;
+package com.ivanov.tech.session.demo;
 
 
 import android.app.ProgressDialog;
@@ -22,21 +22,20 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ivanov.tech.session.R;
 import com.ivanov.tech.session.Session;
-import com.ivanov.tech.session.Session.Status;
 
 /**
  * Created by Igor on 09.05.15.
  */
-public class FragmentSessionTester extends SherlockDialogFragment implements OnClickListener {
+public class FragmentDemo extends SherlockDialogFragment implements OnClickListener {
 
-    public static final String TAG = FragmentSessionTester.class
+    public static final String TAG = FragmentDemo.class
             .getSimpleName();    
 	
     TextView textview_info;
     Button button_logout;
 
-    public static FragmentSessionTester newInstance() {
-    	FragmentSessionTester f = new FragmentSessionTester();
+    public static FragmentDemo newInstance() {
+    	FragmentDemo f = new FragmentDemo();
         return f;
     }
 
@@ -54,7 +53,7 @@ public class FragmentSessionTester extends SherlockDialogFragment implements OnC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = null;
-        view = inflater.inflate(R.layout.fragment_tester, container, false);
+        view = inflater.inflate(R.layout.fragment_demo, container, false);
                 
         button_logout = (Button) view.findViewById(R.id.fragment_tester_button_logout);
         button_logout.setOnClickListener(this);
@@ -70,7 +69,7 @@ public class FragmentSessionTester extends SherlockDialogFragment implements OnC
 		
 		if (v.getId()==button_logout.getId()){
 			Session.removeApiKey();			
-			((MainActivity)getActivity()).showTester();
+			((ActivityDemo)getActivity()).showFragmentDemo();
 		}
 	}
     

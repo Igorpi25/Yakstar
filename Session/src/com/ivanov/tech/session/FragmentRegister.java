@@ -24,43 +24,25 @@ import com.android.volley.VolleyError;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.ivanov.tech.connection.Connection;
+import com.ivanov.tech.connection.Connection.ProtocolListener;
 
-public class SessionFragmentRegister extends SherlockDialogFragment implements OnClickListener {
-private static String TAG = SessionFragmentRegister.class.getSimpleName();
+public class FragmentRegister extends SherlockDialogFragment implements OnClickListener {
+private static String TAG = FragmentRegister.class.getSimpleName();
     
     Button button_register,button_to_login;
     EditText edittext_name,edittext_email,edittext_password;
     
-    
-    public static final String registerUrl="http://"+YourDomen+"/v1/register";
-    
-    Session.Status statuslistener;
+    Connection.ProtocolListener protocollistener;
     ViewGroup container;
     
     boolean success=false;
 
-    public static SessionFragmentRegister newInstance(Session.Status listener) {
-    	SessionFragmentRegister f = new SessionFragmentRegister();
-    	f.statuslistener=listener;
+    public static FragmentRegister newInstance(Connection.ProtocolListener listener) {
+    	FragmentRegister f = new FragmentRegister();
+    	f.protocollistener=listener;
     	
         return f;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-    
-    @Override
-    public void onDetach(){
-    	super.onDetach();
-    	
-    		
     }
 
     @Override
@@ -87,18 +69,32 @@ private static String TAG = SessionFragmentRegister.class.getSimpleName();
 
 	@Override
 	public void onClick(View v) {
+		
 		if(v.getId()==button_register.getId()){
 			
 			final String name= edittext_name.getText().toString();
 			final String email= edittext_email.getText().toString();
 			final String password= edittext_password.getText().toString();
 			
-			doRegisterRequest(getActivity().getApplicationContext(),name,email,password);
+			Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new ProtocolListener(){
+
+				@Override
+				public void isCompleted() {
+					doRegisterRequest(getActivity().getApplicationContext(),name,email,password);
+				}
+
+				@Override
+				public void onCanceled() {
+					
+				}
+				
+			});
+			
+			
 		}
 		
 		if(v.getId()==button_to_login.getId()){
-			Session.createSessionLoginFragment(getActivity(), getFragmentManager(), container.getId(), statuslistener);
-			
+			Session.createSessionLoginFragment(getActivity(), getFragmentManager(), container.getId(), protocollistener);			
 		}
 			
 	}
@@ -112,7 +108,7 @@ private static String TAG = SessionFragmentRegister.class.getSimpleName();
     	Log.e(TAG,tag);
     	
     	StringRequest request = new StringRequest(Method.POST,
-    			registerUrl,
+    			Session.registerUrl,
     	                new Response.Listener<String>() {
     	 
     	                    @Override
@@ -127,7 +123,7 @@ private static String TAG = SessionFragmentRegister.class.getSimpleName();
     	                        	if(!json.isNull("success")){	    	                        	
     	                        		if(json.getInt("success")==1){
     	                        			
-    	                        			SessionFragmentLogin f=Session.createSessionLoginFragment(getActivity(), getFragmentManager(), container.getId(), statuslistener);
+    	                        			FragmentLogin f=Session.createSessionLoginFragment(getActivity(), getFragmentManager(), container.getId(), protocollistener);
     	                        			
     	                        			Bundle arguments=new Bundle();
     	                        			arguments.putString("email", email);

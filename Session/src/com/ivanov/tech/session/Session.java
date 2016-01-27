@@ -33,8 +33,7 @@ import android.util.Log;
 public class Session {
 	
     private static String TAG = Session.class.getSimpleName();
- 
-    
+     
     private static final String PREF = "Session";
     
     public static final String PREF_API_KEY="PREF_API_KEY";
@@ -42,9 +41,11 @@ public class Session {
     
     public static final String PREF_USER_ID="PREF_USER_ID";
     public static final int PREF_USER_ID_DEFAULT=0;
-    
-    //Your server's ip
-    private final static String testApiKeyUrl = "http://"+YourDomen+"/v1/testapikey";
+
+        
+    public final static String testApiKeyUrl = "http://"+YourDomenOrIp+"/igorserver/v1/testapikey";
+    public static final String loginUrl="http://"+YourDomenOrIp+"/igorserver/v1/login";
+    public static final String registerUrl="http://"+YourDomenOrIp+"/igorserver/v1/register";
 
 
     static private SharedPreferences preferences=null;
@@ -85,7 +86,7 @@ public class Session {
   		return preferences.contains(Session.PREF_API_KEY);
   	}
   	
-  	public static void checkApiKey(final Context context, final FragmentManager fragmentManager, final int container,final Status statusListener){
+  	public static void checkApiKey(final Context context, final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener){
   					
   		
   		Connection.protocolConnection(context, fragmentManager, container, new Connection.ProtocolListener() {
@@ -99,10 +100,10 @@ public class Session {
 			public void isCompleted() {
 								
 				if(preferences.contains(PREF_API_KEY)) { 		
-		  			doCheckApiKeyRequest(context,fragmentManager,container,statusListener);
+		  			doCheckApiKeyRequest(context,fragmentManager,container,protocolListener);
 		  			return;		  			
 		  		}else{
-		  			createSessionRegisterFragment(context,fragmentManager,container,statusListener); 		  			
+		  			createSessionRegisterFragment(context,fragmentManager,container,protocolListener); 		  			
 		  		}
 			}	
 		});
@@ -110,7 +111,7 @@ public class Session {
   		 		
   	}
   	
-  	public static boolean doCheckApiKeyRequest(final Context context, final FragmentManager fragmentManager, final int container,final Status statusListener) {
+  	public static boolean doCheckApiKeyRequest(final Context context, final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener) {
 
     	final String tag = TAG+" doTestApiKeyRequest ";  
     	        
@@ -136,13 +137,13 @@ public class Session {
     	                        	json=new JSONObject(response);
     	                        
     	                        	if(!json.isNull("success")){	    	                        	
-    	                        		if(json.getInt("success")==1)statusListener.isSuccess();	
-    	                        		else createSessionLoginFragment(context,fragmentManager,container,statusListener);
+    	                        		if(json.getInt("success")==1)protocolListener.isCompleted();	
+    	                        		else createSessionLoginFragment(context,fragmentManager,container,protocolListener);
 	    	                        }else throw (new JSONException("success=null"));
 	    	                        
     	                        }catch(JSONException e){
     	                        	Log.e(TAG,tag+"onResponse JSONException "+e.toString());
-    	                        	createSessionLoginFragment(context,fragmentManager,container,statusListener);
+    	                        	createSessionLoginFragment(context,fragmentManager,container,protocolListener);
     	                        }finally{
     	                        	pDialog.hide();
     	                        }
@@ -155,7 +156,7 @@ public class Session {
     	                    public void onErrorResponse(VolleyError error) {
     	                    	Log.e(TAG,tag+"onErrorResponse "+error.toString());
     	                        pDialog.hide();
-    	                        createSessionLoginFragment(context,fragmentManager,container,statusListener);
+    	                        createSessionLoginFragment(context,fragmentManager,container,protocolListener);
     	                    }
     	                }){
     		
@@ -179,17 +180,17 @@ public class Session {
         return false;
     }
   	
-  	public static SessionFragmentLogin createSessionLoginFragment(final Context context,final FragmentManager fragmentManager, final int container,final Status statusListener){
+  	public static FragmentLogin createSessionLoginFragment(final Context context,final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener){
 
         try{
             if(fragmentManager.findFragmentByTag("SessionLogin").isVisible()){
-                return (SessionFragmentLogin)fragmentManager.findFragmentByTag("SessionLogin");
+                return (FragmentLogin)fragmentManager.findFragmentByTag("SessionLogin");
             }else{
                 throw (new NullPointerException());
             }
         }catch(NullPointerException e) {
 
-            SessionFragmentLogin sessionloginfragment = SessionFragmentLogin.newInstance(statusListener);
+            FragmentLogin sessionloginfragment = FragmentLogin.newInstance(protocolListener);
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(container, sessionloginfragment, "SessionLogin");
@@ -201,17 +202,17 @@ public class Session {
         }
     }
   	
-  	public static SessionFragmentRegister createSessionRegisterFragment(final Context context,final FragmentManager fragmentManager, final int container,final Status statusListener){
+  	public static FragmentRegister createSessionRegisterFragment(final Context context,final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener){
 
         try{
             if(fragmentManager.findFragmentByTag("SessionRegister").isVisible()){
-                return (SessionFragmentRegister)fragmentManager.findFragmentByTag("SessionRegister");
+                return (FragmentRegister)fragmentManager.findFragmentByTag("SessionRegister");
             }else{
                 throw (new NullPointerException());
             }
         }catch(NullPointerException e) {
 
-            SessionFragmentRegister sessionloginfragment = SessionFragmentRegister.newInstance(statusListener);
+            FragmentRegister sessionloginfragment = FragmentRegister.newInstance(protocolListener);
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(container, sessionloginfragment, "SessionRegister");
@@ -222,9 +223,5 @@ public class Session {
             return sessionloginfragment;
         }
     }
-  	
-  	public interface Status{
-  		public void isSuccess();
-  	}
-  	
+  	  	
 }

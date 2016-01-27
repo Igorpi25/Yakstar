@@ -34,25 +34,27 @@ import com.android.volley.VolleyError;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.ivanov.tech.connection.Connection;
+import com.ivanov.tech.connection.Connection.ProtocolListener;
 
-public class SessionFragmentLogin extends SherlockDialogFragment implements OnClickListener {
+public class FragmentLogin extends SherlockDialogFragment implements OnClickListener {
 
 
-    private static String TAG = SessionFragmentLogin.class.getSimpleName();
+    private static String TAG = FragmentLogin.class.getSimpleName();
     
     Button button_login,button_to_register;
     EditText edittext_email,edittext_password;
     
     
-    public static final String loginUrl="http://"+YourDomen+"/v1/login";
     
-    Session.Status statuslistener;
+    
+    Connection.ProtocolListener protocollistener;
     ViewGroup container;
     
 
-    public static SessionFragmentLogin newInstance(Session.Status listener) {
-    	SessionFragmentLogin f = new SessionFragmentLogin();
-    	f.statuslistener=listener;
+    public static FragmentLogin newInstance(Connection.ProtocolListener listener) {
+    	FragmentLogin f = new FragmentLogin();
+    	f.protocollistener=listener;
     	
         return f;
     }
@@ -110,11 +112,25 @@ public class SessionFragmentLogin extends SherlockDialogFragment implements OnCl
 			final String email= edittext_email.getText().toString();
 			final String password= edittext_password.getText().toString();
 			
-			doLoginRequest(getActivity().getApplicationContext(),email,password);
+			Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new ProtocolListener(){
+
+				@Override
+				public void isCompleted() {
+					doLoginRequest(getActivity().getApplicationContext(),email,password);
+				}
+
+				@Override
+				public void onCanceled() {
+					
+				}
+				
+			});
+			
+			
 		}
 		if(v.getId()==button_to_register.getId()){
 			
-			Session.createSessionRegisterFragment(getActivity(), getFragmentManager(), container.getId(), statuslistener);
+			Session.createSessionRegisterFragment(getActivity(), getFragmentManager(), container.getId(), protocollistener);
 			
 		}
 	}
@@ -128,7 +144,7 @@ public class SessionFragmentLogin extends SherlockDialogFragment implements OnCl
     	Log.e(TAG,tag);
     	
     	StringRequest request = new StringRequest(Method.POST,
-    			loginUrl,
+    			Session.loginUrl,
     	                new Response.Listener<String>() {
     	 
     	                    @Override
@@ -143,15 +159,15 @@ public class SessionFragmentLogin extends SherlockDialogFragment implements OnCl
     	                        	if(!json.isNull("apiKey")){	    	                        	
     	                        		
     	                        		Session.setApiKey(json.getString("apiKey"));
-    	                        		getFragmentManager().beginTransaction().remove(SessionFragmentLogin.this).commit();
-    	                        		statuslistener.isSuccess();
+    	                        		getFragmentManager().beginTransaction().remove(FragmentLogin.this).commit();
+    	                        		protocollistener.isCompleted();
 	    	                        }
     	                        	
     	                        	if(!json.isNull("user_id")){	    	                        	
     	                        		
     	                        		Session.setUserId(json.getInt("user_id"));
-    	                        		getFragmentManager().beginTransaction().remove(SessionFragmentLogin.this).commit();
-    	                        		statuslistener.isSuccess();
+    	                        		getFragmentManager().beginTransaction().remove(FragmentLogin.this).commit();
+    	                        		protocollistener.isCompleted();
 	    	                        }
 	    	                        
     	                        }catch(JSONException e){
