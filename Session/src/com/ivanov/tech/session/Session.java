@@ -43,9 +43,9 @@ public class Session {
     public static final int PREF_USER_ID_DEFAULT=0;
 
         
-    public final static String testApiKeyUrl = "http://"+YourDomenOrIp+"/igorserver/v1/testapikey";
-    public static final String loginUrl="http://"+YourDomenOrIp+"/igorserver/v1/login";
-    public static final String registerUrl="http://"+YourDomenOrIp+"/igorserver/v1/register";
+    public final static String testApiKeyUrl = "http://space14.ru/igorserver/v1/testapikey";
+    public static final String loginUrl="http://space14.ru/igorserver/v1/login";
+    public static final String registerUrl="http://space14.ru/igorserver/v1/register";
 
 
     static private SharedPreferences preferences=null;
