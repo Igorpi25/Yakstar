@@ -15,9 +15,9 @@ import com.ivanov.tech.session.Session;
 public class ActivityDemo extends SherlockFragmentActivity {
 
 	//Urls for Session-demo
-	static final String url_testapikey="http://igorpi25.ru/v2/testapikey";
-	static final String url_login="http://igorpi25.ru/v2/login";
-	static final String url_register="http://igorpi25.ru/v2/register";
+	static final String url_testapikey="http://igorpi25.ru/v1/testapikey";
+	static final String url_login="http://igorpi25.ru/v1/login";
+	static final String url_register="http://igorpi25.ru/v1/register";
         	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
