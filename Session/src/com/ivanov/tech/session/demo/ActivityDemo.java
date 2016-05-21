@@ -14,6 +14,11 @@ import com.ivanov.tech.session.Session;
  */
 public class ActivityDemo extends SherlockFragmentActivity {
 
+	//Urls for Session-demo
+	static final String url_testapikey="http://igorpi25.ru/v2/testapikey";
+	static final String url_login="http://igorpi25.ru/v2/login";
+	static final String url_register="http://igorpi25.ru/v2/register";
+        	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +26,7 @@ public class ActivityDemo extends SherlockFragmentActivity {
         setContentView(R.layout.activity_demo);
         
         //Init app preferences
-        Session.Initialize(getApplicationContext());
+        Session.Initialize(getApplicationContext(),url_testapikey,url_login,url_register);
         
         showFragmentDemo();        
     }

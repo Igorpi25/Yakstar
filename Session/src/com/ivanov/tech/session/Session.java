@@ -42,18 +42,31 @@ public class Session {
     public static final String PREF_USER_ID="PREF_USER_ID";
     public static final int PREF_USER_ID_DEFAULT=0;
 
+    public static final String PREF_TESTAPIKEYURL="PREF_TESTAPIKEYURL";
+    public static final String PREF_LOGINURL="PREF_LOGINURL";
+    public static final String PREF_REGISTERURL="PREF_REGISTERURL";
         
-    public final static String testApiKeyUrl = "http://space14.ru/igorserver/v1/testapikey";
-    public static final String loginUrl="http://space14.ru/igorserver/v1/login";
-    public static final String registerUrl="http://space14.ru/igorserver/v1/register";
-
+    public static String getTestApiKeyUrl(){
+    	return preferences.getString(Session.PREF_TESTAPIKEYURL, null);    	
+    }
+    
+    public static final String getLoginUrl(){
+    	return preferences.getString(Session.PREF_LOGINURL, null);    	
+    }
+    
+    public static final String getRegisterUrl(){
+    	return preferences.getString(Session.PREF_REGISTERURL, null);    	
+    }
 
     static private SharedPreferences preferences=null;
     
-    public static void Initialize(Context context){
+    public static void Initialize(Context context, String url_testapikey, String url_login, String url_register){
     	if(preferences==null){
     		preferences=context.getApplicationContext().getSharedPreferences(PREF, 0);
     	}
+    	preferences.edit().putString(Session.PREF_TESTAPIKEYURL, url_testapikey).commit();
+    	preferences.edit().putString(Session.PREF_LOGINURL, url_login).commit();
+    	preferences.edit().putString(Session.PREF_REGISTERURL, url_register).commit();
     }
  
     public static String getApiKey(){		
@@ -124,7 +137,7 @@ public class Session {
     	pDialog.show();
     	
     	StringRequest request = new StringRequest(Method.POST,
-    			testApiKeyUrl,
+    			getTestApiKeyUrl(),
     	                new Response.Listener<String>() {
     	 
     	                    @Override

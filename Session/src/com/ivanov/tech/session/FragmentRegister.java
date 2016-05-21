@@ -108,7 +108,7 @@ private static String TAG = FragmentRegister.class.getSimpleName();
     	Log.e(TAG,tag);
     	
     	StringRequest request = new StringRequest(Method.POST,
-    			Session.registerUrl,
+    			Session.getRegisterUrl(),
     	                new Response.Listener<String>() {
     	 
     	                    @Override

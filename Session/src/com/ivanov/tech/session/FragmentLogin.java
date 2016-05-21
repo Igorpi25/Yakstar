@@ -144,7 +144,7 @@ public class FragmentLogin extends SherlockDialogFragment implements OnClickList
     	Log.e(TAG,tag);
     	
     	StringRequest request = new StringRequest(Method.POST,
-    			Session.loginUrl,
+    			Session.getLoginUrl(),
     	                new Response.Listener<String>() {
     	 
     	                    @Override
