@@ -156,20 +156,15 @@ public class FragmentLogin extends SherlockDialogFragment implements OnClickList
     	                        try{
     	                        	json=new JSONObject(response);
     	                        
-    	                        	if(!json.isNull("apiKey")){	    	                        	
+    	                        	if( (!json.isNull("apiKey")) && (!json.isNull("user_id")) ){	    	                        	
     	                        		
     	                        		Session.setApiKey(json.getString("apiKey"));
+    	                        		Session.setUserId(json.getInt("user_id"));
+    	                        		
     	                        		getFragmentManager().beginTransaction().remove(FragmentLogin.this).commit();
     	                        		protocollistener.isCompleted();
 	    	                        }
     	                        	
-    	                        	if(!json.isNull("user_id")){	    	                        	
-    	                        		
-    	                        		Session.setUserId(json.getInt("user_id"));
-    	                        		getFragmentManager().beginTransaction().remove(FragmentLogin.this).commit();
-    	                        		protocollistener.isCompleted();
-	    	                        }
-	    	                        
     	                        }catch(JSONException e){
     	                        	Log.e(TAG,"doLoginRequest "+e.toString());
     	                        }
