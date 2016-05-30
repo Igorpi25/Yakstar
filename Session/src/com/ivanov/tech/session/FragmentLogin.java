@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -69,11 +70,9 @@ public class FragmentLogin extends SherlockDialogFragment implements OnClickList
         super.onStart();
     }
     
-    @Override
-    public void onDetach(){
-    	super.onDetach();
-    	
-    		
+    public void onStop(){
+    	super.onStop();    	
+    	hideKeyboard();
     }
 
     @Override
@@ -134,9 +133,7 @@ public class FragmentLogin extends SherlockDialogFragment implements OnClickList
 			
 		}
 	}
-	
-	
-	
+		
 	void doLoginRequest(Context context,final String email,final String password) {
 
     	String tag = TAG+" doLoginRequest"; 
@@ -208,5 +205,14 @@ public class FragmentLogin extends SherlockDialogFragment implements OnClickList
 
     }
 	
-
+	void hideKeyboard(){
+    	try {
+            InputMethodManager input = (InputMethodManager) getActivity()
+                    .getSystemService(getActivity().INPUT_METHOD_SERVICE);
+            input.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
 }

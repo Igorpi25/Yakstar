@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -67,6 +68,11 @@ private static String TAG = FragmentRegister.class.getSimpleName();
         return view;
     }
 
+    public void onStop(){
+    	super.onStop();    	
+    	hideKeyboard();
+    }
+    
 	@Override
 	public void onClick(View v) {
 		
@@ -98,8 +104,6 @@ private static String TAG = FragmentRegister.class.getSimpleName();
 		}
 			
 	}
-	
-	
 	
 	void doRegisterRequest(Context context,final String name,final String email,final String password) {
 
@@ -178,4 +182,13 @@ private static String TAG = FragmentRegister.class.getSimpleName();
 
     }
 	
+	void hideKeyboard(){
+    	try {
+            InputMethodManager input = (InputMethodManager) getActivity()
+                    .getSystemService(getActivity().INPUT_METHOD_SERVICE);
+            input.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
