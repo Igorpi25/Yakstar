@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -25,10 +26,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -38,7 +35,7 @@ import com.android.volley.toolbox.Volley;
 import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
 
-public class FragmentLogin extends SherlockDialogFragment implements OnClickListener {
+public class FragmentLogin extends DialogFragment implements OnClickListener {
 
 
     private static String TAG = FragmentLogin.class.getSimpleName();
