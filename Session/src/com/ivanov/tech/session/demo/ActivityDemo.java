@@ -15,9 +15,17 @@ import com.ivanov.tech.session.Session;
 public class ActivityDemo extends AppCompatActivity {
 
 	//Urls for Session-demo
-	static final String url_testapikey="http://igorpi25.ru/v1/testapikey";
-	static final String url_login="http://igorpi25.ru/v1/login";
-	static final String url_register="http://igorpi25.ru/v1/register";
+	static final String host="https://lk.amtelcom.ru/";	
+	
+	static final String url_check_autorisation=host+"b-/b-autorisation/b-autorisation_check-user.php";
+	
+	static final String url_login=host;
+	static final String url_register=host;
+	
+	static final String url_check_internet=host+"b-/b-switch-inet/b-switch-inet_status.php";
+	static final String url_switch_internet=host+"b-/b-switch-inet/b-switch-inet.php";
+	
+	static final String url_logout=host+"/?action=logout";
         	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +34,14 @@ public class ActivityDemo extends AppCompatActivity {
         setContentView(R.layout.activity_demo);
         
         //Init app preferences
-        Session.Initialize(getApplicationContext(),url_testapikey,url_login,url_register);
+        Session.Initialize(getApplicationContext(),url_check_autorisation,url_login,url_register,url_check_internet,url_switch_internet,url_logout);
         
         showFragmentDemo();        
     }
 
     public void showFragmentDemo() {
     	
-    	Session.checkApiKey(this, getSupportFragmentManager(), R.id.main_container, new Connection.ProtocolListener() {
+    	Session.checkAutorisation(this, getSupportFragmentManager(), R.id.main_container, new Connection.ProtocolListener() {
 			
 			@Override
 			public void onCanceled() {

@@ -17,7 +17,7 @@
         android:id="@+id/main_container">
 
         <TextView
-            android:id="@+id/TextView01"
+            android:id="@+id/fragment_demo_textview_service_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -31,10 +31,10 @@
             android:typeface="sans" />
 
         <TextView
-            android:id="@+id/fragment_tester_textview_info"
+            android:id="@+id/fragment_demo_textview_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/TextView01"
+            android:layout_above="@+id/fragment_demo_textview_service_status"
             android:layout_centerHorizontal="true"
             android:text="@string/logo"
             android:textAppearance="?android:attr/textAppearanceLarge"

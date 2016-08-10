@@ -7,13 +7,14 @@
     android:padding="@dimen/window_pading" >
 
     <EditText
-        android:id="@+id/fragment_login_edittext_email"
+        android:id="@+id/fragment_login_edittext_login"
         style="@style/style_edittext_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/session_login_edittext_email_hint"
-        android:inputType="textEmailAddress" >
+        android:hint="@string/session_login_edittext_login_hint"
+        android:inputType="textEmailAddress"
+        android:text="142234034" >
 
         <requestFocus />
     </EditText>
@@ -25,7 +26,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/session_login_edittext_password_hint"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:text="74806901" />
 
     <Button
         android:id="@+id/fragment_login_button_login"
@@ -40,6 +42,7 @@
         style="@style/style_button_dialog_alter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/session_login_button_to_register_text" />
+        android:text="@string/session_login_button_to_register_text"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -4,10 +4,10 @@
     <string name="logo">com.ivanov.tech.session</string>
     <string name="subs">(demo activity)</string>
 
-    <string name="session_login_edittext_email_hint">email</string>
-    <string name="session_login_edittext_password_hint">password</string>    
-    <string name="session_login_button_login_text">Sign in</string>
-    <string name="session_login_button_to_register_text">Create account</string>  
+    <string name="session_login_edittext_login_hint">логин</string>
+    <string name="session_login_edittext_password_hint">пароль</string>    
+    <string name="session_login_button_login_text">Войти</string>
+    <string name="session_login_button_to_register_text">Регистрироваться</string>  
     
     <string name="session_register_edittext_name_hint">name</string>
     <string name="session_register_edittext_email_hint">email</string>
@@ -15,7 +15,23 @@
     <string name="session_register_button_register_text">Sign Up</string>
     <string name="session_register_button_to_login_text">I\'ve an account already</string>
     
-    <string name="session_tester_button_logout">Sign Out</string>
-    <string name="session_tester_textview_info">Api-Key:</string>
+    
+    
+    
+    <string name="fragment_demo_textview_login">Логин:</string>
+        
+    <string name="fragment_demo_textview_service_status">Статус:</string>
+    <string name="fragment_demo_textview_service_status_active">активный</string>
+    <string name="fragment_demo_textview_service_status_disabled">выключен</string>
+    <string name="fragment_demo_textview_service_status_wait">ожидание ответа сервера</string>
+        
+    <string name="fragment_demo_button_signout">Выйти</string>
+    
+    <string name="fragment_demo_textview_internet">Состояние интернета:</string>        
+    <string name="fragment_demo_textview_internet_on">онлайн</string>
+    <string name="fragment_demo_textview_internet_off">отключен</string>
+        
+    <string name="fragment_demo_button_connect">Подключить</string>
+    <string name="fragment_demo_button_disconnect">Отключить</string>
     
 </resources>

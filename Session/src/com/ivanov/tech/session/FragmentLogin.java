@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -27,6 +28,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.Request.Method;
@@ -41,10 +44,7 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
     private static String TAG = FragmentLogin.class.getSimpleName();
     
     Button button_login,button_to_register;
-    EditText edittext_email,edittext_password;
-    
-    
-    
+    EditText edittext_login,edittext_password;
     
     Connection.ProtocolListener protocollistener;
     ViewGroup container;
@@ -83,13 +83,13 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
         button_to_register = (Button) view.findViewById(R.id.fragment_login_button_to_register);
         button_to_register.setOnClickListener(this);
         
-        edittext_email=(EditText)view.findViewById(R.id.fragment_login_edittext_email);
+        edittext_login=(EditText)view.findViewById(R.id.fragment_login_edittext_login);
         
         edittext_password=(EditText)view.findViewById(R.id.fragment_login_edittext_password);
 
         
         if((getArguments()!=null)&&(getArguments().containsKey("email"))){
-        	edittext_email.setText(getArguments().getString("email"));
+        	edittext_login.setText(getArguments().getString("email"));
         }
         
         if((getArguments()!=null)&&(getArguments().containsKey("password"))){
@@ -105,14 +105,14 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
 	public void onClick(View v) {
 		if(v.getId()==button_login.getId()){
 			
-			final String email= edittext_email.getText().toString();
+			final String login= edittext_login.getText().toString();
 			final String password= edittext_password.getText().toString();
 			
 			Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new ProtocolListener(){
 
 				@Override
 				public void isCompleted() {
-					doLoginRequest(getActivity().getApplicationContext(),email,password);
+					doLoginRequest(getActivity(),login,password);
 				}
 
 				@Override
@@ -131,69 +131,65 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
 		}
 	}
 		
-	void doLoginRequest(Context context,final String email,final String password) {
+	void doLoginRequest(Context context,final String login,final String password) {
 
     	String tag = TAG+" doLoginRequest"; 
     	        
     	Log.e(TAG,tag);
     	
-    	StringRequest request = new StringRequest(Method.POST,
+    	Session.setUserLogin(login);
+    	Session.setUserPassword(password);
+    	
+    	final ProgressDialog pDialog = new ProgressDialog(context);
+    	pDialog.setMessage("Отправка логина и пароля ...");
+    	pDialog.setCancelable(false);    	
+    	pDialog.show();
+    	
+    	StringRequest request = new StringRequest(Request.Method.POST,
     			Session.getLoginUrl(),
     	                new Response.Listener<String>() {
     	 
     	                    @Override
     	                    public void onResponse(String response) {
-    	                        Log.d(TAG, "onResponse" + response);
-    	                        
-    	                        JSONObject json;
-    	                        
-    	                        try{
-    	                        	json=new JSONObject(response);
-    	                        
-    	                        	if( (!json.isNull("apiKey")) && (!json.isNull("user_id")) ){	    	                        	
-    	                        		
-    	                        		Session.setApiKey(json.getString("apiKey"));
-    	                        		Session.setUserId(json.getInt("user_id"));
-    	                        		
-    	                        		getFragmentManager().beginTransaction().remove(FragmentLogin.this).commit();
-    	                        		protocollistener.isCompleted();
-	    	                        }
-    	                        	
-    	                        }catch(JSONException e){
-    	                        	Log.e(TAG,"doLoginRequest "+e.toString());
-    	                        }
-    	                        
+    	                        Log.d(TAG, "onResponse 1 " + response);
+    	                        pDialog.hide();
+    	                        Session.checkAutorisation(getActivity(), getFragmentManager(), R.id.main_container, protocollistener);
     	                    }
     	                    
     	                }, new Response.ErrorListener() {
     	 
     	                    @Override
     	                    public void onErrorResponse(VolleyError error) {
-    	                        Log.e(TAG, "Volley.onErrorResponser: " + error.getMessage());
-    	                        
+    	                        Log.e(TAG, "1 Volley.onErrorResponser: " + error.getMessage());
+    	                        pDialog.hide();
     	                    }
     	                }){
     		
-    		
     		@Override
             public Map<String, String> getHeaders() throws AuthFailureError {
+    			
+    			Log.d(TAG, "getHeaders");
+    			
                 HashMap<String, String> headers = new HashMap<String, String>();
                 
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                Session.addCookiesToHeader(headers);
+                
+                headers.put("content-type", "application/x-www-form-urlencoded");
                 
                 return headers;
             }
     		
     		@Override
-            protected Map<String, String> getParams() {
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
     			
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email);
+                params.put("login", login);
                 params.put("password", password);
+                
+                Log.d(TAG, "getParams = "+params.toString());
                 
                 return params;
             }
-    		
     		
     	};
     	 
