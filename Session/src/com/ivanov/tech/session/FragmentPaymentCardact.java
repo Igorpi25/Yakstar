@@ -131,9 +131,15 @@ public class FragmentPaymentCardact extends DialogFragment implements OnClickLis
 			
 		}
 		
-		if( (v.getId()==button_back.getId()) || (v.getId()==button_close.getId()) ){
+		if( (v.getId()==button_back.getId()) ){
 			
 			getFragmentManager().popBackStack();
+			
+		}
+		
+		if( (v.getId()==button_close.getId()) ){
+			
+			Session.popFullBackStack(getFragmentManager());
 			
 		}
 		

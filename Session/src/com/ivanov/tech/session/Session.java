@@ -488,6 +488,54 @@ public class Session {
         }
     }
   	
+  	public static FragmentPaymentVisa createPaymentVisaFragment(final Context context,final FragmentManager fragmentManager, final int container){
+
+        try{
+            if(fragmentManager.findFragmentByTag("PaymentVisa").isVisible()){
+                return (FragmentPaymentVisa)fragmentManager.findFragmentByTag("PaymentVisa");
+            }else{
+                throw (new NullPointerException());
+            }
+        }catch(NullPointerException e) {
+
+        	FragmentPaymentVisa fragment = FragmentPaymentVisa.newInstance();
+            
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(container, fragment, "PaymentVisa");            
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack("PaymentVisa");
+            fragmentTransaction.commit();
+            
+            return fragment;
+        }
+    }
+  	
+  	public static FragmentPaymentRoot createPaymentRootFragment(final Context context,final FragmentManager fragmentManager, final int container){
+
+        try{
+            if(fragmentManager.findFragmentByTag("PaymentRoot").isVisible()){
+                return (FragmentPaymentRoot)fragmentManager.findFragmentByTag("PaymentRoot");
+            }else{
+                throw (new NullPointerException());
+            }
+        }catch(NullPointerException e) {
+
+        	FragmentPaymentRoot fragment = FragmentPaymentRoot.newInstance();
+            
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(container, fragment, "PaymentRoot");            
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack("PaymentRoot");
+            fragmentTransaction.commit();
+            
+            return fragment;
+        }
+    }
+  	
+  	public static void popFullBackStack(final FragmentManager fragmentManager){
+  		fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+  	}
+  	
   	//------------------Cookies-------------------------------------
   	
   	public static boolean parseCookies(Map<String, String> headers) {

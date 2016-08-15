@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical" >
+	
+    <LinearLayout
+        android:id="@+id/fragment_payment_root_layout_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/window_pading"
+        android:visibility="visible" >
+        
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	
+	        <TextView
+	            android:id="@+id/textView1"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="@string/fragment_payment_root_textview_title"
+	            android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	        <TextView
+	            android:id="@+id/textView2"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="@string/fragment_payment_root_textview_summary"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:visibility="gone" />
+	
+	    </LinearLayout>
+
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:gravity="center_horizontal" >
+
+	        <ImageButton
+	            android:id="@+id/fragment_payment_root_imagebutton_cardact"
+	            android:layout_width="120dp"
+	            android:layout_height="90dp"
+	            android:cropToPadding="false"
+	            android:scaleType="fitCenter"
+	            android:src="@drawable/payment_cardact" />
+
+	        <ImageButton
+	            android:id="@+id/fragment_payment_root_imagebutton_visa"
+	            android:layout_width="120dp"
+	            android:layout_height="90dp"
+	            android:scaleType="fitCenter"
+	            android:src="@drawable/payment_visa" />
+
+	    </LinearLayout>
+	
+	    <Button
+	        android:id="@+id/fragment_payment_root_button_back"
+	        style="@style/style_button_dialog_alter"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:text="@string/fragment_payment_root_button_back" />
+	    
+	</LinearLayout>
+
+</LinearLayout>

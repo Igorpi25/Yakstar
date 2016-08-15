@@ -81,6 +81,12 @@
     <string name="fragment_payment_visa_button_pay">Перейти к оплате</string>
     <string name="fragment_payment_visa_button_back">Назад</string>
     <string name="fragment_payment_visa_button_close">ОК</string>
-        
+    <string name="fragment_payment_visa_textview_success">Оплата прошла успешно!</string>
+    
+    <string name="fragment_payment_root_button_back">Назад</string>
+    <string name="fragment_payment_root_textview_title">Выберите способ оплаты</string>
+    <string name="fragment_payment_root_textview_summary">Если у вас листочек с кодом выберите "Амтел-карта"</string>
+    
+    
     
 </resources>

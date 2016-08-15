@@ -167,7 +167,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
 		
 		if (v.getId()==button_balance_charge.getId()){
 			
-			Session.createPaymentCardactFragment(getActivity(), getFragmentManager(), R.id.main_container);
+			Session.createPaymentRootFragment(getActivity(), getFragmentManager(), R.id.main_container);
 			return;
 		}
 		
