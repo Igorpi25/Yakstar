@@ -6,8 +6,34 @@
     android:orientation="vertical"
     android:padding="@dimen/window_pading" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/color_white"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/fragment_register_textview_success_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_textview_success_message"
+            android:textAppearance="?android:attr/textAppearance" />
+
+        <TextView
+            android:id="@+id/fragment_register_textview_response"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Ваш логин 14224564 пароль 8923483"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     <EditText
-        android:id="@+id/fragment_login_edittext_login"
+        android:id="@+id/fragment_register_edittext_login"
         style="@style/style_edittext_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +45,7 @@
     </EditText>
 
     <EditText
-        android:id="@+id/fragment_login_edittext_password"
+        android:id="@+id/fragment_register_edittext_password"
         style="@style/style_edittext_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,18 +54,11 @@
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/fragment_login_button_login"
+        android:id="@+id/fragment_register_button_login"
         style="@style/style_button_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/window_pading"
         android:text="@string/session_login_button_login_text" />
-
-    <Button
-        android:id="@+id/fragment_login_button_to_register"
-        style="@style/style_button_dialog_alter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/session_login_button_to_register_text" />
-
+    
 </LinearLayout>

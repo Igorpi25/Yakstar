@@ -7,7 +7,7 @@
     <style name="AppBaseTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">#673AB7</item>
         <item name="colorPrimaryDark">#512DA8</item>
-        <item name="colorAccent">#FF4081</item>
+        <item name="colorAccent">#18c818</item>
     </style>
 
     <!-- Application theme. -->

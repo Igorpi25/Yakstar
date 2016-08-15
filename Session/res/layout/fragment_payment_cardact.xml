@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/window_pading" >
+	
+    <LinearLayout
+        android:id="@+id/fragment_payment_cardact_layout_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    	android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical" 
+        android:visibility="visible">
+        
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	
+	        <TextView
+	            android:id="@+id/textView1"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="@string/fragment_payment_cardact_textview_number"
+	            android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	        <TextView
+	            android:id="@+id/textView2"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="@string/fragment_payment_cardact_textview_number_summary"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+	    </LinearLayout>
+	
+	    <EditText
+	        android:id="@+id/fragment_payment_cardact_edittext_number"
+	        style="@style/style_edittext_dialog"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:nextFocusForward="@+id/fragment_payment_cardact_edittext_code_one"
+	        android:nextFocusRight="@+id/fragment_payment_cardact_edittext_code_one"
+	        android:nextFocusDown="@+id/fragment_payment_cardact_edittext_code_one"
+	        android:layout_marginBottom="20dp"
+	        android:layout_marginTop="10dp"
+	        android:ems="10"
+	        android:gravity="center_vertical|center_horizontal"
+	        android:inputType="numberDecimal"
+	        android:maxLength="8" >
+	
+	        <requestFocus />
+	    </EditText>
+	
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	
+	        <TextView
+	            android:id="@+id/TextView01"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="@string/fragment_payment_cardact_textview_code"
+	            android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	    </LinearLayout>
+	
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp" >
+	
+	        <EditText
+	            android:id="@+id/fragment_payment_cardact_edittext_code_one"
+	            style="@style/style_edittext_dialog"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:ems="10"
+	            android:gravity="center_vertical|center_horizontal"
+	            android:inputType="textVisiblePassword"
+	            android:maxLength="4"
+	            android:nextFocusDown="@+id/fragment_payment_cardact_edittext_code_two"
+	            android:nextFocusForward="@+id/fragment_payment_cardact_edittext_code_two"
+	            android:nextFocusLeft="@+id/fragment_payment_cardact_edittext_number"
+	            android:nextFocusRight="@+id/fragment_payment_cardact_edittext_code_two"
+	            android:nextFocusUp="@+id/fragment_payment_cardact_edittext_number" />
+	
+	        <TextView
+	            android:id="@+id/TextView02"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="-"
+	            android:textAppearance="?android:attr/textAppearanceMedium" />
+	        
+	        <EditText
+	            android:id="@+id/fragment_payment_cardact_edittext_code_two"
+	            style="@style/style_edittext_dialog"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:nextFocusForward="@+id/fragment_payment_cardact_edittext_code_three"
+	            android:nextFocusRight="@+id/fragment_payment_cardact_edittext_code_three"
+	            android:nextFocusDown="@+id/fragment_payment_cardact_edittext_code_three"
+	            android:nextFocusUp="@+id/fragment_payment_cardact_edittext_number"
+	            android:nextFocusLeft="@+id/fragment_payment_cardact_edittext_code_one"
+	            android:layout_weight="1"
+	            android:ems="10"
+	            android:gravity="center_vertical|center_horizontal"
+	            android:inputType="textVisiblePassword"
+	            android:maxLength="4" />
+	
+	        <TextView
+	            android:id="@+id/TextView03"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="-"
+	            android:textAppearance="?android:attr/textAppearanceMedium" />
+	        
+	        <EditText
+	            android:id="@+id/fragment_payment_cardact_edittext_code_three"
+	            style="@style/style_edittext_dialog"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:nextFocusForward="@+id/fragment_payment_cardact_edittext_code_four"
+	            android:nextFocusRight="@+id/fragment_payment_cardact_edittext_code_four"
+	            android:nextFocusDown="@+id/fragment_payment_cardact_edittext_code_four"
+	            android:nextFocusUp="@+id/fragment_payment_cardact_edittext_number"
+	            android:nextFocusLeft="@+id/fragment_payment_cardact_edittext_code_two"
+	            android:layout_weight="1"
+	            android:ems="10"
+	            android:gravity="center_vertical|center_horizontal"
+	            android:inputType="textVisiblePassword"
+	            android:maxLength="4" />
+	
+	        <TextView
+	            android:id="@+id/textView04"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="-"
+	            android:textAppearance="?android:attr/textAppearanceMedium" />
+	        
+	        <EditText
+	            android:id="@+id/fragment_payment_cardact_edittext_code_four"
+	            style="@style/style_edittext_dialog"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:nextFocusUp="@+id/fragment_payment_cardact_edittext_number"
+	            android:nextFocusLeft="@+id/fragment_payment_cardact_edittext_code_three"
+	            android:layout_weight="1"
+	            android:ems="10"
+	            android:gravity="center_vertical|center_horizontal"
+	            android:inputType="textVisiblePassword"
+	            android:maxLength="4" />
+	
+	    </LinearLayout>
+	
+	    <Button
+	        android:id="@+id/fragment_payment_cardact_button_activate"
+	        style="@style/style_button_dialog"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="20dp"
+	        android:text="@string/fragment_payment_cardact_button_activate" />
+	
+	    <Button
+	        android:id="@+id/fragment_payment_cardact_button_back"
+	        style="@style/style_button_dialog_alter"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:text="@string/fragment_payment_cardact_button_back" />
+	    
+	</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_payment_cardact_layout_success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" 
+        android:visibility="gone">
+	    
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" 
+	        android:background="@color/color_white"
+	        android:padding="20dp">
+	
+	        <TextView
+	            android:id="@+id/fragment_payment_cardact_textview_success_message"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:text="Активация карты успешно завершена"
+	            android:textAppearance="?android:attr/textAppearanceMedium"
+	            android:textStyle="bold" />
+	
+	    </LinearLayout>
+	    
+        <Button
+	        android:id="@+id/fragment_payment_cardact_button_close"
+	        style="@style/style_button_dialog"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="20dp"
+	        android:text="@string/fragment_payment_cardact_button_close" />
+
+    </LinearLayout>
+
+</LinearLayout>

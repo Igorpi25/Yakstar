@@ -39,20 +39,22 @@ import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
 import com.ivanov.tech.session.Session.RequestListener;
 
-public class FragmentLogin extends DialogFragment implements OnClickListener {
+public class FragmentRegisterSuccess extends DialogFragment implements OnClickListener {
 
 
-    private static String TAG = FragmentLogin.class.getSimpleName();
+    private static String TAG = FragmentRegisterSuccess.class.getSimpleName();
     
-    Button button_login,button_to_register;
+    Button button_login;
     EditText edittext_login,edittext_password;
+    
+    TextView textview_response;
     
     Connection.ProtocolListener protocollistener;
     ViewGroup container;
     
 
-    public static FragmentLogin newInstance(Connection.ProtocolListener listener) {
-    	FragmentLogin f = new FragmentLogin();
+    public static FragmentRegisterSuccess newInstance(Connection.ProtocolListener listener) {
+    	FragmentRegisterSuccess f = new FragmentRegisterSuccess();
     	f.protocollistener=listener;
     	
         return f;
@@ -76,18 +78,16 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = null;
-        view = inflater.inflate(R.layout.fragment_login, container, false);
+        view = inflater.inflate(R.layout.fragment_register_success, container, false);
         
-        button_login = (Button) view.findViewById(R.id.fragment_login_button_login);
+        textview_response=(TextView)view.findViewById(R.id.fragment_register_textview_response);
+        textview_response.setText(Session.getRegisteredMessage());
+        
+        button_login = (Button) view.findViewById(R.id.fragment_register_button_login);
         button_login.setOnClickListener(this);
         
-        button_to_register = (Button) view.findViewById(R.id.fragment_login_button_to_register);
-        button_to_register.setOnClickListener(this);
-        
-        edittext_login=(EditText)view.findViewById(R.id.fragment_login_edittext_login);
-        
-        edittext_password=(EditText)view.findViewById(R.id.fragment_login_edittext_password);
-
+        edittext_login=(EditText)view.findViewById(R.id.fragment_register_edittext_login);        
+        edittext_password=(EditText)view.findViewById(R.id.fragment_register_edittext_password);
         
         if((getArguments()!=null)&&(getArguments().containsKey("email"))){
         	edittext_login.setText(getArguments().getString("email"));
@@ -125,18 +125,7 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
 			
 			
 		}
-		if(v.getId()==button_to_register.getId()){
-			
-			Session.doTarifRequest(getActivity(), getFragmentManager(), R.id.main_container, new RequestListener(){
-
-				@Override
-				public void onResponsed() {
-					Session.createSessionRegisterFirstFragment(getActivity(), getFragmentManager(), container.getId(), protocollistener);					
-				}
-				
-			});
-			
-		}
+		
 	}
 		
 	void doLoginRequest(Context context,final String login,final String password) {
@@ -182,7 +171,7 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
                 
                 Session.addCookiesToHeader(headers);
                 
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                headers.put("content-type", "application/x-www-form-urlencoded");
                 
                 return headers;
             }

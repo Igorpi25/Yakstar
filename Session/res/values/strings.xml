@@ -9,21 +9,56 @@
     <string name="session_login_button_login_text">Войти</string>
     <string name="session_login_button_to_register_text">Регистрироваться</string>  
     
-    <string name="session_register_edittext_name_hint">name</string>
-    <string name="session_register_edittext_email_hint">email</string>
-    <string name="session_register_edittext_password_hint">password</string>    
-    <string name="session_register_button_register_text">Sign Up</string>
-    <string name="session_register_button_to_login_text">I\'ve an account already</string>
+    <string name="session_register_edittext_surname_hint">Фамилия</string>
+    <string name="session_register_edittext_name_hint">Имя</string>
+    <string name="session_register_edittext_patr_hint">Отчество</string>
+    <string name="session_register_edittext_email_hint">e-mail</string>
+    <string name="session_register_edittext_phone_hint">Мобильный телефон</string>    
+    <string name="session_register_edittext_passport_num_hint">Серия и номер паспорта</string>
+    <string name="session_register_edittext_passport_who_hint">Кем и когда выдан</string>
+    <string name="session_register_textview_tarif_text">Выберите свой тариф</string>
     
+    <string name="session_register_confirm_one_text_1">Я ознакомлен с правилами оказания услуг ЗАО \"Амтел-связь\"</string>
+    <string name="session_register_confirm_one_text_2">(Читать правила)</string>
     
+    <string name="session_register_confirm_two_text_1">Я принимаю условия договора-оферты</string>
+    <string name="session_register_confirm_two_text_2">(Читать договор оферты)</string>
     
+    <string name="session_register_captcha_text_1">Введите код указанный на картинке</string>
+    <string name="session_register_captcha_text_2">Обновить картинку</string>
+    <string name="session_register_captcha_text_3">код</string>
+    
+    <string name="register_check_surname">Неверные данные в поле Фамилия\n (кириллица с заглавной буквы)</string>
+    <string name="register_check_name">Неверные данные в поле Имя\n (кириллица с заглавной буквы)</string>
+    <string name="register_check_patr">Неверные данные в поле Отчество\n (кириллица с заглавной буквы)</string>
+    
+    <string name="register_check_phone">Неверно указан номер телефона\n (10 цифр без пробелов)\n</string>    
+    <string name="register_check_passport_num">Неверно указаны паспортные данные\n (серия+номер \[10 цифр без пробелов\])</string>    
+    <string name="register_check_passport_who">Не указан кем и когда выдан паспорт</string>
+    <string name="register_check_confirm">Должны быть приняты все условия договора</string>
+    <string name="register_check_captcha">Вы должны ввести код указанный на картинке</string>
+    
+    <string name="register_warning_not_registered">Ошибка при регистрации</string>
+    
+    <string name="register_textview_success_message">Вы успешно зарегистрировались в системе. Ваша учетная запись будет активирована в течение 15 минут</string>
+    
+    <string name="session_register_button_cancel">Отмена</string>
+    <string name="session_register_button_next_second">Далее</string>    
+    <string name="session_register_button_next_last">Далее</string>
+    <string name="session_register_button_back_first">Назад</string>
+    <string name="session_register_button_back_second">Назад</string>
+    <string name="session_register_button_submit">Зарегистрироваться</string>
     
     <string name="fragment_demo_textview_login">Логин:</string>
         
-    <string name="fragment_demo_textview_service_status">Статус:</string>
-    <string name="fragment_demo_textview_service_status_active">активный</string>
-    <string name="fragment_demo_textview_service_status_disabled">выключен</string>
+    <string name="fragment_demo_textview_service_status">Статус услуги:</string>
+    <string name="fragment_demo_textview_service_status_active">Услуга активна</string>
+    <string name="fragment_demo_textview_service_status_disabled">Статус услуги: заблокирован</string>
     <string name="fragment_demo_textview_service_status_wait">ожидание ответа сервера</string>
+    
+    <string name="fragment_demo_textview_balance_key">Балансе:</string>
+    <string name="fragment_demo_textview_balance_unit">руб</string>
+    <string name="fragment_demo_button_balance_charge">Пополнить баланс</string>
         
     <string name="fragment_demo_button_signout">Выйти</string>
     
@@ -33,5 +68,19 @@
         
     <string name="fragment_demo_button_connect">Подключить</string>
     <string name="fragment_demo_button_disconnect">Отключить</string>
+    
+    <string name="fragment_payment_cardact_textview_number">Введите 8-значный номер карты.</string>
+    <string name="fragment_payment_cardact_textview_number_summary">Если на вашей карте номер состоит из 6 цифр, то добавьте перед ним два нуля</string>
+    <string name="fragment_payment_cardact_textview_code">Введите код активации</string>
+    <string name="fragment_payment_cardact_button_activate">Активировать карту</string>
+    <string name="fragment_payment_cardact_button_back">Назад</string>
+    <string name="fragment_payment_cardact_button_close">ОК</string>
+    
+    <string name="fragment_payment_visa_textview_amount">Введите сумму оплаты.</string>
+    <string name="fragment_payment_visa_textview_amount_summary">Минимальная сумма оплаты 100 руб</string>
+    <string name="fragment_payment_visa_button_pay">Перейти к оплате</string>
+    <string name="fragment_payment_visa_button_back">Назад</string>
+    <string name="fragment_payment_visa_button_close">ОК</string>
+        
     
 </resources>

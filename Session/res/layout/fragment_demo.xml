@@ -28,59 +28,155 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/fragment_demo_textview_service_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="@string/fragment_demo_textview_service_status"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        
-        <TextView
-            android:id="@+id/fragment_demo_textview_service_status_disabled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fragment_demo_textview_service_status_disabled"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        
-        <TextView
-            android:id="@+id/fragment_demo_textview_service_status_active"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fragment_demo_textview_service_status_active"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        
-        <TextView
-            android:id="@+id/fragment_demo_textview_service_status_wait"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fragment_demo_textview_service_status_wait"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    </LinearLayout>
-
     <Button
         android:id="@+id/fragment_demo_button_signout"
         style="@style/style_button_dialog_alter"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:text="@string/fragment_demo_button_signout" />
+
+    <LinearLayout
+        android:id="@+id/fragment_demo_layout_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="invisible" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_clientname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_agriment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_tariffname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_levelname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_topay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_debet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:visibility="visible" >
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_service_status_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/fragment_demo_textview_service_status_active"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_service_status_disabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/fragment_demo_textview_service_status_disabled"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_balance_key"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/fragment_demo_textview_balance_key"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_balance_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="(неизвестно)"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/fragment_demo_textview_balance_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="5dp"
+                android:text="@string/fragment_demo_textview_balance_unit"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/fragment_demo_button_balance_charge"
+            style="@style/style_button_dialog_alter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/fragment_demo_button_balance_charge" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/fragment_demo_layout_internet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1.0"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible" >
+        android:visibility="gone" >
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,7 +205,8 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/fragment_demo_textview_internet_off"
-	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:visibility="gone" />
 	
 	    </LinearLayout>
 
@@ -127,7 +224,9 @@
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_marginTop="10dp"
-            android:text="@string/fragment_demo_button_disconnect" />
+            android:text="@string/fragment_demo_button_disconnect"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </LinearLayout>
