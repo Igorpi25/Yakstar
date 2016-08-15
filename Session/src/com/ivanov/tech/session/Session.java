@@ -728,7 +728,7 @@ public class Session {
 
         return false;
     }
-  	  	
+  	
   	protected static boolean doGetNewCookieRequest(final Context context, final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener) {
 
     	final String tag = TAG+" doGetNewCookieRequest ";  

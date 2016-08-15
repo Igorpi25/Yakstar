@@ -41,7 +41,7 @@
     <string name="register_warning_not_registered">Ошибка при регистрации</string>
     
     <string name="register_textview_success_message">Вы успешно зарегистрировались в системе. Ваша учетная запись будет активирована в течение 15 минут</string>
-    <string name="register_textview_success_message_warning">Внимание! Запишите логин и пароль на бумаге. В случае потери этих данных вы не сможете востановить аккаунт</string>
+    <string name="register_textview_success_message_warning">Внимание! Настоятельно рекомендуем записать логин и пароль на бумаге</string>
     
     <string name="session_register_button_cancel">Отмена</string>
     <string name="session_register_button_next_second">Далее</string>    
