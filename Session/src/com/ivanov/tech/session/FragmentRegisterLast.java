@@ -188,13 +188,16 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     	                        	json=new JSONObject(response);
     	                        	
     	                        	if(json.getBoolean("status")==true){
-    	                        		
+
+    	                                Session.removeRegisterJson();
+    	                                
     	                        		String message=json.getString("message");
-    	                        		
+
     	                        		Session.setRegisteredMessage(message);
 
     	                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE); 
 
+    	                                
     	                        		Session.createSessionRegisterSuccessFragment(getActivity(), getFragmentManager(), R.id.main_container, protocollistener);
     	                        		
     	                        	}else{

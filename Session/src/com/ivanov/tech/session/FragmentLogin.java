@@ -88,13 +88,13 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
         
         edittext_password=(EditText)view.findViewById(R.id.fragment_login_edittext_password);
 
-        
-        if((getArguments()!=null)&&(getArguments().containsKey("email"))){
-        	edittext_login.setText(getArguments().getString("email"));
-        }
-        
-        if((getArguments()!=null)&&(getArguments().containsKey("password"))){
-        	edittext_password.setText(getArguments().getString("password"));
+        if(Session.getUserLogin()!=null){
+        	edittext_login.setText(Session.getUserLogin());
+        	
+        	if(Session.getUserPassword()!=null){
+        		edittext_password.setText(Session.getUserPassword());
+        	}
+        	
         }
         
         this.container=container;
@@ -146,8 +146,8 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
     	Log.e(TAG,tag);
     	
     	Session.setUserLogin(login);
-    	Session.setUserPassword(password);
-    	
+    	Session.setUserPassword(password);    	
+    	    	
     	final ProgressDialog pDialog = new ProgressDialog(context);
     	pDialog.setMessage("Отправка логина и пароля ...");
     	pDialog.setCancelable(false);    	

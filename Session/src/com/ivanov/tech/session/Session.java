@@ -50,10 +50,10 @@ public class Session {
     //------------Prefs----------------
     
     public static final String PREF_USER_LOGIN="PREF_USER_LOGIN";
-    public static final String PREF_USER_LOGIN_DEFAULT="(login)";
+    public static final String PREF_USER_LOGIN_DEFAULT=null;
     
     public static final String PREF_USER_PASSWORD="PREF_USER_PASSWORD";
-    public static final String PREF_USER_PASSWORD_DEFAULT="(password)";
+    public static final String PREF_USER_PASSWORD_DEFAULT=null;
     
     public static final String PREF_INFO_JSON="PREF_INFO";
     public static final String PREF_INFO_JSON_DEFAULT=null;
@@ -335,6 +335,9 @@ public class Session {
 				Session.removeRegisteredMessage();
 				Session.removeRegisterJson();
 				Session.removeTarifsJson();
+				Session.removeRegisterJson();
+				Session.removeRegisteredMessage();
+				Session.removeInfoJson();
 				
 				Session.checkAutorisation(context, fragmentManager, container, new Connection.ProtocolListener() {
 					
@@ -662,6 +665,8 @@ public class Session {
 									            	xpp.next();
 									                if(xpp.getEventType()==XmlPullParser.TEXT){
 									                	Log.d(TAG, "onResponse login_text="+xpp.getText());
+									                	
+									                	Session.removeRegisteredMessage();
 									                	
 									                	protocolListener.isCompleted();
 									                	return;

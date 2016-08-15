@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="@color/color_white"
         android:orientation="vertical"
         android:padding="10dp" >
@@ -26,11 +26,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Ваш логин 14224564 пароль 8923483"
+            android:text="Ваш логин *** пароль ***"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/fragment_register_textview_success_message_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/color_white"
+        android:padding="10dp"
+        android:text="@string/register_textview_success_message_warning"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/color_pink"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/fragment_register_edittext_login"

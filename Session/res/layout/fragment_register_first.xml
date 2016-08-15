@@ -5,6 +5,22 @@
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical"
     android:padding="@dimen/window_pading" >
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Заполните форму регистрации"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginBottom="5dp"
+        android:text="ФИО : *"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
     
     <EditText
         android:id="@+id/fragment_register_edittext_surname"
@@ -40,12 +56,21 @@
  
     </EditText>
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Контакты:"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <EditText
         android:id="@+id/fragment_register_edittext_email"
         style="@style/style_edittext_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/window_pading"
         android:ems="10"
         android:hint="@string/session_register_edittext_email_hint"
         android:inputType="textEmailAddress" >
@@ -61,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="5dp"
-            android:text="+"
+            android:text="+7"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
@@ -75,16 +100,26 @@
             android:inputType="phone" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/TextView02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Пасспортные данные: *"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
     
     <EditText
         android:id="@+id/fragment_register_edittext_passport_num"
         style="@style/style_edittext_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/window_pading"
         android:ems="10"
         android:hint="@string/session_register_edittext_passport_num_hint"
-        android:inputType="textEmailAddress" >
+        android:inputType="numberDecimal"
+        android:maxLength="10" >
         
     </EditText>
     
@@ -95,7 +130,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/session_register_edittext_passport_who_hint"
-        android:inputType="textEmailAddress" >        
+        android:inputType="text" >        
     </EditText>
     
     <Button
