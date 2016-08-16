@@ -9,10 +9,9 @@
         <item name="colorPrimaryDark">#512DA8</item>
         <item name="colorAccent">#18c818</item>
     </style>
-
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-    </style>
     
+    <style name="SwitchInternetTheme" parent="@android:style/TextAppearance.Small">
+    <item name="android:textColor">#FFF</item>
+</style>
+
 </resources>

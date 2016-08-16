@@ -318,8 +318,8 @@ public class Session {
 				}
 		  		
 			}	
-		});  		
-  		 		
+		});
+  		  		 		
   	}
 
     public static void Logout(final Context context, final FragmentManager fragmentManager, final int container){

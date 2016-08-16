@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	textview_internet_on,textview_internet_off,
     	textview_balance_value,textview_agriment,textview_clientname,textview_tariffname,textview_topay,textview_levelname,textview_debet;
     
+    SwitchCompat switch_internet;
     
     View layout_internet,layout_info;
     
@@ -149,7 +151,9 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         textview_levelname=(TextView) view.findViewById(R.id.fragment_demo_textview_levelname);
         textview_debet=(TextView) view.findViewById(R.id.fragment_demo_textview_debet);
         
-        
+        switch_internet = (SwitchCompat)view.findViewById(R.id.fragment_demo_switch_internet);
+        switch_internet.setSwitchTextAppearance(getActivity(), R.style.SwitchInternetTheme);
+                
         showDisabled();
             
         return view;
