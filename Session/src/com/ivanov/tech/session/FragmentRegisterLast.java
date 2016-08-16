@@ -231,7 +231,6 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
                 Session.addCookiesToHeader(headers);
                 headers.put("Content-Type", "application/x-www-form-urlencoded");
                 
-                
                 return headers;
             }
     		
@@ -242,7 +241,6 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
                 
                 try{
                 	
-                
 	                JSONObject json=new JSONObject(Session.getRegisterJson());
 	                
 	                

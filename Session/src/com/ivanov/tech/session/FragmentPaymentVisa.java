@@ -357,6 +357,8 @@ public class FragmentPaymentVisa extends DialogFragment implements OnClickListen
 		});
 		
 		textview_success_summary.setText("Сумма оплаты "+amount+" руб");
+		
+		dialogloading.hide();
 	}
 	
 	void hideKeyboard(){
@@ -424,7 +426,7 @@ public class FragmentPaymentVisa extends DialogFragment implements OnClickListen
 				handlerloading.obtainMessage(1).sendToTarget();
 			}
 			
-		}, 8000);
+		}, 6000);
 		
 	}
 }

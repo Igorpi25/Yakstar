@@ -318,8 +318,7 @@ public class Session {
 				}
 		  		
 			}	
-		});
-  		
+		});  		
   		 		
   	}
 
