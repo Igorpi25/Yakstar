@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,7 +44,7 @@ import com.ivanov.tech.session.Session.RequestListener;
 /**
  * Created by Igor on 09.05.15.
  */
-public class FragmentDemo extends DialogFragment implements OnClickListener ,CheckInternetListener{
+public class FragmentDemo extends DialogFragment implements OnClickListener ,CheckInternetListener, OnCheckedChangeListener{
 
     public static final String TAG = FragmentDemo.class
             .getSimpleName();    
@@ -53,10 +55,10 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	textview_balance_value,textview_agriment,textview_clientname,textview_tariffname,textview_topay,textview_levelname,textview_debet;
     
     SwitchCompat switch_internet;
-    
+    TextView textview_internet_enabling,textview_internet_disabling;
     View layout_internet,layout_info;
     
-    Button button_signout,button_connect,button_disconnect,button_balance_charge;
+    Button button_signout,button_balance_charge;
 
     public static FragmentDemo newInstance() {
     	FragmentDemo f = new FragmentDemo();
@@ -103,8 +105,8 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
 				} catch (JSONException e) {
 					Log.e(TAG, "onStart doInfoRequest onResponsed JSONException e="+e);
 				}
-			}
-			
+		    	
+			}			
         	
         });
     
@@ -120,12 +122,6 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         button_signout = (Button) view.findViewById(R.id.fragment_demo_button_signout);
         button_signout.setOnClickListener(this);
         
-        button_connect = (Button) view.findViewById(R.id.fragment_demo_button_connect);
-        button_connect.setOnClickListener(this);
-        
-        button_disconnect = (Button) view.findViewById(R.id.fragment_demo_button_disconnect);
-        button_disconnect.setOnClickListener(this);
-        
         button_balance_charge = (Button) view.findViewById(R.id.fragment_demo_button_balance_charge);
         button_balance_charge.setOnClickListener(this);
         
@@ -137,7 +133,9 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         
         textview_internet_on = (TextView) view.findViewById(R.id.fragment_demo_textview_internet_on);
         textview_internet_off = (TextView) view.findViewById(R.id.fragment_demo_textview_internet_off);
-                
+        textview_internet_enabling = (TextView) view.findViewById(R.id.fragment_demo_textview_internet_enabling);
+        textview_internet_disabling = (TextView) view.findViewById(R.id.fragment_demo_textview_internet_disabling);
+        
 //        progressbar_wait = (ProgressBar) view.findViewById(R.id.fragment_demo_progressbar_wait);
         layout_internet = view.findViewById(R.id.fragment_demo_layout_internet);
         
@@ -153,37 +151,53 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         
         switch_internet = (SwitchCompat)view.findViewById(R.id.fragment_demo_switch_internet);
         switch_internet.setSwitchTextAppearance(getActivity(), R.style.SwitchInternetTheme);
+        switch_internet.setOnCheckedChangeListener(this);
                 
         showDisabled();
-            
+        
         return view;
     }
 
     @Override
 	public void onClick(View v) {
 		textview_login_value.setText(Session.getUserLogin());
-		Log.d(TAG, "onClick logout");
+		
 		if (v.getId()==button_signout.getId()){
-			
+			Log.d(TAG, "onClick button_signout");
 			Session.Logout(getActivity(), getFragmentManager(), R.id.main_container);
 			return;
 		}
 		
 		if (v.getId()==button_balance_charge.getId()){
-			
+			Log.d(TAG, "onClick button_balance_charge");
 			Session.createPaymentRootFragment(getActivity(), getFragmentManager(), R.id.main_container);
+			
 			return;
 		}
-		
-		if ( (v.getId()==button_connect.getId())||(v.getId()==button_disconnect.getId()) ){
-			Session.doSwitchInternetRequest(getActivity(),this);
-			return;
-		}
-		
-		
 		
 	}
-        
+
+    @Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    	Log.d(TAG, "onCheckedChanged switch_internet.checked="+switch_internet.isChecked()+" isChecked="+isChecked);
+    	
+    	if(isChecked){
+			textview_internet_on.setVisibility(View.GONE);
+	    	textview_internet_off.setVisibility(View.GONE);
+	    	textview_internet_enabling.setVisibility(View.VISIBLE);
+	    	textview_internet_disabling.setVisibility(View.GONE);		    	
+		}else{
+			textview_internet_on.setVisibility(View.GONE);
+	    	textview_internet_off.setVisibility(View.GONE);
+	    	textview_internet_enabling.setVisibility(View.GONE);
+	    	textview_internet_disabling.setVisibility(View.VISIBLE);
+		}
+    	
+    	Session.doSwitchInternetRequest(getActivity(),this);
+    	switch_internet.setEnabled(false);    	
+    	
+	}
+    
     void showActive(){
     	layout_internet.setVisibility(View.VISIBLE);
     	
@@ -203,17 +217,28 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     void showInternetOn(){
     	textview_internet_on.setVisibility(View.VISIBLE);
     	textview_internet_off.setVisibility(View.GONE);
+    	textview_internet_enabling.setVisibility(View.GONE);
+    	textview_internet_disabling.setVisibility(View.GONE);
+    	    	
+    	switch_internet.setEnabled(true); 
     	
-    	button_connect.setVisibility(View.GONE);
-    	button_disconnect.setVisibility(View.VISIBLE);
+    	switch_internet.setOnCheckedChangeListener(null);
+    	switch_internet.setChecked(true);
+    	switch_internet.setOnCheckedChangeListener(this);
+    	
     }
     
     void showInternetOff(){
     	textview_internet_on.setVisibility(View.GONE);
     	textview_internet_off.setVisibility(View.VISIBLE);
+    	textview_internet_enabling.setVisibility(View.GONE);
+    	textview_internet_disabling.setVisibility(View.GONE);
     	
-    	button_connect.setVisibility(View.VISIBLE);
-    	button_disconnect.setVisibility(View.GONE);
+    	switch_internet.setEnabled(true);
+    	
+    	switch_internet.setOnCheckedChangeListener(null);
+    	switch_internet.setChecked(false);
+    	switch_internet.setOnCheckedChangeListener(this);
     }
 	
     void updateInfo(JSONObject json){ 
@@ -252,12 +277,15 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     
     @Override
 	public void isOnline() {
+    	
 		showInternetOn();
 	}
 
 	@Override
 	public void isOffline() {
+		
 		showInternetOff();
 	}
+
 	
 }

@@ -855,10 +855,10 @@ public class Session {
       	        
       	Log.e(TAG,tag);
       	
-      	final ProgressDialog pDialog = new ProgressDialog(context);
-    	pDialog.setMessage("Включение/Отключение интернета ...");
-    	pDialog.setCancelable(false);    	
-    	pDialog.show();
+//      	final ProgressDialog pDialog = new ProgressDialog(context);
+//    	pDialog.setMessage("Включение/Отключение интернета ...");
+//    	pDialog.setCancelable(false);    	
+//    	pDialog.show();
       	
       	StringRequest request = new StringRequest(Method.POST,
       			Session.getSwitchInternetUrl(),
@@ -868,7 +868,7 @@ public class Session {
       	                    public void onResponse(String response) {
       	                        Log.d(TAG, tag+" onResponse " + response);
       	                        
-      	                        pDialog.hide();
+//      	                        pDialog.hide();
       	                        
       	                        if((response==null) || response.isEmpty()){
       	                        	Log.d(TAG, tag+" onResponse response = empty or null");
@@ -894,7 +894,7 @@ public class Session {
       	                    @Override
       	                    public void onErrorResponse(VolleyError error) {
       	                        Log.e(TAG, tag+"Volley.onErrorResponser: " + error.getMessage());
-      	                        pDialog.hide();
+//      	                        pDialog.hide();
       	                        listener.isOffline();      	                        
       	                    }
       	                }){

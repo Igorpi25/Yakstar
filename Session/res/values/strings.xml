@@ -66,6 +66,8 @@
     <string name="fragment_demo_textview_internet">Состояние интернета:</string>        
     <string name="fragment_demo_textview_internet_on">онлайн</string>
     <string name="fragment_demo_textview_internet_off">отключен</string>
+    <string name="fragment_demo_textview_internet_enabling">включение</string>
+    <string name="fragment_demo_textview_internet_disabling">отключение</string>
         
     <string name="fragment_demo_button_connect">Подключить</string>
     <string name="fragment_demo_button_disconnect">Отключить</string>
