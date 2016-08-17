@@ -41,6 +41,7 @@ import com.bumptech.glide.load.model.LazyHeaderFactory;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
+import com.ivanov.tech.session.Session.CheckAuthorizationListener;
 import com.ivanov.tech.session.Session.RequestListener;
 
 public class FragmentRegisterLast extends DialogFragment implements OnClickListener {
@@ -56,12 +57,12 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     Button button_captcha_update;
     EditText edittext_captcha_code;
     
-    Connection.ProtocolListener protocollistener;
+    CheckAuthorizationListener protocollistener;
     ViewGroup container;
         
     boolean success=false;    
 
-    public static FragmentRegisterLast newInstance(Connection.ProtocolListener listener) {
+    public static FragmentRegisterLast newInstance(CheckAuthorizationListener listener) {
     	FragmentRegisterLast f = new FragmentRegisterLast();
     	f.protocollistener=listener;
     	

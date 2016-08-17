@@ -31,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
+import com.ivanov.tech.session.Session.CheckAuthorizationListener;
 
 public class FragmentRegisterFirst extends DialogFragment implements OnClickListener {
 private static String TAG = FragmentRegisterFirst.class.getSimpleName();
@@ -42,12 +43,12 @@ private static String TAG = FragmentRegisterFirst.class.getSimpleName();
     	edittext_email,edittext_phone,
     	edittext_passport_num,edittext_passport_who;
     
-    Connection.ProtocolListener protocollistener;
+    CheckAuthorizationListener protocollistener;
     ViewGroup container;
         
     boolean success=false;
 
-    public static FragmentRegisterFirst newInstance(Connection.ProtocolListener listener) {
+    public static FragmentRegisterFirst newInstance(CheckAuthorizationListener listener) {
     	FragmentRegisterFirst f = new FragmentRegisterFirst();
     	f.protocollistener=listener;
     	

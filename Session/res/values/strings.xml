@@ -90,6 +90,36 @@
     <string name="fragment_payment_root_textview_title">Выберите способ оплаты</string>
     <string name="fragment_payment_root_textview_summary">Если у вас листочек с кодом выберите "Амтел-карта"</string>
     
+    <string name="fragment_error_button_close">Закрыть</string>
+    
+    <string name="error_31_title">Сервер не найден</string>
+    <string name="error_31_message">Для работы приложения вы должны подключиться к сети \"ТелИнТел\"</string>
+    
+    <string name="error_32_title">Ошибка обращения к серверу</string>
+    <string name="error_32_message">Не могу получить идентификатор сессии</string>
+    
+    <string name="error_33_title">Ошибка обращения к серверу</string>
+    <string name="error_33_message">Не могу получить список тарифов</string>
+    
+    <string name="error_34_title">Ошибка обращения к серверу</string>
+    <string name="error_34_message">Не могу получить код безопасности</string>
+    
+    <string name="error_35_title">Ошибка обращения к серверу</string>
+    <string name="error_35_message">Не могу выполнить запрос на регистрацию </string>
     
     
+    <string name="error_41_title">Ошибка чтения данных</string>
+    <string name="error_41_message">Не могу получить новый идентификатор сессии</string>
+    
+    <string name="error_42_title">Ошибка парсинга тарифов</string>
+    <string name="error_42_message">Не могу прочитать ответ сервера, т.к. JSON-данные не совпадают</string>
+    
+    <!-- json.status=false 4 times -->
+    <string name="error_431_title">Ошибка регистрации</string>
+    <string name="error_431_message">Возможно с вашего IP-адреса регистрировался другой пользователь. Попробуйте изменить ваш IP-адрес, и посвторите регистрацию</string>
+	
+    <!-- emty response or json.status is missing -->
+    <string name="error_432_title">Ошибка чтения данных</string>
+    <string name="error_432_message">Отсутствует статус в JSON-ответе, либо ответ не пришел</string>
+        
 </resources>

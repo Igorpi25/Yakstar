@@ -98,7 +98,7 @@ public class Session {
     public static String getLogoutUrl(){
     	return preferences.getString(Session.PREF_LOGOUT_URL, null);    	
     }
-        
+    
     public static String getCheckAutorisationUrl(){
     	return preferences.getString(Session.PREF_CHECK_AUTORISATION_URL, null);    	
     }
@@ -122,11 +122,11 @@ public class Session {
     public static final String getCaptchaUrl(){
     	return preferences.getString(Session.PREF_CAPTCHA_URL, null);    	
     }
-
+    
     public static final String getRulesUrl(){
     	return preferences.getString(Session.PREF_RULES_URL, null);    	
     }
-
+    
     public static final String getAgrimentUrl(){
     	return preferences.getString(Session.PREF_AGRIMENT_URL, null);    	
     }
@@ -299,27 +299,14 @@ public class Session {
     	preferences.edit().putString(Session.PREF_PAYMENT_VISA_URL, url_payment_visa).commit();
     }
    	
-  	public static void checkAutorisation(final Context context, final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener){
+  	public static void checkAutorisation(final Context context, final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener listener){
   					
-  		Connection.protocolConnection(context, fragmentManager, container, new Connection.ProtocolListener() {
-			
-			@Override
-			public void onCanceled() {
-				
-			}
-			
-			@Override
-			public void isCompleted() {
-				
-				if(Session.isCookieExists()){
-					doCheckAutorisationRequest(context,fragmentManager,container,protocolListener);
-				}else{
-					doGetNewCookieRequest(context,fragmentManager,container,protocolListener);
-				}
-		  		
-			}	
-		});
-  		  		 		
+  		if(Session.isCookieExists()){
+			doCheckAutorisationRequest(context,fragmentManager,container,listener);
+		}else{
+			doGetNewCookieRequest(context,fragmentManager,container,listener);
+		}
+		
   	}
 
     public static void Logout(final Context context, final FragmentManager fragmentManager, final int container){
@@ -338,15 +325,15 @@ public class Session {
 				Session.removeRegisteredMessage();
 				Session.removeInfoJson();
 				
-				Session.checkAutorisation(context, fragmentManager, container, new Connection.ProtocolListener() {
+				Session.checkAutorisation(context, fragmentManager, container, new CheckAuthorizationListener() {
 					
 					@Override
-					public void onCanceled() {
+					public void isAuthorized() {
 						//Приложение не запустится, пока пользователь не будет авторизован
 					}
 					
 					@Override
-					public void isCompleted() {
+					public void isLogedout() {
 				        fragmentManager.beginTransaction()
 				                .replace(R.id.main_container, new FragmentDemo())
 				                .commit();		
@@ -359,7 +346,7 @@ public class Session {
     
   	//-----------------Fragments------------------------------
   	
-  	public static FragmentLogin createSessionLoginFragment(final Context context,final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener){
+  	public static FragmentLogin createSessionLoginFragment(final Context context,final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener listener){
 
         try{
             if(fragmentManager.findFragmentByTag("SessionLogin").isVisible()){
@@ -369,7 +356,7 @@ public class Session {
             }
         }catch(NullPointerException e) {
 
-            FragmentLogin fragment = FragmentLogin.newInstance(protocolListener);
+            FragmentLogin fragment = FragmentLogin.newInstance(listener);
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(container, fragment, "SessionLogin");
@@ -381,7 +368,7 @@ public class Session {
         }
     }
   	
-  	public static FragmentRegisterFirst createSessionRegisterFirstFragment(final Context context,final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener){
+  	public static FragmentRegisterFirst createSessionRegisterFirstFragment(final Context context,final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener protocolListener){
 
         try{
             if(fragmentManager.findFragmentByTag("RegisterFirst").isVisible()){
@@ -403,7 +390,7 @@ public class Session {
         }
     }
   	
-  	public static FragmentRegisterSecond createSessionRegisterSecondFragment(final Context context,final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener){
+  	public static FragmentRegisterSecond createSessionRegisterSecondFragment(final Context context,final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener protocolListener){
 
         try{
             if(fragmentManager.findFragmentByTag("RegisterSecond").isVisible()){
@@ -425,7 +412,7 @@ public class Session {
         }
     }
   	
-  	public static FragmentRegisterLast createSessionRegisterLastFragment(final Context context,final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener){
+  	public static FragmentRegisterLast createSessionRegisterLastFragment(final Context context,final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener protocolListener){
 
         try{
             if(fragmentManager.findFragmentByTag("RegisterLast").isVisible()){
@@ -447,7 +434,7 @@ public class Session {
         }
     }
   	
-  	public static FragmentRegisterSuccess createSessionRegisterSuccessFragment(final Context context,final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener){
+  	public static FragmentRegisterSuccess createSessionRegisterSuccessFragment(final Context context,final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener protocolListener){
 
         try{
             if(fragmentManager.findFragmentByTag("RegisterSuccess").isVisible()){
@@ -538,6 +525,28 @@ public class Session {
   		fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
   	}
   	
+  	public static FragmentError createErrorFragment(final Context context,final FragmentManager fragmentManager, final int container, final int code, final String title, final String message, final CloseListener listener){
+
+        try{
+            if(fragmentManager.findFragmentByTag("Error").isVisible()){
+                return (FragmentError)fragmentManager.findFragmentByTag("Error");
+            }else{
+                throw (new NullPointerException());
+            }
+        }catch(NullPointerException e) {
+
+        	FragmentError fragment = FragmentError.newInstance(code,title,message,listener);
+            
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(container, fragment, "Error");            
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack("Error");
+            fragmentTransaction.commit();
+            
+            return fragment;
+        }
+    }
+  	
   	//------------------Cookies-------------------------------------
   	
   	public static boolean parseCookies(Map<String, String> headers) {
@@ -616,7 +625,7 @@ public class Session {
 
     //------------------Requests--------------------------
     
-  	protected static boolean doCheckAutorisationRequest(final Context context, final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener) {
+  	protected static boolean doCheckAutorisationRequest(final Context context, final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener listener) {
 
     	final String tag = TAG+" doCheckAutorisationRequest ";  
     	        
@@ -645,7 +654,7 @@ public class Session {
     	                        	Session.removeCookies();
     	                        		
     	                        	//Request without cookies, to get new cookie
-    	                        	Session.checkAutorisation(context, fragmentManager, container, protocolListener);
+    	                        	Session.checkAutorisation(context, fragmentManager, container, listener);
     	                        	
     	                        	return;
     	                        }
@@ -667,7 +676,7 @@ public class Session {
 									                	
 									                	Session.removeRegisteredMessage();
 									                	
-									                	protocolListener.isCompleted();
+									                	listener.isAuthorized();
 									                	return;
 									                	
 									                }else{
@@ -728,7 +737,8 @@ public class Session {
         return false;
     }
   	
-  	protected static boolean doGetNewCookieRequest(final Context context, final FragmentManager fragmentManager, final int container,final Connection.ProtocolListener protocolListener) {
+  	
+  	protected static boolean doGetNewCookieRequest(final Context context, final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener listener) {
 
     	final String tag = TAG+" doGetNewCookieRequest ";  
     	        
@@ -750,7 +760,7 @@ public class Session {
     	                    public void onResponse(String response) {
     	                        Log.d(TAG, tag+" onResponse " + response);
     	                        pDialog.hide();
-    	                        Session.createSessionLoginFragment(context, fragmentManager, container, protocolListener);
+    	                        Session.createSessionLoginFragment(context, fragmentManager, container, listener);
     	                        return;
     	                    }
     	                    
@@ -1078,13 +1088,22 @@ public class Session {
   	
   	//-----------------Listeners------------------------
   	
+  	public interface CheckAuthorizationListener{
+        public void isAuthorized();
+        public void isLogedout();
+    }
+  	
   	public interface RequestListener{
         public void onResponsed();
     }
 
+  	
   	public interface CheckInternetListener{
         public void isOnline();
         public void isOffline();
     }
   	
+  	public interface CloseListener{
+        public void onClosed();
+    }
 }

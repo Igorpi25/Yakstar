@@ -37,6 +37,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
+import com.ivanov.tech.session.Session.CheckAuthorizationListener;
 import com.ivanov.tech.session.Session.RequestListener;
 
 public class FragmentRegisterSuccess extends DialogFragment implements OnClickListener {
@@ -49,11 +50,11 @@ public class FragmentRegisterSuccess extends DialogFragment implements OnClickLi
     
     TextView textview_response;
     
-    Connection.ProtocolListener protocollistener;
+    CheckAuthorizationListener protocollistener;
     ViewGroup container;
     
 
-    public static FragmentRegisterSuccess newInstance(Connection.ProtocolListener listener) {
+    public static FragmentRegisterSuccess newInstance(CheckAuthorizationListener listener) {
     	FragmentRegisterSuccess f = new FragmentRegisterSuccess();
     	f.protocollistener=listener;
     	

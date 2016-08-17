@@ -37,6 +37,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
+import com.ivanov.tech.session.Session.CheckAuthorizationListener;
 import com.ivanov.tech.session.Session.RequestListener;
 
 public class FragmentLogin extends DialogFragment implements OnClickListener {
@@ -47,13 +48,12 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
     Button button_login,button_to_register;
     EditText edittext_login,edittext_password;
     
-    Connection.ProtocolListener protocollistener;
+    CheckAuthorizationListener listener;
     ViewGroup container;
     
-
-    public static FragmentLogin newInstance(Connection.ProtocolListener listener) {
+    public static FragmentLogin newInstance(CheckAuthorizationListener listener) {
     	FragmentLogin f = new FragmentLogin();
-    	f.protocollistener=listener;
+    	f.listener=listener;
     	
         return f;
     }
@@ -131,7 +131,7 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
 
 				@Override
 				public void onResponsed() {
-					Session.createSessionRegisterFirstFragment(getActivity(), getFragmentManager(), container.getId(), protocollistener);					
+					Session.createSessionRegisterFirstFragment(getActivity(), getFragmentManager(), container.getId(), listener);					
 				}
 				
 			});
@@ -161,7 +161,7 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
     	                    public void onResponse(String response) {
     	                        Log.d(TAG, "onResponse 1 " + response);
     	                        pDialog.hide();
-    	                        Session.checkAutorisation(getActivity(), getFragmentManager(), R.id.main_container, protocollistener);
+    	                        Session.checkAutorisation(getActivity(), getFragmentManager(), R.id.main_container, listener);
     	                    }
     	                    
     	                }, new Response.ErrorListener() {
@@ -171,6 +171,7 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
     	                        Log.e(TAG, "1 Volley.onErrorResponser: " + error.getMessage());
     	                        pDialog.hide();
     	                    }
+    	                    
     	                }){
     		
     		@Override

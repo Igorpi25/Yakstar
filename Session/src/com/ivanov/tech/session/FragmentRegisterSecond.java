@@ -35,6 +35,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
+import com.ivanov.tech.session.Session.CheckAuthorizationListener;
 
 public class FragmentRegisterSecond extends DialogFragment implements OnClickListener {
 private static String TAG = FragmentRegisterSecond.class.getSimpleName();
@@ -43,12 +44,12 @@ private static String TAG = FragmentRegisterSecond.class.getSimpleName();
     Spinner spinner_tarif;
     TextView textview_tarif_summary;
     
-    Connection.ProtocolListener protocollistener;
+    CheckAuthorizationListener protocollistener;
     ViewGroup container;
         
     boolean success=false;
 
-    public static FragmentRegisterSecond newInstance(Connection.ProtocolListener listener) {
+    public static FragmentRegisterSecond newInstance(CheckAuthorizationListener listener) {
     	FragmentRegisterSecond f = new FragmentRegisterSecond();
     	f.protocollistener=listener;
     	

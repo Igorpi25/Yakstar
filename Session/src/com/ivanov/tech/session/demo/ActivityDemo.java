@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.session.R;
 import com.ivanov.tech.session.Session;
+import com.ivanov.tech.session.Session.CheckAuthorizationListener;
 
 /**
  * Created by Igor on 15.01.15.
@@ -62,21 +63,21 @@ public class ActivityDemo extends AppCompatActivity {
 
     public void showFragmentDemo() {
     	
-    	Session.checkAutorisation(this, getSupportFragmentManager(), R.id.main_container, new Connection.ProtocolListener() {
+    	Session.checkAutorisation(this, getSupportFragmentManager(), R.id.main_container, new CheckAuthorizationListener() {
 			
 			@Override
-			public void onCanceled() {
-				//Приложение не запустится, пока пользователь не будет авторизован
-				finish();
-			}
-			
-			@Override
-			public void isCompleted() {
+			public void isAuthorized() {
 				FragmentManager fragmentManager = getSupportFragmentManager();
 		        fragmentManager.beginTransaction()
 		                .replace(R.id.main_container, new FragmentDemo())
 		                .commit();		
 			}
+			
+			@Override
+			public void isLogedout() {
+				
+			}
+			
 		});
     	
         
