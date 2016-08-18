@@ -1,42 +1,54 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layoutcoordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/main_container">
 
-        <TextView
-            android:id="@+id/fragment_demo_textview_service_status"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="17dp"
-            android:text="@string/subs"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#330054a6"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:typeface="sans" />
+	        android:layout_marginBottom="17dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+            
+            <TextView
+	            android:id="@+id/fragment_demo_textview_login"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/logo"
+	            android:textAppearance="?android:attr/textAppearanceLarge"
+	            android:textColor="#330054a6"
+	            android:textSize="20sp"
+	            android:gravity="center"
+	            android:textStyle="bold"
+	            android:typeface="sans" />
+            
+	        <TextView
+	            android:id="@+id/fragment_demo_textview_service_status"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/subs"
+	            android:textAppearance="?android:attr/textAppearanceLarge"
+	            android:textColor="#330054a6"
+	            android:textSize="15sp"
+	            android:gravity="center"
+	            android:textStyle="bold"
+	            android:typeface="sans" />
+	
+	        
+        
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/fragment_demo_textview_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/fragment_demo_textview_service_status"
-            android:layout_centerHorizontal="true"
-            android:text="@string/logo"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#330054a6"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:typeface="sans" />
+        
 
     </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>

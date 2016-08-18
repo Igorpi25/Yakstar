@@ -94,7 +94,7 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
         
         this.container=container;
         
-        doCapchaRequest(getActivity());
+        doCapchaRequest(getActivity(),false);
         
         return view;
     }
@@ -139,7 +139,7 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
 		
 		if(v.getId()==button_captcha_update.getId()){
 			//updateCaptcha();
-			doCapchaRequest(getActivity());
+			doCapchaRequest(getActivity(),true);
 		}
 			
 	}
@@ -280,16 +280,18 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     	
     }
 	
-	void doCapchaRequest(final Context context) {
+	void doCapchaRequest(final Context context, final boolean enabledialog) {
 
     	final String tag = TAG+" doCapchaRequest"; 
-    	        
+    	
     	Log.e(TAG,tag);
+    	edittext_captcha_code.setText("");
+    	imageview_captcha.setImageResource(R.color.color_white);
     	
     	final ProgressDialog pDialog = new ProgressDialog(context);
     	pDialog.setMessage("Обновление кода безопасности...");
     	pDialog.setCancelable(false);
-    	pDialog.show();
+    	if(enabledialog)pDialog.show();
     	
     	ImageRequest request = new ImageRequest(Session.getCaptchaUrl(),
     		    new Response.Listener<Bitmap>() {
@@ -303,7 +305,7 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     		    new Response.ErrorListener() {
     		        public void onErrorResponse(VolleyError error) {
     		        	pDialog.hide();
-    		        	//imageview_captcha.setImageResource(R.drawable.ic_error);
+    		        	imageview_captcha.setImageResource(R.color.color_white);
     		        	edittext_captcha_code.setText("");
     		        	
     		        	//final FragmentManager fragmentmanager=getFragmentManager();    		        	
@@ -392,6 +394,7 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
 		
 		if(errorcounter<maxerrornum){
 			Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+			doCapchaRequest(getActivity(),false);
 		}else{
 			errorcounter=0;
 			Session.createErrorFragment(getActivity(), getFragmentManager(), R.id.main_container, 431, R.string.error_431_title, R.string.error_431_message,null);

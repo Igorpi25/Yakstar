@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ivanov.tech.connection.Connection;
+import com.ivanov.tech.session.FragmentSplashScreen;
 import com.ivanov.tech.session.R;
 import com.ivanov.tech.session.Session;
 import com.ivanov.tech.session.Session.CheckAuthorizationListener;
@@ -58,7 +59,27 @@ public class ActivityDemo extends AppCompatActivity {
         		url_payment_cardact,
         		url_payment_visa);
         
-        showFragmentDemo();        
+        showFragmentSplashScreen();
+        
+        Session.checkAutorisation(this, getSupportFragmentManager(), R.id.main_container, new CheckAuthorizationListener() {
+			    		
+			@Override
+			public void isAuthorized() {
+				showFragmentDemo();
+			}			
+			
+			@Override
+			public void isLogedout() {
+				Session.createSessionLoginFragment(ActivityDemo.this, getSupportFragmentManager(), R.id.main_container, this);
+			}
+
+			@Override
+			public boolean enableDialogs() {
+				return false;
+			}
+				
+		});
+        
     }
 
     @Override
@@ -67,25 +88,20 @@ public class ActivityDemo extends AppCompatActivity {
 
     }
     
+    public void showFragmentSplashScreen() {
+    	
+    	FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_container, new FragmentSplashScreen())
+                .commit();		        
+    }    	
+    
     public void showFragmentDemo() {
     	
-    	Session.checkAutorisation(this, getSupportFragmentManager(), R.id.main_container, new CheckAuthorizationListener() {
-			
-			@Override
-			public void isAuthorized() {
-				FragmentManager fragmentManager = getSupportFragmentManager();
-		        fragmentManager.beginTransaction()
-		                .replace(R.id.main_container, new FragmentDemo())
-		                .commit();		
-			}
-			
-			@Override
-			public void isLogedout() {
-				Session.createSessionLoginFragment(ActivityDemo.this, getSupportFragmentManager(), R.id.main_container, this);
-			}
-			
-		});
-    	
+    	FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.main_container, new FragmentDemo())
+                .commit();        
         
     }
 

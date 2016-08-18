@@ -4,42 +4,73 @@
     android:layout_height="fill_parent"
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical"
-    android:padding="@dimen/window_pading" >
+    android:weightSum="2.0" >
 
-    <EditText
-        android:id="@+id/fragment_login_edittext_login"
-        style="@style/style_edittext_dialog"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/session_login_edittext_login_hint"
-        android:inputType="textEmailAddress" >
+        android:layout_weight="1.0"
+        android:background="@color/color_white"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="vertical" >
 
-        <requestFocus />
-    </EditText>
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_logo" />
 
-    <EditText
-        android:id="@+id/fragment_login_edittext_password"
-        style="@style/style_edittext_dialog"
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/session_login_edittext_password_hint"
-        android:inputType="textPassword" />
+        android:layout_weight="1.0"
+        android:gravity="top|center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/window_pading" >
 
-    <Button
-        android:id="@+id/fragment_login_button_login"
-        style="@style/style_button_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/window_pading"
-        android:text="@string/session_login_button_login_text" />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/session_login_textview_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <Button
-        android:id="@+id/fragment_login_button_to_register"
-        style="@style/style_button_dialog_alter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/session_login_button_to_register_text" />
+        <EditText
+            android:id="@+id/fragment_login_edittext_login"
+            style="@style/style_edittext_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/session_login_edittext_login_hint"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/fragment_login_edittext_password"
+            style="@style/style_edittext_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/session_login_edittext_password_hint"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/fragment_login_button_login"
+            style="@style/style_button_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/window_pading"
+            android:text="@string/session_login_button_login_text" />
+
+        <Button
+            android:id="@+id/fragment_login_button_to_register"
+            style="@style/style_button_dialog_alter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/session_login_button_to_register_text" />
+    </LinearLayout>
 
 </LinearLayout>

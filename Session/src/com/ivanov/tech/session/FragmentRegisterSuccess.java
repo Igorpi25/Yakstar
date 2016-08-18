@@ -126,7 +126,12 @@ public class FragmentRegisterSuccess extends DialogFragment implements OnClickLi
 						public void isLogedout() {
 							Toast.makeText(getActivity(), "Неправильный логин или пароль", Toast.LENGTH_LONG).show();
 						}
-						
+
+						@Override
+						public boolean enableDialogs() {
+							return true;
+						}
+							
 					});
 					
 				}

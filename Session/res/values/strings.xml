@@ -4,6 +4,7 @@
     <string name="logo">com.ivanov.tech.session</string>
     <string name="subs">(demo activity)</string>
 
+    <string name="session_login_textview_title">Введите логин и пароль</string>
     <string name="session_login_edittext_login_hint">логин</string>
     <string name="session_login_edittext_password_hint">пароль</string>    
     <string name="session_login_button_login_text">Войти</string>
@@ -18,7 +19,7 @@
     <string name="session_register_edittext_passport_who_hint">Кем и когда выдан</string>
     <string name="session_register_textview_tarif_text">Выберите свой тариф</string>
     
-    <string name="session_register_confirm_one_text_1">Я ознакомлен с правилами оказания услуг ЗАО \"Амтел-связь\"</string>
+    <string name="session_register_confirm_one_text_1">Я ознакомлен с правилами оказания услуг ООО \"ТелИнТел\"</string>
     <string name="session_register_confirm_one_text_2">(Читать правила)</string>
     
     <string name="session_register_confirm_two_text_1">Я принимаю условия договора-оферты</string>
@@ -93,7 +94,7 @@
     <string name="fragment_error_button_close">Закрыть</string>
     
     <string name="error_31_title">Сервер не найден</string>
-    <string name="error_31_message">Для работы приложения вы должны подключиться к сети \"ТелИнТел\"</string>
+    <string name="error_31_message">Для работы приложения вы должны подключиться к сети ООО \"ТелИнТел\"</string>
     
     <string name="error_32_title">Ошибка обращения к серверу</string>
     <string name="error_32_message">Не могу получить идентификатор сессии</string>

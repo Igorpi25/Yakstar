@@ -65,7 +65,7 @@ public class FragmentPaymentVisa extends DialogFragment implements OnClickListen
     View layout_amount,layout_webview,layout_success;
     WebView webview;
     
-    ViewGroup container;
+    ViewGroup container;    
     
     ProgressDialog dialogloading;    
     Handler handlerloading;

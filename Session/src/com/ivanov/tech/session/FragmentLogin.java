@@ -126,6 +126,10 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
 							Toast.makeText(getActivity(), "Неправильный логин или пароль", Toast.LENGTH_LONG).show();
 						}
 						
+						@Override
+						public boolean enableDialogs() {
+							return true;
+						}
 					});
 				}
 

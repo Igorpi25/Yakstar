@@ -5,9 +5,9 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="colorPrimary">#673AB7</item>
-        <item name="colorPrimaryDark">#512DA8</item>
-        <item name="colorAccent">#18c818</item>
+        <item name="colorPrimary">#0082c9</item>
+        <item name="colorPrimaryDark">#02334e</item>
+        <item name="colorAccent">#0082c9</item>
     </style>
     
     <style name="SwitchInternetTheme" parent="@android:style/TextAppearance.Small">

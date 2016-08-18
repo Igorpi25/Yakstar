@@ -340,7 +340,13 @@ public class Session {
 					public void isLogedout() {
 				        Session.createSessionLoginFragment(context, fragmentManager, container, this);
 					}
-				
+
+					
+					@Override
+					public boolean enableDialogs() {
+						return true;
+					}
+									
 				});
 			}
 			
@@ -645,7 +651,9 @@ public class Session {
     	pDialog.setMessage("Проверка активности сессии ...");
     	pDialog.setCancelable(false);
     	
-    	pDialog.show();
+    	if(listener.enableDialogs()){
+    		pDialog.show();
+    	}
     	    	
     	StringRequest request = new StringRequest(Method.GET,
     			getCheckAutorisationUrl(),
@@ -761,7 +769,9 @@ public class Session {
     	final ProgressDialog pDialog = new ProgressDialog(context);
     	pDialog.setMessage("Получение новой сессии ...");
     	pDialog.setCancelable(false);    	
-    	pDialog.show();
+    	if(listener.enableDialogs()){
+    		pDialog.show();
+    	}
     	
     	//Cookie is not actual    	                        	
     	Session.removeCookies();
@@ -1079,7 +1089,7 @@ public class Session {
     }
   	
   	
-  	//-----------------------Operation Requests
+  	//-----------------------Operation Requests------------------------
   	
   	
   	public static void doTarifRequest(final Context context, final FragmentManager fragmentManager, final int container, final RequestListener listener) {
@@ -1205,6 +1215,7 @@ public class Session {
   	public interface CheckAuthorizationListener{
         public void isAuthorized();
         public void isLogedout();
+        public boolean enableDialogs();//If set true then dialogs will be showed, otherwise won't be
     }
   	
   	public interface RequestListener{
