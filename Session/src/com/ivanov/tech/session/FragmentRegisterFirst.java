@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -32,6 +33,7 @@ import com.android.volley.toolbox.Volley;
 import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
 import com.ivanov.tech.session.Session.CheckAuthorizationListener;
+import com.ivanov.tech.session.Session.RequestListener;
 
 public class FragmentRegisterFirst extends DialogFragment implements OnClickListener {
 private static String TAG = FragmentRegisterFirst.class.getSimpleName();
@@ -103,7 +105,27 @@ private static String TAG = FragmentRegisterFirst.class.getSimpleName();
 		
 		if(v.getId()==button_next.getId()){
 			if(validate()){
-				Session.createSessionRegisterSecondFragment(getActivity(), getFragmentManager(), container.getId(), protocollistener);
+				
+				Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new Connection.ProtocolListener(){ 
+					
+					@Override
+					public void onCanceled() {
+						
+					}
+					
+					@Override
+					public void isCompleted() {
+						Session.doTarifRequest(getActivity(), getFragmentManager(), R.id.main_container, new RequestListener(){
+
+							@Override
+							public void onResponsed() {
+								Session.createSessionRegisterSecondFragment(getActivity(), getFragmentManager(), container.getId(), protocollistener);
+							}
+							
+						});
+					}
+				});
+								
 			}
 		}
 		
@@ -137,8 +159,8 @@ private static String TAG = FragmentRegisterFirst.class.getSimpleName();
         return m.matches();  
     }  
 	
-	void showWarning(int res){
-		Toast.makeText(getActivity(), getString(res), Toast.LENGTH_LONG).show();
+	void showWarning(int res){	
+		Toast.makeText(getActivity(), res, Toast.LENGTH_LONG).show();
 	}
 	
 	void hideKeyboard(){

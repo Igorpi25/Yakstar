@@ -36,6 +36,7 @@ import com.android.volley.toolbox.Volley;
 import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
 import com.ivanov.tech.session.Session.CheckAuthorizationListener;
+import com.ivanov.tech.session.Session.CloseListener;
 
 public class FragmentRegisterSecond extends DialogFragment implements OnClickListener {
 private static String TAG = FragmentRegisterSecond.class.getSimpleName();
@@ -254,6 +255,16 @@ private static String TAG = FragmentRegisterSecond.class.getSimpleName();
 			return strings;
 		
 		}catch(JSONException e){
+			
+			Session.createErrorFragment(getActivity(), getFragmentManager(), R.id.main_container, 42, R.string.error_42_title, R.string.error_42_message, new CloseListener(){
+
+				@Override
+				public void onClosed() {
+					Session.killApp();
+				}
+              	
+              });
+			
 			return null;
 		}
 	}

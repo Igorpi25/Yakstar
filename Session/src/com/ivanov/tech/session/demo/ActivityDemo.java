@@ -61,6 +61,12 @@ public class ActivityDemo extends AppCompatActivity {
         showFragmentDemo();        
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+    
     public void showFragmentDemo() {
     	
     	Session.checkAutorisation(this, getSupportFragmentManager(), R.id.main_container, new CheckAuthorizationListener() {
@@ -75,7 +81,7 @@ public class ActivityDemo extends AppCompatActivity {
 			
 			@Override
 			public void isLogedout() {
-				
+				Session.createSessionLoginFragment(ActivityDemo.this, getSupportFragmentManager(), R.id.main_container, this);
 			}
 			
 		});

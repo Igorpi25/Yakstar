@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -113,7 +114,19 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
 
 				@Override
 				public void isCompleted() {
-					doLoginRequest(getActivity(),login,password);
+					Session.doLoginRequest(getActivity(),getFragmentManager(),R.id.main_container,login,password,new CheckAuthorizationListener(){
+
+						@Override
+						public void isAuthorized() {
+							listener.isAuthorized();
+						}
+
+						@Override
+						public void isLogedout() {
+							Toast.makeText(getActivity(), "Неправильный логин или пароль", Toast.LENGTH_LONG).show();
+						}
+						
+					});
 				}
 
 				@Override
@@ -127,85 +140,10 @@ public class FragmentLogin extends DialogFragment implements OnClickListener {
 		}
 		if(v.getId()==button_to_register.getId()){
 			
-			Session.doTarifRequest(getActivity(), getFragmentManager(), R.id.main_container, new RequestListener(){
-
-				@Override
-				public void onResponsed() {
-					Session.createSessionRegisterFirstFragment(getActivity(), getFragmentManager(), container.getId(), listener);					
-				}
-				
-			});
+			Session.createSessionRegisterFirstFragment(getActivity(), getFragmentManager(), container.getId(), listener);
 			
 		}
 	}
-		
-	void doLoginRequest(Context context,final String login,final String password) {
-
-    	String tag = TAG+" doLoginRequest"; 
-    	        
-    	Log.e(TAG,tag);
-    	
-    	Session.setUserLogin(login);
-    	Session.setUserPassword(password);    	
-    	    	
-    	final ProgressDialog pDialog = new ProgressDialog(context);
-    	pDialog.setMessage("Отправка логина и пароля ...");
-    	pDialog.setCancelable(false);    	
-    	pDialog.show();
-    	
-    	StringRequest request = new StringRequest(Request.Method.POST,
-    			Session.getLoginUrl(),
-    	                new Response.Listener<String>() {
-    	 
-    	                    @Override
-    	                    public void onResponse(String response) {
-    	                        Log.d(TAG, "onResponse 1 " + response);
-    	                        pDialog.hide();
-    	                        Session.checkAutorisation(getActivity(), getFragmentManager(), R.id.main_container, listener);
-    	                    }
-    	                    
-    	                }, new Response.ErrorListener() {
-    	 
-    	                    @Override
-    	                    public void onErrorResponse(VolleyError error) {
-    	                        Log.e(TAG, "1 Volley.onErrorResponser: " + error.getMessage());
-    	                        pDialog.hide();
-    	                    }
-    	                    
-    	                }){
-    		
-    		@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-    			
-    			Log.d(TAG, "getHeaders");
-    			
-                HashMap<String, String> headers = new HashMap<String, String>();
-                
-                Session.addCookiesToHeader(headers);
-                
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
-                
-                return headers;
-            }
-    		
-    		@Override
-            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
-    			
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("login", login);
-                params.put("password", password);
-                
-                Log.d(TAG, "getParams = "+params.toString());
-                
-                return params;
-            }
-    		
-    	};
-    	 
-    	request.setTag(tag);
-    	Volley.newRequestQueue(context.getApplicationContext()).add(request);
-
-    }
 	
 	void hideKeyboard(){
     	try {

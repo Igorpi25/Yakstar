@@ -50,18 +50,19 @@ public class FragmentError extends DialogFragment implements OnClickListener {
     Button button_close;
     TextView textview_title,textview_message,textview_code;
    
-    CloseListener listener;
-    String title,message;
-    int code;
+    CloseListener listener=null;
+    
+    int code,title,message;
     
     ViewGroup container;
 
-    public static FragmentError newInstance(int code,String title,String message, CloseListener listener) {
+    public static FragmentError newInstance(int code,int title,int message, CloseListener listener) {
     	FragmentError f = new FragmentError();
     	
     	f.title=title;
     	f.message=message;
     	f.code=code;
+    	f.listener=listener;
     	
         return f;
     }
@@ -89,8 +90,12 @@ public class FragmentError extends DialogFragment implements OnClickListener {
         button_close.setOnClickListener(this);
         
         textview_title = (TextView) view.findViewById(R.id.fragment_error_textview_title);
+        textview_title.setText(title);
         textview_message = (TextView) view.findViewById(R.id.fragment_error_textview_message);
+        textview_message.setText(message);
+        
         textview_code = (TextView) view.findViewById(R.id.fragment_error_textview_code);
+        textview_code.setText(String.valueOf(code)); 
         
         this.container=container;
         
@@ -100,9 +105,9 @@ public class FragmentError extends DialogFragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		
-		if(v.getId()==button_close.getId()){			
-			getFragmentManager().popBackStack();
-			listener.onClosed();
+		if(v.getId()==button_close.getId()){	
+			getFragmentManager().popBackStack();			
+			if(listener!=null)listener.onClosed();
 		}
 		
 	}

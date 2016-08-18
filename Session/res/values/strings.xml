@@ -116,7 +116,7 @@
     
     <!-- json.status=false 4 times -->
     <string name="error_431_title">Ошибка регистрации</string>
-    <string name="error_431_message">Возможно с вашего IP-адреса регистрировался другой пользователь. Попробуйте изменить ваш IP-адрес, и посвторите регистрацию</string>
+    <string name="error_431_message">Возможно с вашего IP-адреса регистрировался другой пользователь. Попробуйте изменить ваш IP-адрес, и повторите регистрацию</string>
 	
     <!-- emty response or json.status is missing -->
     <string name="error_432_title">Ошибка чтения данных</string>

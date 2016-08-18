@@ -42,6 +42,7 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
 import com.ivanov.tech.session.Session.CheckAuthorizationListener;
+import com.ivanov.tech.session.Session.CloseListener;
 import com.ivanov.tech.session.Session.RequestListener;
 
 public class FragmentRegisterLast extends DialogFragment implements OnClickListener {
@@ -59,7 +60,10 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     
     CheckAuthorizationListener protocollistener;
     ViewGroup container;
-        
+    
+    int errorcounter=0;
+    int maxerrornum=4;
+    
     boolean success=false;    
 
     public static FragmentRegisterLast newInstance(CheckAuthorizationListener listener) {
@@ -90,6 +94,8 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
         
         this.container=container;
         
+        doCapchaRequest(getActivity());
+        
         return view;
     }
 
@@ -105,7 +111,7 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     	super.onStart();   
     	
     	loadRegisterJson();
-    	doCapchaRequest(getActivity());
+    	edittext_captcha_code.setText("");
     	
     	hideKeyboard();
     }
@@ -113,7 +119,6 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     public void onResume(){
     	super.onResume();   
     	
-    	//updateCaptcha();
     }
 	
     @Override
@@ -140,19 +145,18 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
 	}
 	
 	boolean checkConfirms(){
-		if ( !(checkbox_one.isChecked()&&checkbox_two.isChecked()) )showWarning(R.string.register_check_confirm);
+		if ( !(checkbox_one.isChecked()&&checkbox_two.isChecked()) ){
+			showWarningCheck(R.string.register_check_confirm);
+		}
+		
 		return checkbox_one.isChecked()&&checkbox_two.isChecked();
 	}
 	
 	boolean checkCaptcha(){
-		if(edittext_captcha_code.getText().length()==0)showWarning(R.string.register_check_captcha);
+		if(edittext_captcha_code.getText().length()==0)showWarningCheck(R.string.register_check_captcha);
 		return (edittext_captcha_code.getText().length()>0);
 	}
 	
-	void showWarning(int res){
-		Toast.makeText(getActivity(), getString(res), Toast.LENGTH_LONG).show();
-	}
-		
 	void hideKeyboard(){
     	try {
             InputMethodManager input = (InputMethodManager) getActivity()
@@ -193,7 +197,7 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     	                                Session.removeRegisterJson();
     	                                
     	                        		String message=json.getString("message");
-
+    	                        		
     	                        		Session.setRegisteredMessage(message);
 
     	                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE); 
@@ -202,13 +206,12 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     	                        		Session.createSessionRegisterSuccessFragment(getActivity(), getFragmentManager(), R.id.main_container, protocollistener);
     	                        		
     	                        	}else{
-    	                        		//showWarning(R.string.register_warning_not_registered);
-    	                        		Toast.makeText(getActivity(),json.getString("message") , Toast.LENGTH_LONG).show();
+    	                        		showWarningNotRegistered(json.getString("message"));
     	                        	}
     	                        	
     	                        }catch(JSONException e){
     	                        	Log.e(TAG,"doRegisterRequest " +e.toString());
-    	                        	showWarning(R.string.register_warning_not_registered);
+    	                        	Session.createErrorFragment(getActivity(), getFragmentManager(), R.id.main_container, 432, R.string.error_432_title, R.string.error_432_message, null);
     	                        }
     	                        
     	                    }
@@ -220,7 +223,7 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     	                        Log.e(TAG, "Volley.onErrorResponser: " + error.getMessage());
     	                        pDialog.hide();
     	                        
-    	                        showWarning(R.string.register_warning_not_registered);
+    	                        Session.createErrorFragment(getActivity(), getFragmentManager(), R.id.main_container, 35, R.string.error_35_title, R.string.error_35_message, null);
     	                    }
     	                }){
     		
@@ -294,13 +297,24 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     		        public void onResponse(Bitmap bitmap) {
     		        	pDialog.hide();
     		            imageview_captcha.setImageBitmap(bitmap);
+    		            edittext_captcha_code.setText("");
     		        }
     		    }, 0, 0, null,
     		    new Response.ErrorListener() {
     		        public void onErrorResponse(VolleyError error) {
     		        	pDialog.hide();
-    		        	//imageview_captcha.setImageResource(R.color.color_red);
+    		        	//imageview_captcha.setImageResource(R.drawable.ic_error);
     		        	edittext_captcha_code.setText("");
+    		        	
+    		        	//final FragmentManager fragmentmanager=getFragmentManager();    		        	
+    		        	Session.createErrorFragment(getActivity(), getFragmentManager(), R.id.main_container, 34, R.string.error_34_title, R.string.error_34_message, new CloseListener(){
+
+							@Override
+							public void onClosed() {
+								Session.killApp();
+							}
+    		        		
+    		        	});
     		        }
     		    }){
     			
@@ -366,6 +380,22 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
 			
 		} catch (JSONException e) {e.printStackTrace();}
 			
+		
+	}
+	
+	void showWarningCheck(int stringid){
+		Toast.makeText(getActivity(), stringid, Toast.LENGTH_LONG).show();
+	}
+	
+	void showWarningNotRegistered(String message){
+		errorcounter++;
+		
+		if(errorcounter<maxerrornum){
+			Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+		}else{
+			errorcounter=0;
+			Session.createErrorFragment(getActivity(), getFragmentManager(), R.id.main_container, 431, R.string.error_431_title, R.string.error_431_message,null);
+		}
 		
 	}
 	

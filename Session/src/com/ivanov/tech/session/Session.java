@@ -27,6 +27,7 @@ import com.ivanov.tech.connection.Connection.ProtocolListener;
 import com.ivanov.tech.session.Session.RequestListener;
 import com.ivanov.tech.session.demo.FragmentDemo;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -330,20 +331,27 @@ public class Session {
 					@Override
 					public void isAuthorized() {
 						//Приложение не запустится, пока пользователь не будет авторизован
+						fragmentManager.beginTransaction()
+		                .replace(R.id.main_container, new FragmentDemo())
+		                .commit();		
 					}
 					
 					@Override
 					public void isLogedout() {
-				        fragmentManager.beginTransaction()
-				                .replace(R.id.main_container, new FragmentDemo())
-				                .commit();		
+				        Session.createSessionLoginFragment(context, fragmentManager, container, this);
 					}
+				
 				});
 			}
 			
 		});
     }
     
+    public static void killApp(){
+    	System.runFinalizersOnExit(true);
+
+        System.exit(0);
+    }
   	//-----------------Fragments------------------------------
   	
   	public static FragmentLogin createSessionLoginFragment(final Context context,final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener listener){
@@ -525,7 +533,7 @@ public class Session {
   		fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
   	}
   	
-  	public static FragmentError createErrorFragment(final Context context,final FragmentManager fragmentManager, final int container, final int code, final String title, final String message, final CloseListener listener){
+  	public static FragmentError createErrorFragment(final Context context,final FragmentManager fragmentManager, final int container, final int code, final int title, final int message, final CloseListener listener){
 
         try{
             if(fragmentManager.findFragmentByTag("Error").isVisible()){
@@ -625,6 +633,8 @@ public class Session {
 
     //------------------Requests--------------------------
     
+    //---------------------------Authorization Requests-------------------------
+    
   	protected static boolean doCheckAutorisationRequest(final Context context, final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener listener) {
 
     	final String tag = TAG+" doCheckAutorisationRequest ";  
@@ -713,8 +723,13 @@ public class Session {
     	                    	
     	                    	pDialog.hide();
     	                    	
-    	                        //createSessionLoginFragment(context,fragmentManager,container,protocolListener);
-    	                    	Toast.makeText(context, "Volley error. Сервер не найден, или проблемы с сеть", Toast.LENGTH_LONG).show();
+    	                    	Session.createErrorFragment(context, fragmentManager, container, 31, R.string.error_31_title, R.string.error_31_message, new CloseListener(){
+
+									@Override
+									public void onClosed() {
+										Session.killApp();
+									}    	                    		
+    	                    	});
     	                    }
     	                }){
     		
@@ -735,8 +750,7 @@ public class Session {
     	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
         return false;
-    }
-  	
+    }  	
   	
   	protected static boolean doGetNewCookieRequest(final Context context, final FragmentManager fragmentManager, final int container,final CheckAuthorizationListener listener) {
 
@@ -760,7 +774,7 @@ public class Session {
     	                    public void onResponse(String response) {
     	                        Log.d(TAG, tag+" onResponse " + response);
     	                        pDialog.hide();
-    	                        Session.createSessionLoginFragment(context, fragmentManager, container, listener);
+    	                        listener.isLogedout();
     	                        return;
     	                    }
     	                    
@@ -770,14 +784,34 @@ public class Session {
     	                    public void onErrorResponse(VolleyError error) {
     	                    	Log.e(TAG,tag+"onErrorResponse "+error.toString()); 
     	                    	pDialog.hide();
-    	                    	Toast.makeText(context, "Volley error. Сервер не найден, или проблемы с сеть", Toast.LENGTH_LONG).show();
+    	                    	Session.createErrorFragment(context, fragmentManager, container, 32, R.string.error_32_title, R.string.error_32_message, new CloseListener(){
+
+									@Override
+									public void onClosed() {
+										Session.killApp();
+									}
+    	                    		
+    	                    	});
     	                    }
+    	                    
     	                }){
     		
     		@Override
     	    protected Response<String> parseNetworkResponse(NetworkResponse response) {
     	        
-    			Session.parseCookies(response.headers);
+    			
+    			boolean iscookieexists=Session.parseCookies(response.headers);
+    			
+    			if(!iscookieexists){
+    				Session.createErrorFragment(context, fragmentManager, container, 41, R.string.error_41_title, R.string.error_41_message, new CloseListener(){
+
+						@Override
+						public void onClosed() {
+							Session.killApp();
+						}
+                		
+                	});
+    			}
     	            			
     	        return super.parseNetworkResponse(response);
     	    }
@@ -790,7 +824,124 @@ public class Session {
         return false;
     }
   	    
-    //---------------------Check Internet Requests-----------------------
+  	
+  	public static void doLoginRequest(final Context context, final FragmentManager fragmentManager, final int container, final String login,final String password,final CheckAuthorizationListener listener) {
+
+    	String tag = TAG+" doLoginRequest"; 
+    	        
+    	Log.e(TAG,tag);
+    	
+    	Session.setUserLogin(login);
+    	Session.setUserPassword(password);    	
+    	    	
+    	final ProgressDialog pDialog = new ProgressDialog(context);
+    	pDialog.setMessage("Отправка логина и пароля ...");
+    	pDialog.setCancelable(false);    	
+    	pDialog.show();
+    	
+    	StringRequest request = new StringRequest(Request.Method.POST,
+    			Session.getLoginUrl(),
+    	                new Response.Listener<String>() {
+    	 
+    	                    @Override
+    	                    public void onResponse(String response) {
+    	                        Log.d(TAG, "onResponse 1 " + response);
+    	                        pDialog.hide();
+    	                        Session.checkAutorisation(context, fragmentManager, R.id.main_container, listener);
+    	                    }
+    	                    
+    	                }, new Response.ErrorListener() {
+    	 
+    	                    @Override
+    	                    public void onErrorResponse(VolleyError error) {
+    	                        Log.e(TAG, "1 Volley.onErrorResponser: " + error.getMessage());
+    	                        pDialog.hide();
+    	                    }
+    	                    
+    	                }){
+    		
+    		@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+    			
+    			Log.d(TAG, "getHeaders");
+    			
+                HashMap<String, String> headers = new HashMap<String, String>();
+                
+                Session.addCookiesToHeader(headers);
+                
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                
+                return headers;
+            }
+    		
+    		@Override
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+    			
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("login", login);
+                params.put("password", password);
+                
+                Log.d(TAG, "getParams = "+params.toString());
+                
+                return params;
+            }
+    		
+    	};
+    	 
+    	request.setTag(tag);
+    	Volley.newRequestQueue(context.getApplicationContext()).add(request);
+
+    }
+  	public static void doLogoutRequest(final Context context, final FragmentManager fragmentManager, final int container, final RequestListener logoutlistener) {
+
+      	final String tag = TAG+" doLogoutRequest"; 
+      	        
+      	Log.e(TAG,tag);
+      	
+      	final ProgressDialog pDialog = new ProgressDialog(context);
+    	pDialog.setMessage("Закрытие сессии ...");
+    	pDialog.setCancelable(false);    	
+    	pDialog.show();
+    	
+      	StringRequest request = new StringRequest(Method.GET,
+      			Session.getLogoutUrl(),
+      	                new Response.Listener<String>() {
+      	 
+      	                    @Override
+      	                    public void onResponse(String response) {
+      	                        Log.d(TAG, tag+" onResponse " + response);
+      	                        pDialog.hide();
+      	                        logoutlistener.onResponsed();
+      	                    }
+      	                    
+      	                }, new Response.ErrorListener() {
+      	 
+      	                    @Override
+      	                    public void onErrorResponse(VolleyError error) {
+      	                        Log.e(TAG, tag+"Volley.onErrorResponser: " + error.getMessage());
+      	                        pDialog.hide();
+      	                    }
+      	                }){
+      		
+      		
+      		@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                  HashMap<String, String> headers = new HashMap<String, String>();
+                  
+                  headers.put("Content-Type", "application/x-www-form-urlencoded");
+                  Session.addCookiesToHeader(headers);
+                  
+                  return headers;
+            }
+      		
+      	};
+      	 
+      	request.setTag(tag);
+      	Volley.newRequestQueue(context.getApplicationContext()).add(request);
+
+    }
+  	
+  	//---------------------Check Internet Requests-----------------------
     
   	public static void doCheckInternetRequest(Context context, final CheckInternetListener listener) {
 
@@ -927,54 +1078,9 @@ public class Session {
 
     }
   	
-  	public static void doLogoutRequest(final Context context, final FragmentManager fragmentManager, final int container, final RequestListener logoutlistener) {
-
-      	final String tag = TAG+" doLogoutRequest"; 
-      	        
-      	Log.e(TAG,tag);
-      	
-      	final ProgressDialog pDialog = new ProgressDialog(context);
-    	pDialog.setMessage("Закрытие сессии ...");
-    	pDialog.setCancelable(false);    	
-    	pDialog.show();
-    	
-      	StringRequest request = new StringRequest(Method.GET,
-      			Session.getLogoutUrl(),
-      	                new Response.Listener<String>() {
-      	 
-      	                    @Override
-      	                    public void onResponse(String response) {
-      	                        Log.d(TAG, tag+" onResponse " + response);
-      	                        pDialog.hide();
-      	                        logoutlistener.onResponsed();
-      	                    }
-      	                    
-      	                }, new Response.ErrorListener() {
-      	 
-      	                    @Override
-      	                    public void onErrorResponse(VolleyError error) {
-      	                        Log.e(TAG, tag+"Volley.onErrorResponser: " + error.getMessage());
-      	                        pDialog.hide();
-      	                    }
-      	                }){
-      		
-      		
-      		@Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                  HashMap<String, String> headers = new HashMap<String, String>();
-                  
-                  headers.put("Content-Type", "application/x-www-form-urlencoded");
-                  Session.addCookiesToHeader(headers);
-                  
-                  return headers;
-            }
-      		
-      	};
-      	 
-      	request.setTag(tag);
-      	Volley.newRequestQueue(context.getApplicationContext()).add(request);
-
-    }
+  	
+  	//-----------------------Operation Requests
+  	
   	
   	public static void doTarifRequest(final Context context, final FragmentManager fragmentManager, final int container, final RequestListener listener) {
 
@@ -1007,7 +1113,14 @@ public class Session {
       	                        Log.e(TAG, tag+"Volley.onErrorResponser: " + error.getMessage());
       	                        pDialog.hide();
       	                        
-      	                        Toast.makeText(context, "Ошибка получения тарифа", Toast.LENGTH_LONG).show();
+      	                        Session.createErrorFragment(context, fragmentManager, container, 33, R.string.error_33_title, R.string.error_33_message, new CloseListener(){
+
+									@Override
+									public void onClosed() {
+										Session.killApp();
+									}
+      	                        	
+      	                        });
       	                    }
       	                }){
       		
@@ -1085,6 +1198,7 @@ public class Session {
       	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
     }
+  	
   	
   	//-----------------Listeners------------------------
   	
