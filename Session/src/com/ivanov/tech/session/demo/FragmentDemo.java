@@ -3,12 +3,24 @@ package com.ivanov.tech.session.demo;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,9 +34,13 @@ import android.widget.Toast;
 
 import com.android.volley.Request.Method;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,10 +52,13 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ivanov.tech.connection.Connection;
+import com.ivanov.tech.multipletypesadapter.cursoradapter_recyclerview.CursorItemHolder;
+import com.ivanov.tech.multipletypesadapter.cursoradapter_recyclerview.CursorMultipleTypesAdapter;
 import com.ivanov.tech.session.R;
 import com.ivanov.tech.session.Session;
 import com.ivanov.tech.session.Session.CheckInternetListener;
 import com.ivanov.tech.session.Session.RequestListener;
+import com.ivanov.tech.session.adapter.ItemHolderText;
 
 /**
  * Created by Igor on 09.05.15.
@@ -49,16 +68,20 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     public static final String TAG = FragmentDemo.class
             .getSimpleName();    
 	
-    TextView textview_login_value,
-    	textview_service_status_disabled,textview_service_status_active,
-    	textview_internet_on,textview_internet_off,
-    	textview_balance_value,textview_agriment,textview_clientname,textview_tariffname,textview_topay,textview_levelname,textview_debet;
+    protected static final int TYPE_TEXT = 0;
+    protected static final int TYPE_TEXT_CLICKABLE = 1;
     
+    protected SubMenu menuSession;
+	protected MenuItem menuLogout;
+    
+    TextView textview_gov_link;
     SwitchCompat switch_internet;
-    TextView textview_internet_enabling,textview_internet_disabling;
     View layout_internet,layout_info;
     
-    Button button_signout,button_balance_charge;
+    RecyclerView recyclerview_info;
+    CursorMultipleTypesAdapter adapter_info;
+    
+    //Button button_signout;
 
     public static FragmentDemo newInstance() {
     	FragmentDemo f = new FragmentDemo();
@@ -74,6 +97,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     @Override
     public void onStart() {
         super.onStart();
+        
         
         Session.doInfoRequest(getActivity(), new RequestListener(){
 
@@ -119,61 +143,77 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         View view = null;
         view = inflater.inflate(R.layout.fragment_demo, container, false);
         
-        button_signout = (Button) view.findViewById(R.id.fragment_demo_button_signout);
-        button_signout.setOnClickListener(this);
-        
-        button_balance_charge = (Button) view.findViewById(R.id.fragment_demo_button_balance_charge);
-        button_balance_charge.setOnClickListener(this);
-        
-        textview_login_value = (TextView) view.findViewById(R.id.fragment_demo_textview_login_value);
-        textview_login_value.setText(Session.getUserLogin());
-        
-        textview_service_status_active = (TextView) view.findViewById(R.id.fragment_demo_textview_service_status_active);
-        textview_service_status_disabled = (TextView) view.findViewById(R.id.fragment_demo_textview_service_status_disabled);
-        
-        textview_internet_on = (TextView) view.findViewById(R.id.fragment_demo_textview_internet_on);
-        textview_internet_off = (TextView) view.findViewById(R.id.fragment_demo_textview_internet_off);
-        textview_internet_enabling = (TextView) view.findViewById(R.id.fragment_demo_textview_internet_enabling);
-        textview_internet_disabling = (TextView) view.findViewById(R.id.fragment_demo_textview_internet_disabling);
-        
-//        progressbar_wait = (ProgressBar) view.findViewById(R.id.fragment_demo_progressbar_wait);
-        layout_internet = view.findViewById(R.id.fragment_demo_layout_internet);
-        
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+		((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
+		((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name); 
+		
+		setHasOptionsMenu(true);
+		
+		textview_gov_link = (TextView)view.findViewById(R.id.fragment_demo_textview_gov_link);
+		textview_gov_link.setClickable(true);
+		textview_gov_link.setMovementMethod(LinkMovementMethod.getInstance());
+		
+        layout_internet = view.findViewById(R.id.fragment_demo_layout_internet);        
         layout_info = view.findViewById(R.id.fragment_demo_layout_info);
-        
-        textview_balance_value=(TextView) view.findViewById(R.id.fragment_demo_textview_balance_value);
-        textview_agriment=(TextView) view.findViewById(R.id.fragment_demo_textview_agriment);
-        textview_clientname=(TextView) view.findViewById(R.id.fragment_demo_textview_clientname);
-        textview_tariffname=(TextView) view.findViewById(R.id.fragment_demo_textview_tariffname);
-        textview_topay=(TextView) view.findViewById(R.id.fragment_demo_textview_topay);
-        textview_levelname=(TextView) view.findViewById(R.id.fragment_demo_textview_levelname);
-        textview_debet=(TextView) view.findViewById(R.id.fragment_demo_textview_debet);
         
         switch_internet = (SwitchCompat)view.findViewById(R.id.fragment_demo_switch_internet);
         switch_internet.setSwitchTextAppearance(getActivity(), R.style.SwitchInternetTheme);
         switch_internet.setOnCheckedChangeListener(this);
-                
+        
+        recyclerview_info=(RecyclerView)view.findViewById(R.id.fragment_demo_recyclerview_info);
+        recyclerview_info.setLayoutManager(new LinearLayoutManager(recyclerview_info.getContext()));
+        
+        adapter_info=new CursorMultipleTypesAdapter(getActivity(),null);        
+        adapter_info.addItemHolder(TYPE_TEXT, new ItemHolderText(getActivity(),null));
+        adapter_info.addItemHolder(TYPE_TEXT_CLICKABLE, new ItemHolderText(getActivity(),R.layout.itemholder_text_clickable,this));
+        
+        recyclerview_info.setAdapter(adapter_info);
+        
+        
         showDisabled();
         
         return view;
     }
 
     @Override
-	public void onClick(View v) {
-		textview_login_value.setText(Session.getUserLogin());
-		
-		if (v.getId()==button_signout.getId()){
-			Log.d(TAG, "onClick button_signout");
-			Session.Logout(getActivity(), getFragmentManager(), R.id.main_container);
-			return;
-		}
-		
-		if (v.getId()==button_balance_charge.getId()){
-			Log.d(TAG, "onClick button_balance_charge");
-			Session.createPaymentRootFragment(getActivity(), getFragmentManager(), R.id.main_container);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        
+		menu.clear();
+				
+		menuSession = menu.addSubMenu(R.id.fragment_demo_menu_session, Menu.NONE, 1, R.string.fragment_demo_menu_session).setIcon(R.drawable.ic_menu_logout_white);
+		menuSession.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+		menuLogout=menuSession.add(Menu.NONE, R.id.fragment_demo_menu_logout, Menu.NONE,R.string.fragment_demo_menu_logout);
+		menuLogout.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		menuLogout.setIcon(R.drawable.ic_menu_logout_dark);
+		menuLogout.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Log.d(TAG, "onMenuItemClick signout");
+				Session.Logout(getActivity(), getFragmentManager(), R.id.main_container);
+				return true;
+			}
 			
-			return;
-		}
+		});
+    }
+    
+    @Override
+	public void onClick(View v) {
+		
+    	
+//		if (v.getId()==button_signout.getId()){
+//			Log.d(TAG, "onClick button_signout");
+//			Session.Logout(getActivity(), getFragmentManager(), R.id.main_container);
+//			return;
+//		}
+		
+//		if (v.getId()==button_balance_charge.getId()){
+//			Log.d(TAG, "onClick button_balance_charge");
+//			Session.createPaymentRootFragment(getActivity(), getFragmentManager(), R.id.main_container);
+//			
+//			return;
+//		}
 		
 	}
 
@@ -182,15 +222,15 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	Log.d(TAG, "onCheckedChanged switch_internet.checked="+switch_internet.isChecked()+" isChecked="+isChecked);
     	
     	if(isChecked){
-			textview_internet_on.setVisibility(View.GONE);
-	    	textview_internet_off.setVisibility(View.GONE);
-	    	textview_internet_enabling.setVisibility(View.VISIBLE);
-	    	textview_internet_disabling.setVisibility(View.GONE);		    	
+//			textview_internet_on.setVisibility(View.GONE);
+//	    	textview_internet_off.setVisibility(View.GONE);
+//	    	textview_internet_enabling.setVisibility(View.VISIBLE);
+//	    	textview_internet_disabling.setVisibility(View.GONE);		    	
 		}else{
-			textview_internet_on.setVisibility(View.GONE);
-	    	textview_internet_off.setVisibility(View.GONE);
-	    	textview_internet_enabling.setVisibility(View.GONE);
-	    	textview_internet_disabling.setVisibility(View.VISIBLE);
+//			textview_internet_on.setVisibility(View.GONE);
+//	    	textview_internet_off.setVisibility(View.GONE);
+//	    	textview_internet_enabling.setVisibility(View.GONE);
+//	    	textview_internet_disabling.setVisibility(View.VISIBLE);
 		}
     	
     	Session.doSwitchInternetRequest(getActivity(),this);
@@ -200,25 +240,19 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     
     void showActive(){
     	layout_internet.setVisibility(View.VISIBLE);
-    	
-    	textview_service_status_active.setVisibility(View.VISIBLE);
-    	textview_service_status_disabled.setVisibility(View.GONE);
-    	
+    	    	
     }
     
     void showDisabled(){
     	layout_internet.setVisibility(View.GONE);
     	
-    	textview_service_status_active.setVisibility(View.GONE);
-    	textview_service_status_disabled.setVisibility(View.VISIBLE);
-    	
     }
     
     void showInternetOn(){
-    	textview_internet_on.setVisibility(View.VISIBLE);
-    	textview_internet_off.setVisibility(View.GONE);
-    	textview_internet_enabling.setVisibility(View.GONE);
-    	textview_internet_disabling.setVisibility(View.GONE);
+//    	textview_internet_on.setVisibility(View.VISIBLE);
+//    	textview_internet_off.setVisibility(View.GONE);
+//    	textview_internet_enabling.setVisibility(View.GONE);
+//    	textview_internet_disabling.setVisibility(View.GONE);
     	    	
     	switch_internet.setEnabled(true); 
     	
@@ -229,10 +263,10 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     }
     
     void showInternetOff(){
-    	textview_internet_on.setVisibility(View.GONE);
-    	textview_internet_off.setVisibility(View.VISIBLE);
-    	textview_internet_enabling.setVisibility(View.GONE);
-    	textview_internet_disabling.setVisibility(View.GONE);
+//    	textview_internet_on.setVisibility(View.GONE);
+//    	textview_internet_off.setVisibility(View.VISIBLE);
+//    	textview_internet_enabling.setVisibility(View.GONE);
+//    	textview_internet_disabling.setVisibility(View.GONE);
     	
     	switch_internet.setEnabled(true);
     	
@@ -241,26 +275,12 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	switch_internet.setOnCheckedChangeListener(this);
     }
 	
-    void updateInfo(JSONObject json){ 
-    	
-    	try {
-    		layout_info.setVisibility(View.VISIBLE);	
-    		
-			textview_balance_value.setText(json.getJSONObject("balance").getString("data"));			
-			textview_clientname.setText(json.getJSONObject("clientName").getString("data"));			
-			textview_agriment.setText("Договор : "+json.getJSONObject("agreement").getString("data"));
-			
-			textview_tariffname.setText(getInfoString(json,"tariffName"));
-			textview_topay.setText(getInfoString(json,"toPay")+ " руб");
-			textview_levelname.setText(getInfoString(json,"levelname"));
-			textview_debet.setText(getInfoString(json,"debet")+ " руб");
-						
-		} catch (JSONException e) {e.printStackTrace();}
+    void updateInfo(JSONObject json_info){
+    	adapter_info.changeCursor(getAdapterInfo(json_info));
     }
     
-    void cleanInfo(){ 
-    	
-    	layout_info.setVisibility(View.INVISIBLE);	
+    void cleanInfo(){
+    	adapter_info.changeCursor(getAdapterInfoCleaned());    	
     }
     
     String getInfoString(JSONObject json_info, String name) throws JSONException{
@@ -271,6 +291,113 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	String data=object.getString("data");
     	
     	return title+" : "+data;
+    }
+    
+    //------------Preparing cursor----------------------------
+	
+    protected MatrixCursor getAdapterInfo(JSONObject json_info){
+
+    	MatrixCursor matrixcursor=new MatrixCursor(new String[]{adapter_info.COLUMN_ID, adapter_info.COLUMN_TYPE, adapter_info.COLUMN_KEY, adapter_info.COLUMN_VALUE});    	
+    	
+    	int _id=-1;    	
+    	
+    	JSONObject json_item=null;   
+    	JSONObject json_object=null; 
+    	
+    	try{
+    		json_object=json_info.getJSONObject("agreement");
+    		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'}}"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_CLICKABLE,_id,json_item.toString()});
+    		
+    	}catch(JSONException e){
+    		Log.e(TAG, "getAdapterInfo JSONException e="+e);
+    	}
+    	
+    	try{
+    		json_object=json_info.getJSONObject("balance");
+    		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getDouble("data")+" руб'} }"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_CLICKABLE,_id,json_item.toString()});
+    		
+    	}catch(JSONException e){
+    		Log.e(TAG, "getAdapterInfo JSONException e="+e);
+    	}
+    	
+    	try{
+    		json_object=json_info.getJSONObject("toPay");
+    		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getDouble("data")+" руб'} }"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		
+    	}catch(JSONException e){
+    		Log.e(TAG, "getAdapterInfo JSONException e="+e);
+    	}
+    	
+    	try{
+    		json_object=json_info.getJSONObject("debet");
+    		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getDouble("data")+" руб'}}"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		
+    	}catch(JSONException e){
+    		Log.e(TAG, "getAdapterInfo JSONException e="+e);
+    	}
+    	
+    	try{
+    		json_object=json_info.getJSONObject("tariffName");
+    		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'} }"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_CLICKABLE,_id,json_item.toString()});
+    		
+    	}catch(JSONException e){
+    		Log.e(TAG, "getAdapterInfo JSONException e="+e);
+    	}
+    	
+    	try{
+    		json_object=json_info.getJSONObject("levelname");
+    		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'}}"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		
+    	}catch(JSONException e){
+    		Log.e(TAG, "getAdapterInfo JSONException e="+e);
+    	}
+    	
+    	try{
+    		JSONArray json_array=json_info.getJSONArray("trafic");
+    		json_object=json_array.getJSONObject(0);
+    		json_item=new JSONObject("{key:{text:'Трафик'},value:{text:'"+new DecimalFormat("###.#").format(json_object.getDouble("restbytes")/1048576)+"/"+Math.round(json_object.getDouble("maxbytes")/1048576)+" МБ'}}"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		
+    	}catch(JSONException e){
+    		Log.e(TAG, "getAdapterInfo JSONException e="+e);
+    	}
+    	
+    	try{
+    		json_object=json_info.getJSONObject("serviceStatus");
+    		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'}}"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		
+    	}catch(JSONException e){
+    		Log.e(TAG, "getAdapterInfo JSONException e="+e);
+    	}
+    	
+    	return matrixcursor;   
+    	
+    }
+    
+    protected MatrixCursor getAdapterInfoCleaned(){
+
+    	MatrixCursor matrixcursor=new MatrixCursor(new String[]{adapter_info.COLUMN_ID, adapter_info.COLUMN_TYPE, adapter_info.COLUMN_KEY, adapter_info.COLUMN_VALUE});    	
+    	
+    	int _id=-1;
+    	
+    	JSONObject json_item=null;    	
+    	
+    	try{
+    		json_item=new JSONObject("{key:{text:'Баланс'},value:{text:' '} }"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    	}catch(JSONException e){
+    		Log.e(TAG, "getAdapterInfoCleaned JSONException e="+e);
+    	}
+    	
+    	return matrixcursor;   
+    	
     }
     
     //-----------------CheckInternetListener-----------------------------

@@ -41,8 +41,11 @@ public class ActivityDemo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        
         setContentView(R.layout.activity_demo);
         
+        getSupportActionBar().hide();
+      
         //Init app preferences
         Session.Initialize(getApplicationContext(),
         		url_check_autorisation,
@@ -81,7 +84,7 @@ public class ActivityDemo extends AppCompatActivity {
 		});
         
     }
-
+    
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -93,7 +96,7 @@ public class ActivityDemo extends AppCompatActivity {
     	FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.main_container, new FragmentSplashScreen())
-                .commit();		        
+                .commit();	        
     }    	
     
     public void showFragmentDemo() {
@@ -102,7 +105,7 @@ public class ActivityDemo extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.main_container, new FragmentDemo())
                 .commit();        
-        
+                
     }
 
 }

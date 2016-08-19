@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">Ivanov\'s Tech Session</string>
+    <string name="app_name">ТелИнТел</string>
     <string name="logo">com.ivanov.tech.session</string>
     <string name="subs">(demo activity)</string>
 
@@ -51,7 +51,14 @@
     <string name="session_register_button_back_second">Назад</string>
     <string name="session_register_button_submit">Зарегистрироваться</string>
     
+    <string name="fragment_demo_menu_session">Аккаунт</string>
+    <string name="fragment_demo_menu_logout">Выйти</string>
+    
+    <string name="fragment_demo_textview_gov_summary">Федеральный портал Гос.услуг</string>
+    <string name="fragment_demo_textview_gov_link"><a href='http://www.gosuslugi.ru'> www.gosuslugi.ru</a></string>
+    
     <string name="fragment_demo_textview_login">Логин:</string>
+    <string name="fragment_demo_button_signout">Выйти</string>
         
     <string name="fragment_demo_textview_service_status">Статус услуги:</string>
     <string name="fragment_demo_textview_service_status_active">Услуга активна</string>
@@ -62,7 +69,6 @@
     <string name="fragment_demo_textview_balance_unit">руб</string>
     <string name="fragment_demo_button_balance_charge">Пополнить баланс</string>
         
-    <string name="fragment_demo_button_signout">Выйти</string>
     
     <string name="fragment_demo_textview_internet">Состояние интернета:</string>        
     <string name="fragment_demo_textview_internet_on">онлайн</string>
