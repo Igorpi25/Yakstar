@@ -962,7 +962,7 @@ public class Session {
       	final ProgressDialog pDialog = new ProgressDialog(context);
     	pDialog.setMessage("Проверка интернета ...");
     	pDialog.setCancelable(false);    	
-    	pDialog.show();
+    	//pDialog.show();
       	
       	StringRequest request = new StringRequest(Method.GET,
       			Session.getCheckInternetUrl(),
@@ -1161,7 +1161,7 @@ public class Session {
       	final ProgressDialog pDialog = new ProgressDialog(context);
     	pDialog.setMessage("Запрос информации...");
     	pDialog.setCancelable(false);    	
-    	pDialog.show();
+    	//pDialog.show();
       	
       	StringRequest request = new StringRequest(Method.GET,
       			Session.getInfoUrl(),

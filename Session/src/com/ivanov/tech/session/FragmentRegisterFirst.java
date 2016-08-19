@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +63,10 @@ private static String TAG = FragmentRegisterFirst.class.getSimpleName();
     	
         View view = null;
         view = inflater.inflate(R.layout.fragment_register_first, container, false);
-                
+        
+        setHasOptionsMenu(true);
+		((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        
         edittext_surname=(EditText)view.findViewById(R.id.fragment_register_edittext_surname);
         edittext_name=(EditText)view.findViewById(R.id.fragment_register_edittext_name);
         edittext_patr=(EditText)view.findViewById(R.id.fragment_register_edittext_patr);

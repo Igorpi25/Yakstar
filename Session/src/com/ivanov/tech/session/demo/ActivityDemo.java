@@ -90,7 +90,7 @@ public class ActivityDemo extends AppCompatActivity {
         super.onDestroy();
 
     }
-    
+        
     public void showFragmentSplashScreen() {
     	
     	FragmentManager fragmentManager = getSupportFragmentManager();

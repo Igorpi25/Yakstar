@@ -13,6 +13,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -75,6 +76,9 @@ public class FragmentPaymentRoot extends DialogFragment implements OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = null;
         view = inflater.inflate(R.layout.fragment_payment_root, container, false);
+        
+        setHasOptionsMenu(true);
+		((AppCompatActivity)getActivity()).getSupportActionBar().show();
         
         button_back = (Button) view.findViewById(R.id.fragment_payment_root_button_back);
         button_back.setOnClickListener(this);

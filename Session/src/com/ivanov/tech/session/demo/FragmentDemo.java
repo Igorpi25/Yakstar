@@ -69,12 +69,12 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
             .getSimpleName();    
 	
     protected static final int TYPE_TEXT = 0;
-    protected static final int TYPE_TEXT_CLICKABLE = 1;
+    protected static final int TYPE_TEXT_BALANCE = 1;
     
     protected SubMenu menuSession;
 	protected MenuItem menuLogout;
     
-    TextView textview_gov_link;
+    TextView textview_gov_link,textview_internet_value;
     SwitchCompat switch_internet;
     View layout_internet,layout_info;
     
@@ -98,6 +98,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     public void onStart() {
         super.onStart();
         
+        Log.d(TAG, "onCreateView");
         
         Session.doInfoRequest(getActivity(), new RequestListener(){
 
@@ -143,12 +144,16 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         View view = null;
         view = inflater.inflate(R.layout.fragment_demo, container, false);
         
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        Log.d(TAG, "onCreateView");
+        
+        setHasOptionsMenu(true);
+		((AppCompatActivity)getActivity()).getSupportActionBar().show();
+		
 		((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
 		((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name); 
 		
-		setHasOptionsMenu(true);
+		
 		
 		textview_gov_link = (TextView)view.findViewById(R.id.fragment_demo_textview_gov_link);
 		textview_gov_link.setClickable(true);
@@ -159,17 +164,25 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         
         switch_internet = (SwitchCompat)view.findViewById(R.id.fragment_demo_switch_internet);
         switch_internet.setSwitchTextAppearance(getActivity(), R.style.SwitchInternetTheme);
-        switch_internet.setOnCheckedChangeListener(this);
+        
+        textview_internet_value = (TextView)view.findViewById(R.id.fragment_demo_textview_internet_value);
         
         recyclerview_info=(RecyclerView)view.findViewById(R.id.fragment_demo_recyclerview_info);
         recyclerview_info.setLayoutManager(new LinearLayoutManager(recyclerview_info.getContext()));
         
         adapter_info=new CursorMultipleTypesAdapter(getActivity(),null);        
         adapter_info.addItemHolder(TYPE_TEXT, new ItemHolderText(getActivity(),null));
-        adapter_info.addItemHolder(TYPE_TEXT_CLICKABLE, new ItemHolderText(getActivity(),R.layout.itemholder_text_clickable,this));
+        adapter_info.addItemHolder(TYPE_TEXT_BALANCE, new ItemHolderText(getActivity(),R.layout.itemholder_text_clickable,new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Log.d(TAG, "onClick TYPE_TEXT_BALANCE");
+				Session.createPaymentRootFragment(getActivity(), getFragmentManager(), R.id.main_container);				
+			}
+        	
+        }));
         
         recyclerview_info.setAdapter(adapter_info);
-        
         
         showDisabled();
         
@@ -200,21 +213,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     
     @Override
 	public void onClick(View v) {
-		
-    	
-//		if (v.getId()==button_signout.getId()){
-//			Log.d(TAG, "onClick button_signout");
-//			Session.Logout(getActivity(), getFragmentManager(), R.id.main_container);
-//			return;
-//		}
-		
-//		if (v.getId()==button_balance_charge.getId()){
-//			Log.d(TAG, "onClick button_balance_charge");
-//			Session.createPaymentRootFragment(getActivity(), getFragmentManager(), R.id.main_container);
-//			
-//			return;
-//		}
-		
+				
 	}
 
     @Override
@@ -222,15 +221,9 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	Log.d(TAG, "onCheckedChanged switch_internet.checked="+switch_internet.isChecked()+" isChecked="+isChecked);
     	
     	if(isChecked){
-//			textview_internet_on.setVisibility(View.GONE);
-//	    	textview_internet_off.setVisibility(View.GONE);
-//	    	textview_internet_enabling.setVisibility(View.VISIBLE);
-//	    	textview_internet_disabling.setVisibility(View.GONE);		    	
+    		textview_internet_value.setText(R.string.fragment_demo_textview_internet_enabling);
 		}else{
-//			textview_internet_on.setVisibility(View.GONE);
-//	    	textview_internet_off.setVisibility(View.GONE);
-//	    	textview_internet_enabling.setVisibility(View.GONE);
-//	    	textview_internet_disabling.setVisibility(View.VISIBLE);
+			textview_internet_value.setText(R.string.fragment_demo_textview_internet_disabling);
 		}
     	
     	Session.doSwitchInternetRequest(getActivity(),this);
@@ -249,10 +242,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     }
     
     void showInternetOn(){
-//    	textview_internet_on.setVisibility(View.VISIBLE);
-//    	textview_internet_off.setVisibility(View.GONE);
-//    	textview_internet_enabling.setVisibility(View.GONE);
-//    	textview_internet_disabling.setVisibility(View.GONE);
+    	textview_internet_value.setText(R.string.fragment_demo_textview_internet_on);
     	    	
     	switch_internet.setEnabled(true); 
     	
@@ -263,10 +253,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     }
     
     void showInternetOff(){
-//    	textview_internet_on.setVisibility(View.GONE);
-//    	textview_internet_off.setVisibility(View.VISIBLE);
-//    	textview_internet_enabling.setVisibility(View.GONE);
-//    	textview_internet_disabling.setVisibility(View.GONE);
+    	textview_internet_value.setText(R.string.fragment_demo_textview_internet_off);
     	
     	switch_internet.setEnabled(true);
     	
@@ -280,7 +267,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     }
     
     void cleanInfo(){
-    	adapter_info.changeCursor(getAdapterInfoCleaned());    	
+    	//adapter_info.changeCursor(getAdapterInfoCleaned());    	
     }
     
     String getInfoString(JSONObject json_info, String name) throws JSONException{
@@ -307,7 +294,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	try{
     		json_object=json_info.getJSONObject("agreement");
     		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'}}"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_CLICKABLE,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -316,7 +303,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	try{
     		json_object=json_info.getJSONObject("balance");
     		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getDouble("data")+" руб'} }"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_CLICKABLE,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_BALANCE,_id,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -343,7 +330,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	try{
     		json_object=json_info.getJSONObject("tariffName");
     		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'} }"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_CLICKABLE,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);

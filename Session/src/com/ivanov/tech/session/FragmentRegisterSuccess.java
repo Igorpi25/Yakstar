@@ -13,6 +13,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -81,6 +82,9 @@ public class FragmentRegisterSuccess extends DialogFragment implements OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = null;
         view = inflater.inflate(R.layout.fragment_register_success, container, false);
+        
+        setHasOptionsMenu(true);
+		((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         
         textview_response=(TextView)view.findViewById(R.id.fragment_register_textview_response);
         textview_response.setText(Session.getRegisteredMessage());

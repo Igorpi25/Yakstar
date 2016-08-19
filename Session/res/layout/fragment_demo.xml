@@ -59,9 +59,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/fragment_demo_textview_internet_on"
-		            android:textAppearance="?android:attr/textAppearanceSmall"
-		            android:textColor="@color/color_green"
-		            android:visibility="gone" />
+		            android:textAppearance="?android:attr/textAppearanceSmall" />
 		        
 		    </LinearLayout>
 	

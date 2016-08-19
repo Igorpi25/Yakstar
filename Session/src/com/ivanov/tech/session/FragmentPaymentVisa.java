@@ -21,6 +21,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -97,6 +98,9 @@ public class FragmentPaymentVisa extends DialogFragment implements OnClickListen
         View view = null;
         view = inflater.inflate(R.layout.fragment_payment_visa, container, false);
 
+        setHasOptionsMenu(true);
+		((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        
         this.container=container;
         
         button_pay = (Button) view.findViewById(R.id.fragment_payment_visa_button_pay);

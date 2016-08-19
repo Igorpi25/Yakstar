@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,6 +78,9 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = null;
         view = inflater.inflate(R.layout.fragment_register_last, container, false);
+        
+        setHasOptionsMenu(true);
+		((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         
         button_submit = (Button) view.findViewById(R.id.fragment_register_button_submit);
         button_submit.setOnClickListener(this);

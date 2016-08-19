@@ -2,6 +2,7 @@ package com.ivanov.tech.session;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,9 @@ public class FragmentSplashScreen extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = null;
         view = inflater.inflate(R.layout.fragment_splashscreen, container, false);
+        
+        setHasOptionsMenu(true);
+		((AppCompatActivity)getActivity()).getSupportActionBar().hide();
         
         this.container=container;
         
