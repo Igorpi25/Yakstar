@@ -133,7 +133,17 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
 			if(checkConfirms()&&checkCaptcha()){
 				saveRegisterJson();
 				
-				doRegisterRequest(getActivity(),getFragmentManager(),R.id.main_container);
+				Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new Connection.ProtocolListener(){ 
+					@Override
+					public void onCanceled() {
+						
+					}
+					
+					@Override
+					public void isCompleted() {
+						doRegisterRequest(getActivity(),getFragmentManager(),R.id.main_container);
+					}
+				});
 			}
 		}
 			
@@ -142,8 +152,17 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
 		}
 		
 		if(v.getId()==button_captcha_update.getId()){
-			//updateCaptcha();
-			doCapchaRequest(getActivity(),true);
+			Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new Connection.ProtocolListener(){ 
+				@Override
+				public void onCanceled() {
+					
+				}
+				
+				@Override
+				public void isCompleted() {
+					doCapchaRequest(getActivity(),true);
+				}
+			});
 		}
 			
 	}

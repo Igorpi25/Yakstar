@@ -69,7 +69,11 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
             .getSimpleName();    
 	
     protected static final int TYPE_TEXT = 0;
-    protected static final int TYPE_TEXT_BALANCE = 1;
+    protected static final int TYPE_TEXT_CLICKABLE = 1;
+    
+    protected static final int BUTTON_KEY_BALANCE_CHARGE = 1;
+    protected static final int BUTTON_KEY_TARIF_EDIT = 2;
+    protected static final int BUTTON_KEY_AGREEMENT = 3;
     
     protected SubMenu menuSession;
 	protected MenuItem menuLogout;
@@ -98,18 +102,9 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     public void onStart() {
         super.onStart();
         
-        Log.d(TAG, "onResume");
+        Log.d(TAG, "onStart");  
         
-        Session.doInfoRequest(getActivity(),getFragmentManager(), R.id.main_container, new RequestListener(){
-
-			@Override
-			public void onResponsed() {
-		    	updateInfo();		    	
-			}	
-        });
-    
-        Session.doCheckInternetRequest(getActivity(), getFragmentManager(), R.id.main_container, this);
-        
+        refreshState();        
     }
     
     @Override
@@ -143,15 +138,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         
         adapter_info=new CursorMultipleTypesAdapter(getActivity(),null);        
         adapter_info.addItemHolder(TYPE_TEXT, new ItemHolderText(getActivity(),null));
-        adapter_info.addItemHolder(TYPE_TEXT_BALANCE, new ItemHolderText(getActivity(),R.layout.itemholder_text_clickable,new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Log.d(TAG, "onClick TYPE_TEXT_BALANCE");
-				Session.createPaymentRootFragment(getActivity(), getFragmentManager(), R.id.main_container);				
-			}
-        	
-        }));
+        adapter_info.addItemHolder(TYPE_TEXT_CLICKABLE, new ItemHolderText(getActivity(),R.layout.itemholder_text_clickable,this));
         
         recyclerview_info.setAdapter(adapter_info);
         
@@ -188,23 +175,72 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     
     @Override
 	public void onClick(View v) {
-		
+    	
+    	Log.d(TAG, "onClick");
+    	
+		if(v.getTag(R.layout.itemholder_text_clickable)!=null){
+			Log.d(TAG, "onClick item clicked");
+			if( ((Integer)v.getTag(R.layout.itemholder_text_clickable))==BUTTON_KEY_BALANCE_CHARGE ){
+				
+				Log.d(TAG, "onClick TYPE_TEXT_BALANCE");
+				Session.createPaymentRootFragment(getActivity(), getFragmentManager(), R.id.main_container);
+				
+			}
+			
+		}
 	}
 
     @Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
     	Log.d(TAG, "onCheckedChanged switch_internet.checked="+switch_internet.isChecked()+" isChecked="+isChecked);
     	
-    	if(isChecked){
-    		textview_internet_value.setText(R.string.fragment_demo_textview_internet_enabling);
-		}else{
-			textview_internet_value.setText(R.string.fragment_demo_textview_internet_disabling);
-		}
-    	
-    	Session.doSwitchInternetRequest(getActivity(),getFragmentManager(),R.id.main_container,this);
-    	switch_internet.setEnabled(false);    	
+    	Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new Connection.ProtocolListener(){
+
+			@Override
+			public void isCompleted() {
+				if(switch_internet.isChecked()){
+		    		textview_internet_value.setText(R.string.fragment_demo_textview_internet_enabling);
+				}else{
+					textview_internet_value.setText(R.string.fragment_demo_textview_internet_disabling);
+				}
+		    	
+		    	Session.doSwitchInternetRequest(getActivity(),getFragmentManager(),R.id.main_container,FragmentDemo.this);
+		    	switch_internet.setEnabled(false); 
+			}
+
+			@Override
+			public void onCanceled() {
+				isUnknown();
+			}
+        	
+        });
     	
 	}
+    
+    void refreshState(){
+    	Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new Connection.ProtocolListener(){
+
+			@Override
+			public void isCompleted() {
+				Session.doInfoRequest(getActivity(),getFragmentManager(), R.id.main_container, new RequestListener(){
+
+					@Override
+					public void onResponsed() {
+				    	updateInfo();		    	
+					}	
+		        });
+		    
+		        Session.doCheckInternetRequest(getActivity(), getFragmentManager(), R.id.main_container, FragmentDemo.this);
+		        
+			}
+
+			@Override
+			public void onCanceled() {
+				isUnknown();
+			}
+        	
+        });
+    }
     
     void updateInfo(){
     	
@@ -258,7 +294,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	try{
     		json_object=json_info.getJSONObject("agreement");
     		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'}}"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,0,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -267,7 +303,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	try{
     		json_object=json_info.getJSONObject("balance");
     		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getDouble("data")+" руб'} }"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_BALANCE,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_CLICKABLE,BUTTON_KEY_BALANCE_CHARGE,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -276,7 +312,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	try{
     		json_object=json_info.getJSONObject("toPay");
     		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getDouble("data")+" руб'} }"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,0,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -285,7 +321,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	try{
     		json_object=json_info.getJSONObject("debet");
     		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getDouble("data")+" руб'}}"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,0,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -294,7 +330,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	try{
     		json_object=json_info.getJSONObject("tariffName");
     		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'} }"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,0,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -303,7 +339,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	try{
     		json_object=json_info.getJSONObject("levelname");
     		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'}}"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,0,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -313,7 +349,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     		JSONArray json_array=json_info.getJSONArray("trafic");
     		json_object=json_array.getJSONObject(0);
     		json_item=new JSONObject("{key:{text:'Трафик'},value:{text:'"+new DecimalFormat("###.#").format(json_object.getDouble("restbytes")/1048576)+"/"+Math.round(json_object.getDouble("maxbytes")/1048576)+" МБ'}}"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,0,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -322,7 +358,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	try{
     		json_object=json_info.getJSONObject("serviceStatus");
     		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'}}"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,0,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);

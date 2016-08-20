@@ -29,9 +29,10 @@ public class ItemHolderText extends CursorItemHolder{
 	OnClickListener onclicklistener;
 	int layout=R.layout.itemholder_text;
 	
-	protected ItemHolderText(View itemView,Context context, OnClickListener onclicklistener) {
+	protected ItemHolderText(View itemView,Context context, int layout, OnClickListener onclicklistener) {
 		super(itemView);
 		
+		this.layout=layout;
 		this.context=context;
 		this.onclicklistener=onclicklistener;
 		
@@ -61,14 +62,14 @@ public class ItemHolderText extends CursorItemHolder{
 		View view = LayoutInflater.from(parent.getContext())
                 .inflate(layout, parent, false);
 		
-		ItemHolderText itemholder=new ItemHolderText(view,context,onclicklistener);
+		ItemHolderText itemholder=new ItemHolderText(view,context,layout,onclicklistener);
 		
 		itemholder.textview_key = (TextView) view.findViewById(R.id.itemholder_text_textview_key);
 		itemholder.textview_value = (TextView) view.findViewById(R.id.itemholder_text_textview_value);
 		itemholder.imageview_icon = (ImageView) view.findViewById(R.id.itemholder_text_imageview_icon);
 		
 		if(itemholder.onclicklistener!=null){
-			view.setOnClickListener(itemholder.onclicklistener);
+			itemholder.itemView.setOnClickListener(itemholder.onclicklistener);
 		}
 		
 		return itemholder;
