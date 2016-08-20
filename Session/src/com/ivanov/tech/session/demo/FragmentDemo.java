@@ -78,9 +78,9 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     protected SubMenu menuSession;
 	protected MenuItem menuLogout;
     
-    TextView textview_gov_link,textview_internet_value;
+    TextView textview_gov_link,textview_internet_value,textview_refresh;
     SwitchCompat switch_internet;
-    View layout_internet,layout_info;
+    View layout_internet,layout_info,layout_refresh,progressbar_refresh,imageview_refresh;
     
     RecyclerView recyclerview_info;
     CursorMultipleTypesAdapter adapter_info;
@@ -102,9 +102,10 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     public void onStart() {
         super.onStart();
         
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
         Log.d(TAG, "onStart");  
         
-        refreshState();        
+        refresh();        
     }
     
     @Override
@@ -116,7 +117,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         
         setHasOptionsMenu(true);
 		((AppCompatActivity)getActivity()).getSupportActionBar().show();
-		
+				
 		((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
 		((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name); 
@@ -127,6 +128,13 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
 		
         layout_internet = view.findViewById(R.id.fragment_demo_layout_internet);        
         layout_info = view.findViewById(R.id.fragment_demo_layout_info);
+        
+        layout_refresh = view.findViewById(R.id.fragment_demo_layout_refresh);
+        textview_refresh=(TextView)view.findViewById(R.id.fragment_demo_textview_refresh);
+        imageview_refresh=view.findViewById(R.id.fragment_demo_imageview_refresh);
+        progressbar_refresh=view.findViewById(R.id.fragment_demo_progressbar_refresh);
+        
+        
         
         switch_internet = (SwitchCompat)view.findViewById(R.id.fragment_demo_switch_internet);
         switch_internet.setSwitchTextAppearance(getActivity(), R.style.SwitchInternetTheme);
@@ -144,6 +152,8 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         
         //Take info from preferences
         updateInfo();
+        
+        setRefreshButtonState(false);
         
         //Set status to waiting
         internetWaiting();
@@ -177,6 +187,10 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
 	public void onClick(View v) {
     	
     	Log.d(TAG, "onClick");
+    	
+    	if(v.getId()==layout_refresh.getId()){
+    		refresh();
+    	}
     	
 		if(v.getTag(R.layout.itemholder_text_clickable)!=null){
 			Log.d(TAG, "onClick item clicked");
@@ -217,15 +231,19 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	
 	}
     
-    void refreshState(){
+    void refresh(){
     	Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new Connection.ProtocolListener(){
 
 			@Override
 			public void isCompleted() {
+				
+				setRefreshButtonState(true);
+				
 				Session.doInfoRequest(getActivity(),getFragmentManager(), R.id.main_container, new RequestListener(){
 
 					@Override
 					public void onResponsed() {
+						setRefreshButtonState(false);
 				    	updateInfo();		    	
 					}	
 		        });
@@ -244,6 +262,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     
     void updateInfo(){
     	
+    	if(Session.getInfoJson()==null)return;
     	try {
     		
     		JSONObject json_info=new JSONObject(Session.getInfoJson());
@@ -278,6 +297,22 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	switch_internet.setOnCheckedChangeListener(null);
     	switch_internet.setChecked(Session.getInternetState());
     	switch_internet.setOnCheckedChangeListener(this);
+    }
+    
+    void setRefreshButtonState(boolean processing){
+//    	if(processing){            
+//            progressbar_refresh.setVisibility(View.VISIBLE);
+//            imageview_refresh.setVisibility(View.GONE);
+//            textview_refresh.setText(R.string.fragment_demo_textview_refresh_2);
+//            textview_refresh.setVisibility(View.VISIBLE);
+//            layout_refresh.setOnClickListener(null);            
+//    	}else{    		
+//    		progressbar_refresh.setVisibility(View.GONE);
+//    		imageview_refresh.setVisibility(View.VISIBLE);
+//    		textview_refresh.setText(R.string.fragment_demo_textview_refresh_1);
+//    		textview_refresh.setVisibility(View.VISIBLE);
+//    		layout_refresh.setOnClickListener(this);
+//    	}
     }
     
     //------------Preparing cursor----------------------------

@@ -77,7 +77,10 @@
     <string name="fragment_demo_textview_internet_disabling">отключение</string>
     <string name="fragment_demo_textview_internet_waiting">ожидание</string>
     <string name="fragment_demo_textview_internet_error">ошибка</string>
-        
+    
+    <string name="fragment_demo_textview_refresh_1">обновить</string>
+    <string name="fragment_demo_textview_refresh_2">обновление</string>    
+    
     <string name="fragment_demo_button_connect">Подключить</string>
     <string name="fragment_demo_button_disconnect">Отключить</string>
     
