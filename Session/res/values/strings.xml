@@ -75,6 +75,8 @@
     <string name="fragment_demo_textview_internet_off">отключен</string>
     <string name="fragment_demo_textview_internet_enabling">включение</string>
     <string name="fragment_demo_textview_internet_disabling">отключение</string>
+    <string name="fragment_demo_textview_internet_waiting">ожидание</string>
+    <string name="fragment_demo_textview_internet_error">ошибка</string>
         
     <string name="fragment_demo_button_connect">Подключить</string>
     <string name="fragment_demo_button_disconnect">Отключить</string>
@@ -114,6 +116,14 @@
     <string name="error_35_title">Ошибка обращения к серверу</string>
     <string name="error_35_message">Не могу выполнить запрос на регистрацию </string>
     
+    <string name="error_36_title">Ошибка обращения к серверу</string>
+    <string name="error_36_message">Запрос информации информацию о клиенте </string>
+    
+    <string name="error_37_title">Ошибка обращения к серверу</string>
+    <string name="error_37_message">Во время запроса проверки подключения к интернету</string>
+    
+    <string name="error_38_title">Ошибка обращения к серверу</string>
+    <string name="error_38_message">Во время запроса подключения/отключения интернета</string>
     
     <string name="error_41_title">Ошибка чтения данных</string>
     <string name="error_41_message">Не могу получить новый идентификатор сессии</string>
@@ -128,5 +138,26 @@
     <!-- emty response or json.status is missing -->
     <string name="error_432_title">Ошибка чтения данных</string>
     <string name="error_432_message">Отсутствует статус в JSON-ответе, либо ответ не пришел</string>
+    
+    <!-- doInfoRequest-->
+    <string name="error_441_title">Ошибка чтения данных</string>
+    <string name="error_441_message">Ошибка чтения информации пользователя. Сервер вернул пустой ответ</string>
         
+    <string name="error_442_title">Ошибка чтения данных</string>
+    <string name="error_442_message">Ошибка чтения информации пользователя. JSON-ошибка</string>
+    
+    <!-- doCheckInternetRequest -->
+    <string name="error_451_title">Ошибка чтения данных</string>
+    <string name="error_451_message">Ошибка чтения статуса подключения к интернету. Сервер вернул пустой результат</string>
+    
+    <string name="error_452_title">Ошибка чтения данных</string>
+    <string name="error_452_message">Ошибка чтения статуса подключения к интернету. JSON-ошибка</string>
+    
+    <!-- doSwitchInternetRequest -->
+    <string name="error_461_title">Ошибка чтения данных</string>
+    <string name="error_461_message">В ответ на запрос подключения/отключения интернета. Сервер вернул пустой результат</string>
+    
+    <string name="error_462_title">Ошибка чтения данных</string>
+    <string name="error_462_message">Ошибка чтения результата запроса подключения/отключения интернета. JSON-ошибка</string>
+    
 </resources>

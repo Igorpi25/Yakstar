@@ -98,44 +98,17 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     public void onStart() {
         super.onStart();
         
-        Log.d(TAG, "onCreateView");
+        Log.d(TAG, "onResume");
         
-        Session.doInfoRequest(getActivity(), new RequestListener(){
+        Session.doInfoRequest(getActivity(),getFragmentManager(), R.id.main_container, new RequestListener(){
 
 			@Override
 			public void onResponsed() {
-
-		    	if(!Session.isInfoJsonExists())Toast.makeText(getActivity(), "Ошибка! Данные пользователя пусты", Toast.LENGTH_LONG).show();
-		    	
-		    	try {
-		    		
-		    		JSONObject json_info=new JSONObject(Session.getInfoJson());
-		    	
-		    		String servicestatusdata=json_info.getJSONObject("serviceStatus").getString("data");
-		    		
-					if(servicestatusdata.equals("Активна")){
-						showActive();				
-						updateInfo(json_info);
-					}else if(servicestatusdata.equals("Заблокирована")){
-						
-						showDisabled();
-						updateInfo(json_info);
-					}else{
-						Log.e(TAG, "onStart doInfoRequest onResponsed serviceStatus.data unknown value="+servicestatusdata);
-						Toast.makeText(getActivity(), "Ошибка! Неизвестный статус услуги: "+servicestatusdata, Toast.LENGTH_LONG).show();
-						showDisabled();
-						cleanInfo();
-					}
-					
-				} catch (JSONException e) {
-					Log.e(TAG, "onStart doInfoRequest onResponsed JSONException e="+e);
-				}
-		    	
-			}			
-        	
+		    	updateInfo();		    	
+			}	
         });
     
-        Session.doCheckInternetRequest(getActivity(), this);
+        Session.doCheckInternetRequest(getActivity(), getFragmentManager(), R.id.main_container, this);
         
     }
     
@@ -152,8 +125,6 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
 		((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
 		((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name); 
-		
-		
 		
 		textview_gov_link = (TextView)view.findViewById(R.id.fragment_demo_textview_gov_link);
 		textview_gov_link.setClickable(true);
@@ -184,7 +155,11 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         
         recyclerview_info.setAdapter(adapter_info);
         
-        showDisabled();
+        //Take info from preferences
+        updateInfo();
+        
+        //Set status to waiting
+        internetWaiting();
         
         return view;
     }
@@ -213,7 +188,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     
     @Override
 	public void onClick(View v) {
-				
+		
 	}
 
     @Override
@@ -226,58 +201,47 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
 			textview_internet_value.setText(R.string.fragment_demo_textview_internet_disabling);
 		}
     	
-    	Session.doSwitchInternetRequest(getActivity(),this);
+    	Session.doSwitchInternetRequest(getActivity(),getFragmentManager(),R.id.main_container,this);
     	switch_internet.setEnabled(false);    	
     	
 	}
     
-    void showActive(){
-    	layout_internet.setVisibility(View.VISIBLE);
-    	    	
-    }
-    
-    void showDisabled(){
-    	layout_internet.setVisibility(View.GONE);
+    void updateInfo(){
     	
+    	try {
+    		
+    		JSONObject json_info=new JSONObject(Session.getInfoJson());
+    	
+    		String servicestatusdata=json_info.getJSONObject("serviceStatus").getString("data");
+    		
+			if(servicestatusdata.equals("Активна")){						
+				adapter_info.changeCursor(getAdapterInfo(json_info));				
+			}else if(servicestatusdata.equals("Заблокирована")){					
+				adapter_info.changeCursor(getAdapterInfo(json_info));				
+			}else{				
+				Log.e(TAG, "updateInfo unknown service.status value="+servicestatusdata);	
+				//Try to parse it anyway
+				adapter_info.changeCursor(getAdapterInfo(json_info));				
+			}
+			
+		} catch (JSONException e) {
+			Log.e(TAG, "onStart doInfoRequest onResponsed JSONException e="+e);
+			Session.createErrorTerminateFragment(getActivity(), getFragmentManager(), R.id.main_container, 442, R.string.error_442_title, R.string.error_442_message);
+		}
     }
     
-    void showInternetOn(){
-    	textview_internet_value.setText(R.string.fragment_demo_textview_internet_on);
-    	    	
-    	switch_internet.setEnabled(true); 
+    void internetWaiting(){
+    	if(Session.getInternetState()){
+			textview_internet_value.setText(R.string.fragment_demo_textview_internet_on);
+		}else{
+			textview_internet_value.setText(R.string.fragment_demo_textview_internet_off);
+		}
+    	
+    	switch_internet.setEnabled(false);
     	
     	switch_internet.setOnCheckedChangeListener(null);
-    	switch_internet.setChecked(true);
+    	switch_internet.setChecked(Session.getInternetState());
     	switch_internet.setOnCheckedChangeListener(this);
-    	
-    }
-    
-    void showInternetOff(){
-    	textview_internet_value.setText(R.string.fragment_demo_textview_internet_off);
-    	
-    	switch_internet.setEnabled(true);
-    	
-    	switch_internet.setOnCheckedChangeListener(null);
-    	switch_internet.setChecked(false);
-    	switch_internet.setOnCheckedChangeListener(this);
-    }
-	
-    void updateInfo(JSONObject json_info){
-    	adapter_info.changeCursor(getAdapterInfo(json_info));
-    }
-    
-    void cleanInfo(){
-    	//adapter_info.changeCursor(getAdapterInfoCleaned());    	
-    }
-    
-    String getInfoString(JSONObject json_info, String name) throws JSONException{
-    	
-    	JSONObject object=json_info.getJSONObject(name);
-    	
-    	String title=object.getString("title");
-    	String data=object.getString("data");
-    	
-    	return title+" : "+data;
     }
     
     //------------Preparing cursor----------------------------
@@ -368,37 +332,39 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	
     }
     
-    protected MatrixCursor getAdapterInfoCleaned(){
-
-    	MatrixCursor matrixcursor=new MatrixCursor(new String[]{adapter_info.COLUMN_ID, adapter_info.COLUMN_TYPE, adapter_info.COLUMN_KEY, adapter_info.COLUMN_VALUE});    	
-    	
-    	int _id=-1;
-    	
-    	JSONObject json_item=null;    	
-    	
-    	try{
-    		json_item=new JSONObject("{key:{text:'Баланс'},value:{text:' '} }"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,_id,json_item.toString()});
-    	}catch(JSONException e){
-    		Log.e(TAG, "getAdapterInfoCleaned JSONException e="+e);
-    	}
-    	
-    	return matrixcursor;   
-    	
-    }
-    
     //-----------------CheckInternetListener-----------------------------
     
     @Override
 	public void isOnline() {
+    	textview_internet_value.setText(R.string.fragment_demo_textview_internet_on);
     	
-		showInternetOn();
+    	switch_internet.setEnabled(true); 
+    	
+    	switch_internet.setOnCheckedChangeListener(null);
+    	switch_internet.setChecked(true);
+    	switch_internet.setOnCheckedChangeListener(this);
 	}
 
 	@Override
 	public void isOffline() {
-		
-		showInternetOff();
+		textview_internet_value.setText(R.string.fragment_demo_textview_internet_off);
+    	
+    	switch_internet.setEnabled(true);
+    	
+    	switch_internet.setOnCheckedChangeListener(null);
+    	switch_internet.setChecked(false);
+    	switch_internet.setOnCheckedChangeListener(this);
+	}
+	
+
+	@Override
+	public void isUnknown() {
+		textview_internet_value.setText(R.string.fragment_demo_textview_internet_error);
+    	switch_internet.setEnabled(false);
+    	
+    	switch_internet.setOnCheckedChangeListener(null);
+    	switch_internet.setChecked(Session.getInternetState());
+    	switch_internet.setOnCheckedChangeListener(this);
 	}
 
 	

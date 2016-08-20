@@ -71,6 +71,8 @@ public class Session {
     public static final String PREF_REGISTERED_MESSAGE="PREF_REGISTEREDMESSAGE";
     public static final String PREF_REGISTERED_MESSAGE_DEFAULT=null;
     
+    public static final String PREF_INTERNET_STATE="PREF_INTERNET_STATE";
+    public static final boolean PREF_INTERNET_STATE_DEFAULT=false;
     //----------------URLs--------------------------------
     
     public static final String PREF_LOGOUT_URL="PREF_LOGOUTURL";
@@ -240,6 +242,14 @@ public class Session {
   	
   	public static boolean isInfoJsonExists(){
   		return preferences.contains(Session.PREF_INFO_JSON);
+  	}
+  	
+  	public static boolean getInternetState(){
+  		return preferences.getBoolean(Session.PREF_INTERNET_STATE,Session.PREF_INTERNET_STATE_DEFAULT);
+  	}
+  	
+  	public static void setInternetState(boolean value){
+  		preferences.edit().putBoolean(Session.PREF_INTERNET_STATE,value).commit();
   	}
   	
   	//--------Message that reciedved after registration-------------
@@ -550,6 +560,35 @@ public class Session {
         }catch(NullPointerException e) {
 
         	FragmentError fragment = FragmentError.newInstance(code,title,message,listener);
+            
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(container, fragment, "Error");            
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack("Error");
+            fragmentTransaction.commit();
+            
+            return fragment;
+        }
+    }
+  	
+  	public static FragmentError createErrorTerminateFragment(final Context context,final FragmentManager fragmentManager, final int container, final int code, final int title, final int message){
+
+        try{
+            if(fragmentManager.findFragmentByTag("Error").isVisible()){
+                return (FragmentError)fragmentManager.findFragmentByTag("Error");
+            }else{
+                throw (new NullPointerException());
+            }
+        }catch(NullPointerException e) {
+
+        	FragmentError fragment = FragmentError.newInstance(code,title,message, new CloseListener(){
+
+				@Override
+				public void onClosed() {
+					Session.killApp();
+				}
+        		
+        	});
             
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(container, fragment, "Error");            
@@ -953,7 +992,7 @@ public class Session {
   	
   	//---------------------Check Internet Requests-----------------------
     
-  	public static void doCheckInternetRequest(Context context, final CheckInternetListener listener) {
+  	public static void doCheckInternetRequest(final Context context, final FragmentManager fragmentManager, final int container, final CheckInternetListener listener) {
 
       	final String tag = TAG+" doCheckInternetRequest"; 
       	        
@@ -965,7 +1004,7 @@ public class Session {
     	//pDialog.show();
       	
       	StringRequest request = new StringRequest(Method.GET,
-      			Session.getCheckInternetUrl(),
+      			Session.getCheckInternetUrl(), 
       	                new Response.Listener<String>() {
       	 
       	                    @Override
@@ -975,20 +1014,27 @@ public class Session {
       	                        pDialog.hide();
       	                        
       	                        if((response==null) && response.isEmpty()){
-      	                        	listener.isOffline();
+      	                        	Session.createErrorFragment(context, fragmentManager, container, 451, R.string.error_451_title, R.string.error_451_message, null);
+      	                        	listener.isUnknown();
       	                        	return;
       	                        }
       	                        
       	                        try {
 									JSONObject json=new JSONObject(response);
 									
-									if(json.has("status") && json.getBoolean("status")){
+									if(json.getBoolean("status")){										
 										listener.isOnline();										
 									}else{
 										listener.isOffline();
 									}
 									
-								} catch (JSONException e) {e.printStackTrace();}
+									Session.setInternetState(json.getBoolean("status"));
+									
+								} catch (JSONException e) {
+									Log.e(TAG, tag+"onResponse JSONException e" + response);
+									Session.createErrorFragment(context, fragmentManager, container, 452, R.string.error_452_title, R.string.error_452_message, null);
+									listener.isUnknown();
+								}
       	                        
       	                    }
       	                    
@@ -998,7 +1044,9 @@ public class Session {
       	                    public void onErrorResponse(VolleyError error) {
       	                        Log.e(TAG, tag+"Volley.onErrorResponser: " + error.getMessage());
       	                        pDialog.hide();
-      	                        listener.isOffline();      	                        
+      	                        
+      	                        Session.createErrorFragment(context, fragmentManager, container, 37, R.string.error_37_title, R.string.error_37_message, null);
+      	                        listener.isUnknown();
       	                    }
       	                }){
       		
@@ -1020,15 +1068,15 @@ public class Session {
 
     }
   	
-  	public static void doSwitchInternetRequest(Context context, final CheckInternetListener listener) {
+  	public static void doSwitchInternetRequest(final Context context, final FragmentManager fragmentManager, final int container, final CheckInternetListener listener) {
 
       	final String tag = TAG+" doSwitchInternetRequest"; 
       	        
       	Log.e(TAG,tag);
       	
-//      	final ProgressDialog pDialog = new ProgressDialog(context);
-//    	pDialog.setMessage("Включение/Отключение интернета ...");
-//    	pDialog.setCancelable(false);    	
+      	final ProgressDialog pDialog = new ProgressDialog(context);
+    	pDialog.setMessage("Включение/Отключение интернета ...");
+    	pDialog.setCancelable(false);    	
 //    	pDialog.show();
       	
       	StringRequest request = new StringRequest(Method.POST,
@@ -1039,24 +1087,31 @@ public class Session {
       	                    public void onResponse(String response) {
       	                        Log.d(TAG, tag+" onResponse " + response);
       	                        
-//      	                        pDialog.hide();
+      	                        pDialog.hide();
       	                        
       	                        if((response==null) || response.isEmpty()){
       	                        	Log.d(TAG, tag+" onResponse response = empty or null");
-      	                        	listener.isOffline();
+      	                        	Session.createErrorFragment(context, fragmentManager, container, 461, R.string.error_461_title, R.string.error_461_message, null);
+      	                        	listener.isUnknown();
       	                        	return;
       	                        }
       	                        
       	                        try {
 									JSONObject json=new JSONObject(response);
 									
-									if(json.has("status") && json.getBoolean("status")){
+									if(json.getBoolean("status")){
 										listener.isOnline();										
 									}else{
 										listener.isOffline();
 									}
 									
-								} catch (JSONException e) {e.printStackTrace();}
+									Session.setInternetState(json.getBoolean("status"));
+									
+								} catch (JSONException e) {
+									Log.e(TAG, tag+" onResponse JSONException e" + response);
+									Session.createErrorFragment(context, fragmentManager, container, 462, R.string.error_462_title, R.string.error_462_message, null);
+									listener.isUnknown();
+								}
       	                        
       	                    }
       	                    
@@ -1065,8 +1120,10 @@ public class Session {
       	                    @Override
       	                    public void onErrorResponse(VolleyError error) {
       	                        Log.e(TAG, tag+"Volley.onErrorResponser: " + error.getMessage());
-//      	                        pDialog.hide();
-      	                        listener.isOffline();      	                        
+      	                        pDialog.hide();
+      	                        
+      	                        Session.createErrorFragment(context, fragmentManager, container, 38, R.string.error_38_title, R.string.error_38_message, null);
+      	                        listener.isUnknown();      	                        
       	                    }
       	                }){
       		
@@ -1123,14 +1180,7 @@ public class Session {
       	                        Log.e(TAG, tag+"Volley.onErrorResponser: " + error.getMessage());
       	                        pDialog.hide();
       	                        
-      	                        Session.createErrorFragment(context, fragmentManager, container, 33, R.string.error_33_title, R.string.error_33_message, new CloseListener(){
-
-									@Override
-									public void onClosed() {
-										Session.killApp();
-									}
-      	                        	
-      	                        });
+      	                        Session.createErrorTerminateFragment(context, fragmentManager, container, 33, R.string.error_33_title, R.string.error_33_message);
       	                    }
       	                }){
       		
@@ -1152,7 +1202,7 @@ public class Session {
 
     }
   	
-  	public static void doInfoRequest(final Context context, final RequestListener listener) {
+  	public static void doInfoRequest(final Context context, final FragmentManager fragmentManager, final int container, final RequestListener listener) {
 
       	final String tag = TAG+" doInfoRequest"; 
       	        
@@ -1174,10 +1224,10 @@ public class Session {
       	                        pDialog.hide();
       	                        
       	                        if( (response==null)||(response.isEmpty()) ){
-      	                        	Toast.makeText(context, "Ошибка авторизации", Toast.LENGTH_LONG).show();
+      	                        	Session.createErrorTerminateFragment(context,fragmentManager,441,R.string.error_441_title,R.string.error_441_message,container);
       	                        	return;
       	                        }
-      	                        
+      	                              	                        
       	                        Session.setInfoJson(response);
       	                        
       	                        listener.onResponsed();
@@ -1188,7 +1238,8 @@ public class Session {
       	                    @Override
       	                    public void onErrorResponse(VolleyError error) {
       	                        Log.e(TAG, tag+"Volley.onErrorResponser: " + error.getMessage());
-      	                        pDialog.hide();    	                        
+      	                        Session.createErrorTerminateFragment(context,fragmentManager,36,R.string.error_36_title,R.string.error_36_message,container);
+      	                        pDialog.hide();   	                        
       	                    }
       	                }){
       		      		
@@ -1226,6 +1277,7 @@ public class Session {
   	public interface CheckInternetListener{
         public void isOnline();
         public void isOffline();
+        public void isUnknown();
     }
   	
   	public interface CloseListener{
