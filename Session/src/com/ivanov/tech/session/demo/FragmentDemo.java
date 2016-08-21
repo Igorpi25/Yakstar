@@ -57,6 +57,7 @@ import com.ivanov.tech.multipletypesadapter.cursoradapter_recyclerview.CursorMul
 import com.ivanov.tech.session.R;
 import com.ivanov.tech.session.Session;
 import com.ivanov.tech.session.Session.CheckInternetListener;
+import com.ivanov.tech.session.Session.DialogRequestListener;
 import com.ivanov.tech.session.Session.RequestListener;
 import com.ivanov.tech.session.adapter.ItemHolderText;
 
@@ -72,7 +73,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     protected static final int TYPE_TEXT_CLICKABLE = 1;
     
     protected static final int BUTTON_KEY_BALANCE_CHARGE = 1;
-    protected static final int BUTTON_KEY_TARIF_EDIT = 2;
+    protected static final int BUTTON_KEY_TARIF_CHANGE = 2;
     protected static final int BUTTON_KEY_AGREEMENT = 3;
     
     protected SubMenu menuSession;
@@ -148,6 +149,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         adapter_info.addItemHolder(TYPE_TEXT, new ItemHolderText(getActivity(),null));
         adapter_info.addItemHolder(TYPE_TEXT_CLICKABLE, new ItemHolderText(getActivity(),R.layout.itemholder_text_clickable,this));
         
+        
         recyclerview_info.setAdapter(adapter_info);
         
         //Take info from preferences
@@ -193,12 +195,74 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	}
     	
 		if(v.getTag(R.layout.itemholder_text_clickable)!=null){
-			Log.d(TAG, "onClick item clicked");
+			
 			if( ((Integer)v.getTag(R.layout.itemholder_text_clickable))==BUTTON_KEY_BALANCE_CHARGE ){
 				
 				Log.d(TAG, "onClick TYPE_TEXT_BALANCE");
 				Session.createPaymentRootFragment(getActivity(), getFragmentManager(), R.id.main_container);
 				
+			}
+			
+			if( ((Integer)v.getTag(R.layout.itemholder_text_clickable))==BUTTON_KEY_AGREEMENT ){
+				
+				Log.d(TAG, "onClick BUTTON_KEY_AGREEMENT");
+				Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new Connection.ProtocolListener() {
+					
+					@Override
+					public void onCanceled() {}
+					
+					@Override
+					public void isCompleted() {
+						
+						if(Session.getDataJson()!=null){
+							//If cached in prefs
+							Session.createAgreementFragment(getActivity(), getFragmentManager(), R.id.main_container);
+						}else{
+							//Otherwise load it with waiting dialog
+							Session.doChangeRegDataInitRequest(getActivity(), getFragmentManager(), R.id.main_container, new DialogRequestListener(){
+
+								@Override
+								public void onResponsed() {
+									Session.createAgreementFragment(getActivity(), getFragmentManager(), R.id.main_container);
+								}
+
+								@Override
+								public boolean enableDialogs() {	
+									return true;
+								}
+								
+							});
+						}
+						
+						
+					}
+				
+				});
+				
+			}
+			
+			if( ((Integer)v.getTag(R.layout.itemholder_text_clickable))==BUTTON_KEY_TARIF_CHANGE ){
+				
+				Log.d(TAG, "onClick BUTTON_KEY_TARIF_CHANGE");
+				Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new Connection.ProtocolListener() {
+					
+					@Override
+					public void onCanceled() {}
+					
+					@Override
+					public void isCompleted() {
+						
+						Session.doTarifRequest(getActivity(), getFragmentManager(), R.id.main_container, new RequestListener(){
+							
+								@Override
+								public void onResponsed() {
+									Session.createChangeTarifFragment(getActivity(), getFragmentManager(), R.id.main_container);
+								}
+
+						});
+					}
+				
+				});
 			}
 			
 		}
@@ -238,7 +302,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
 			public void isCompleted() {
 				
 				setRefreshButtonState(true);
-				
+								
 				Session.doInfoRequest(getActivity(),getFragmentManager(), R.id.main_container, new RequestListener(){
 
 					@Override
@@ -246,10 +310,23 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
 						setRefreshButtonState(false);
 				    	updateInfo();		    	
 					}	
-		        });
+		        });				
 		    
 		        Session.doCheckInternetRequest(getActivity(), getFragmentManager(), R.id.main_container, FragmentDemo.this);
 		        
+		        Session.doChangeTarifStatusRequest(getActivity(), getFragmentManager(), R.id.main_container, new DialogRequestListener(){
+
+					@Override
+					public void onResponsed() {
+						updateInfo();
+					}
+
+					@Override
+					public boolean enableDialogs() {
+						return false;
+					}					
+		        	
+		        });
 			}
 
 			@Override
@@ -327,9 +404,9 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	JSONObject json_object=null; 
     	
     	try{
-    		json_object=json_info.getJSONObject("agreement");
-    		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'}}"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,0,json_item.toString()});
+    		json_object=json_info.getJSONObject("clientName");
+    		json_item=new JSONObject("{key:{text:'Клиент'},value:{text:'"+json_object.getString("data")+"'}}"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_CLICKABLE,BUTTON_KEY_AGREEMENT,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -362,10 +439,24 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
     	}
     	
+    	String tarif_value_appendix="";
     	try{
+    	
+			if(Session.getChangeTarifStatusJson()!=null){
+				JSONObject json_change_tarif_status=new JSONObject(Session.getChangeTarifStatusJson());
+				if(json_change_tarif_status.getBoolean("status")){
+					tarif_value_appendix="(Заявка на изменение тарифа)";
+				}
+			}
+    	}catch(JSONException e){
+    		Log.e(TAG, "getAdapterInfo JSONException e="+e);
+    	}
+    	
+    	try{
+    		
     		json_object=json_info.getJSONObject("tariffName");
-    		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+"'} }"); 
-    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT,0,json_item.toString()});
+    		json_item=new JSONObject("{key:{text:'"+json_object.getString("title")+"'},value:{text:'"+json_object.getString("data")+tarif_value_appendix+"'} }"); 
+    		matrixcursor.addRow(new Object[]{++_id,TYPE_TEXT_CLICKABLE,BUTTON_KEY_TARIF_CHANGE,json_item.toString()});
     		
     	}catch(JSONException e){
     		Log.e(TAG, "getAdapterInfo JSONException e="+e);
@@ -427,7 +518,6 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	switch_internet.setOnCheckedChangeListener(this);
 	}
 	
-
 	@Override
 	public void isUnknown() {
 		textview_internet_value.setText(R.string.fragment_demo_textview_internet_error);

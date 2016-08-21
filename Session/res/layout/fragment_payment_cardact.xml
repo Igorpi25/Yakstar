@@ -61,7 +61,7 @@
 	        android:orientation="vertical" >
 	
 	        <TextView
-	            android:id="@+id/TextView01"
+	            android:id="@+id/fragment_tarif_change_textview_cancel_link"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:gravity="center"

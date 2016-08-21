@@ -41,7 +41,7 @@
         android:padding="10dp"
         android:text="@string/register_textview_success_message_warning"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#FF8000" />
+        android:textColor="@color/color_warning" />
 
     <EditText
         android:id="@+id/fragment_register_edittext_login"

@@ -23,6 +23,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/itemholder_text_textview_key"
         android:text="Value"
+        android:ellipsize="end"
         android:textColor="@color/color_selector_font" />
 
     <ImageView

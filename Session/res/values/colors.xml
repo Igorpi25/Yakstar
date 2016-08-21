@@ -15,6 +15,7 @@
     <color name="color_transparent">#0000</color>
     <color name="color_pink">#da5e5e</color>
     <color name="color_error">#e74c3c</color>
+    <color name="color_warning">#FF8000</color>
 
 	<color name="color_primary">#0082c9</color>
 	<color name="color_primary_dark">#02334e</color>

@@ -37,6 +37,12 @@ public class ActivityDemo extends AppCompatActivity {
 	static final String url_payment_cardact=host+"p-/b-cardact/b-cardact.php";
 	static final String url_payment_visa=host+"p-/b-payonline/b-payonline.php";
     
+	static final String url_changeregdata_init=host+"p-/b-change-reg-data/b-change-reg-data_initialize.php";
+	static final String url_changeregdata=host+"p-/b-change-reg-data/b-change-reg-data.php";
+	
+	static final String url_changetarif=host+"p-/b-change-tarif/b-change-tarif.php";
+	static final String url_changetarif_status=host+"p-/b-change-tarif/b-change-tarif_get-status.php";
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +66,11 @@ public class ActivityDemo extends AppCompatActivity {
         		url_register,
         		url_info,
         		url_payment_cardact,
-        		url_payment_visa);
+        		url_payment_visa,
+        		url_changeregdata_init,
+        		url_changeregdata,
+        		url_changetarif,
+        		url_changetarif_status);
         
         showFragmentSplashScreen();
         

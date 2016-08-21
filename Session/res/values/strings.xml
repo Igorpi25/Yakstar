@@ -104,6 +104,21 @@
     
     <string name="fragment_error_button_close">Закрыть</string>
     
+    <string name="fragment_agreement_header_accaunt">Аккаунт</string>
+    <string name="fragment_agreement_header_person">Личные данные</string>
+    <string name="fragment_agreement_header_contact">Контакты</string>
+    <string name="fragment_agreement_button_edit">Изменить данные</string>
+    <string name="fragment_agreement_button_back">Назад</string>
+    
+    <string name="fragment_agreement_edit_edittext_hint">Пароль</string>
+    <string name="fragment_agreement_edit_button_send">Отправить</string>
+    <string name="fragment_agreement_edit_button_cancel">Отмена</string>
+    
+    <string name="fragment_tarif_change_textview_message">Внимание! Смена тарифа может происходить только 1 раз в месяц, первого числа календарного месяца</string>
+    <string name="fragment_tarif_change_button_send">Отправить</string>
+    <string name="fragment_tarif_change_button_cancel">Отмена</string>
+    <string name="fragment_tarif_change_textview_cancel_link"><u>Отменить изменение тарифа</u></string>
+    
     <string name="error_31_title">Сервер не найден</string>
     <string name="error_31_message">Для работы приложения вы должны подключиться к сети ООО \"ТелИнТел\"</string>
     
@@ -120,13 +135,25 @@
     <string name="error_35_message">Не могу выполнить запрос на регистрацию </string>
     
     <string name="error_36_title">Ошибка обращения к серверу</string>
-    <string name="error_36_message">Запрос информации информацию о клиенте </string>
+    <string name="error_36_message">Запрос информации о клиенте </string>
     
     <string name="error_37_title">Ошибка обращения к серверу</string>
     <string name="error_37_message">Во время запроса проверки подключения к интернету</string>
     
     <string name="error_38_title">Ошибка обращения к серверу</string>
     <string name="error_38_message">Во время запроса подключения/отключения интернета</string>
+    
+    <string name="error_39_title">Ошибка обращения к серверу</string>
+    <string name="error_39_message">Во время запроса информации о клиенте </string>
+    
+    <string name="error_51_title">Ошибка обращения к серверу</string>
+    <string name="error_51_message">Во время запроса на изменение данных клиента </string>
+    
+    <string name="error_52_title">Ошибка обращения к серверу</string>
+    <string name="error_52_message">Во время запроса изменения тарифа </string>
+    
+    <string name="error_53_title">Ошибка обращения к серверу</string>
+    <string name="error_53_message">Во время запроса статуса изменения тарифа </string>
     
     <string name="error_41_title">Ошибка чтения данных</string>
     <string name="error_41_message">Не могу получить новый идентификатор сессии</string>
@@ -162,5 +189,28 @@
     
     <string name="error_462_title">Ошибка чтения данных</string>
     <string name="error_462_message">Ошибка чтения результата запроса подключения/отключения интернета. JSON-ошибка</string>
+    
+    <!-- doChangeRegDataRequest -->
+    <string name="error_471_title">Ошибка чтения данных</string>
+    <string name="error_471_message">Запрос на данные пользователя, для изменения данных, вернул пустой результат</string>
+    
+    <string name="error_472_title">Ошибка чтения данных</string>
+    <string name="error_472_message">Парсинг данных пользователя, для изменения, привел к JSON-ошибке</string>
+    
+    <!-- doChangeTarifRequest -->
+    <string name="error_481_title">Ошибка чтения данных</string>
+    <string name="error_481_message">Запрос на изменение тарифа, вернул пустой результат</string>
+    
+    <string name="error_482_title">Ошибка чтения данных</string>
+    <string name="error_482_message">Запрос на изменение тарифа привел к JSON-ошибке</string>
+        
+    <!-- doChangeTarifStatusRequest -->
+    <string name="error_491_title">Ошибка чтения данных</string>
+    <string name="error_491_message">Запрос на статус изменения тарифа, вернул пустой результат</string>
+    
+    <string name="error_492_title">Ошибка чтения данных</string>
+    <string name="error_492_message">Запрос на статус изменения тарифа привел к JSON-ошибке</string>
+        
+    
     
 </resources>

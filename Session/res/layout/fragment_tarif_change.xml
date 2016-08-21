@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/fragment_tarif_change_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/window_pading" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Выберите новый тариф"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/fragment_tarif_change_textview_message"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/color_warning" />
+
+            <TextView
+                android:id="@+id/fragment_tarif_change_textview_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white"
+                android:gravity="center_horizontal"
+                android:paddingBottom="10dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/fragment_tarif_change_textview_cancel_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
+                android:background="@color/color_white"
+                android:gravity="center_horizontal"
+                android:paddingBottom="10dp"
+                android:text="@string/fragment_tarif_change_textview_cancel_link"
+                android:textColor="@color/color_focused"
+                android:visibility="gone" />
+
+            <Spinner
+                android:id="@+id/fragment_tarif_change_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:prompt="@color/color_focused" />
+
+            <TextView
+                android:id="@+id/fragment_tarif_change_textview_summary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_white"
+                android:padding="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="20dp" >
+
+                <Button
+                    android:id="@+id/fragment_tarif_change_button_send"
+                    style="@style/style_button_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fragment_tarif_change_button_send" />
+
+                <Button
+                    android:id="@+id/fragment_tarif_change_button_cancel"
+                    style="@style/style_button_dialog_alter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fragment_tarif_change_button_cancel" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
