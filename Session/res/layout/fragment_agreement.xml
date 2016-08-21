@@ -10,15 +10,22 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_weight="1.0"
-	    android:background="@color/color_white"
 	    android:gravity="center_horizontal"
 	    android:orientation="vertical"
 	    android:padding="10dp" >
+
+		<TextView
+		    android:id="@+id/textView1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Данные пользователя"
+		    android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 		<android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_agreement_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+		    android:id="@+id/fragment_agreement_recyclerview"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginTop="20dp" />
 
 		<Button
 	        android:id="@+id/fragment_agreement_button_edit"
@@ -27,6 +34,13 @@
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="@dimen/window_pading"
 	        android:text="@string/fragment_agreement_button_edit" />
+		
+		<Button
+		    android:id="@+id/fragment_agreement_button_password_change"
+		    style="@style/style_button_dialog"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/fragment_agreement_button_password_change" />
 	
 	    <Button
 	        android:id="@+id/fragment_agreement_button_back"

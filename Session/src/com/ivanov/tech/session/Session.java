@@ -2,6 +2,9 @@ package com.ivanov.tech.session;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -1385,7 +1388,7 @@ public class Session {
     	Log.e(TAG,tag);
     	
     	final ProgressDialog pDialog = new ProgressDialog(context);
-    	pDialog.setMessage("Получение данных...");
+    	pDialog.setMessage("Получение данных пользователя");
     	pDialog.setCancelable(false);    
     	
     	if((listener!=null)&&(listener.enableDialogs()))pDialog.show();
@@ -1459,13 +1462,40 @@ public class Session {
     	Log.e(TAG,tag);
     	
     	final ProgressDialog pDialog = new ProgressDialog(context);
-    	pDialog.setMessage("Отправление данных...");
+    	pDialog.setMessage("Изменение данных пользователя...");
     	pDialog.setCancelable(false);    
     	
     	pDialog.show();
     	
-    	StringRequest request = new StringRequest(Method.POST,
-    			Session.getChangeRegDataUrl(),
+    	
+    
+    	String uri=null;
+		try {
+			uri = String.format(Session.getChangeRegDataUrl()+"?surname=%1$s&name=%2$s&patronim=%3$s&email=%4$s&phone=%5$s&newPassword=%6$s&passwordRepeat=%7$s&verifiedPassword=%8$s",
+					URLEncoder.encode(params.get("surname"), "utf-8"),
+					URLEncoder.encode(params.get("name"), "utf-8"),
+					URLEncoder.encode(params.get("patronim"), "utf-8"),
+					URLEncoder.encode(params.get("email"), "utf-8"),
+					URLEncoder.encode(params.get("phone"), "utf-8"),
+					URLEncoder.encode(params.get("newPassword"), "utf-8"),
+					URLEncoder.encode(params.get("passwordRepeat"), "utf-8"),
+					URLEncoder.encode(params.get("verifiedPassword"), "utf-8") );
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	
+//    	String url_params="?";
+//    	for(String key : params.keySet()){
+//    		url_params+=key+"="+Charset.forName("UTF-8").encode(params.get(key))+"&";
+//    	}    	
+//    	url_params = url_params.substring(0, url_params.length()-1);    	
+//    	String url=Session.getChangeRegDataUrl()+url_params;
+    	
+    	Log.d(TAG, tag+" url="+uri);
+    	
+    	StringRequest request = new StringRequest(Method.GET,
+    			uri,
     	                new Response.Listener<String>() {
     	 
     	                    @Override
@@ -1474,20 +1504,27 @@ public class Session {
     	                        pDialog.hide();
     	                        
     	                        if( (response==null)||(response.isEmpty()) ){
-      	                        	Session.createErrorFragment(context,fragmentManager,container,471,R.string.error_471_title,R.string.error_471_message,new CloseListener(){
-
-										@Override
-										public void onClosed() {
-											
-										}
-      	                        		
-      	                        	});
+      	                        	Session.createErrorFragment(context,fragmentManager,container,471,R.string.error_471_title,R.string.error_471_message,null);
       	                        	return;
       	                        }
-      	                              	                        
-      	                        Session.setDataJson(response);
       	                        
-      	                        listener.onResponsed();
+    	                        try{
+    	                        	JSONObject json=new JSONObject(response);
+    	                        	
+    	                        	if( (json.getString("message")!=null)&&(!json.getString("message").isEmpty()) ){
+    	                        		Toast.makeText(context, json.getString("message"), Toast.LENGTH_LONG).show();
+    	                        	}
+    	                        	
+    	                        	if(json.getBoolean("status")){
+    	                        		//Session.setDataJson(response);
+    	      	                        listener.onResponsed();
+    	                        	}
+    	                        	
+    	                        }catch(JSONException e){
+    	                        	Log.e(TAG,tag+" JSONException e="+e);
+    	                        	Session.createErrorFragment(context,fragmentManager,container,472,R.string.error_472_title,R.string.error_472_message,null);
+    	                        }
+    	                        
     	                    }
     	                    
     	                }, new Response.ErrorListener() {
@@ -1512,17 +1549,10 @@ public class Session {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 
                 Session.addCookiesToHeader(headers);
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
                 
                 return headers;
             }
-    		
-    		@Override
-            public Map<String, String> getParams() {
-                
-                return params;
-            }
-    		
+    		    		
     	};
     	
     	request.setTag(tag);

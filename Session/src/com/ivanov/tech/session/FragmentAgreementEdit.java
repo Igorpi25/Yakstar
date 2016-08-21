@@ -70,9 +70,11 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
     public static final String TAG = FragmentAgreementEdit.class
             .getSimpleName();    
 	
-    Button button_confirm, button_cancel;
+    Button button_send, button_cancel;
     
     EditText edittext_surname,edittext_name, edittext_patronim, edittext_email, edittext_phone, edittext_password;
+    
+    View layout_phone;
     
     JSONObject json_data;
     
@@ -88,22 +90,7 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
         Log.d(TAG, "onStart");  
         
-        if(Session.getDataJson()==null){
-        	Session.popFullBackStack(getFragmentManager());
-        	return;
-        }
-        
-        try {
-			json_data=new JSONObject(Session.getDataJson());
-			
-			bindData("surname",edittext_surname,json_data);
-			bindData("name",edittext_name,json_data);
-			bindData("patronim",edittext_patronim,json_data);
-			
-			bindData("email",edittext_email,json_data);
-			bindData("phone",edittext_phone,json_data);
-			
-		} catch (JSONException e) {e.printStackTrace();}
+        refreshData();
     }
     
     @Override
@@ -120,10 +107,10 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
 		((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name); 
 		
-		button_confirm=(Button)view.findViewById(R.id.fragment_agreement_button_edit);
-		button_confirm.setOnClickListener(this);
+		button_send=(Button)view.findViewById(R.id.fragment_agreement_edit_button_send);
+		button_send.setOnClickListener(this);
 		
-		button_cancel=(Button)view.findViewById(R.id.fragment_agreement_button_back);
+		button_cancel=(Button)view.findViewById(R.id.fragment_agreement_edit_button_cancel);
 		button_cancel.setOnClickListener(this);
 		
 		edittext_surname=(EditText)view.findViewById(R.id.fragment_agreement_edit_edittext_surname);
@@ -133,6 +120,10 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
 		edittext_email=(EditText)view.findViewById(R.id.fragment_agreement_edit_edittext_email);
 		edittext_phone=(EditText)view.findViewById(R.id.fragment_agreement_edit_edittext_phone);
 		
+		layout_phone = view.findViewById(R.id.fragment_agreement_edit_layout_phone);
+		
+		edittext_password=(EditText)view.findViewById(R.id.fragment_agreement_edit_edittext_password);
+		
         return view;
     }
     
@@ -141,7 +132,10 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
     	
     	Log.d(TAG, "onClick");
     	
-    	if(v.getId()==button_confirm.getId()){
+    	if(v.getId()==button_send.getId()){
+    		
+    		if( !(checkChanges()&&checkPassword()) )return;
+			
     		Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new Connection.ProtocolListener(){
 
 				@Override
@@ -152,6 +146,7 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
 						@Override
 						public void onResponsed() {
 							//Parse response
+							getFragmentManager().popBackStack();
 						}
 						
 					});
@@ -182,26 +177,85 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
     	processData("email",edittext_email.getText().toString(),params);
     	processData("phone", edittext_phone.getText().toString(),params);
     	
+    	params.put("newPassword", "");
+    	params.put("passwordRepeat", "");
+    	
+    	params.put("verifiedPassword", edittext_password.getText().toString());
+    	
     	return params;
     }
     
     void processData(String key,String value,HashMap<String, String> params){
     	try{
-    		boolean result=json_data.has(key)&&( json_data.getString(key).equals(value) );
+    		boolean result=json_data.has(key)&&( !json_data.getString(key).equals(value) );
     		
-    		if(result)params.put(key, value);
+    		if(result){
+    			params.put(key, value);
+    		}else{
+    			params.put(key, "");
+    		}
     		
     	}catch(JSONException e){
     		Log.e(TAG, "JSONException e="+e);
     	}
     }
     
-    void bindData(String key,EditText edittext,JSONObject json_data){
+    boolean bindData(String key,EditText edittext,JSONObject json_data){
     	try{
     		edittext.setText(json_data.getString(key));
+    		return true;
     	}catch(JSONException e){
     		Log.e(TAG, "JSONException e="+e);
+    		return false;
     	}
     }
 
+    void refreshData(){
+    	if(Session.getDataJson()==null){
+        	Session.popFullBackStack(getFragmentManager());
+        	return;
+        }
+        
+        try {
+			json_data=new JSONObject(Session.getDataJson());
+			
+			bindData("surname",edittext_surname,json_data);
+			bindData("name",edittext_name,json_data);
+			bindData("patronim",edittext_patronim,json_data);
+			
+			bindData("email",edittext_email,json_data);
+			if(bindData("phone",edittext_phone,json_data)==false){
+				layout_phone.setVisibility(View.GONE);
+			}else{
+				layout_phone.setVisibility(View.VISIBLE);
+			}
+			
+		} catch (JSONException e) {
+			Log.e(TAG, "refreshData JSONException e="+e);
+			
+			Session.createErrorFragment(getActivity(), getFragmentManager(), R.id.main_container, 472, R.string.error_472_title, R.string.error_472_message, new CloseListener(){
+
+				@Override
+				public void onClosed() {
+					getFragmentManager().popBackStack();
+				}
+				
+			});
+		}
+    }
+    
+    boolean checkChanges(){
+    	if(getData().size()==0){
+    		Toast.makeText(getActivity(), "Изменений не обнаружено", Toast.LENGTH_LONG).show();
+    	}
+    	return getData().size()>0;
+    }
+    
+    boolean checkPassword(){
+    	if(!getData().containsKey("verifiedPassword")){
+    		Toast.makeText(getActivity(), "Вы должны ввести пароль", Toast.LENGTH_LONG).show();
+    	}
+    	
+    	return getData().containsKey("verifiedPassword");
+    }
 }

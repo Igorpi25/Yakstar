@@ -108,6 +108,7 @@
     <string name="fragment_agreement_header_person">Личные данные</string>
     <string name="fragment_agreement_header_contact">Контакты</string>
     <string name="fragment_agreement_button_edit">Изменить данные</string>
+    <string name="fragment_agreement_button_password_change">Сменить пароль</string>
     <string name="fragment_agreement_button_back">Назад</string>
     
     <string name="fragment_agreement_edit_edittext_hint">Пароль</string>
@@ -118,6 +119,12 @@
     <string name="fragment_tarif_change_button_send">Отправить</string>
     <string name="fragment_tarif_change_button_cancel">Отмена</string>
     <string name="fragment_tarif_change_textview_cancel_link"><u>Отменить изменение тарифа</u></string>
+    
+    <string name="fragment_password_change_edittext_newpassword_hint">Новый пароль</string>
+    <string name="fragment_password_change_edittext_passwordrepeat_hint">Повторить</string>
+    <string name="fragment_password_change_edittext_currentpassword_hint">Пароль</string>
+    <string name="fragment_password_change_button_send">Отправить</string>
+    <string name="fragment_password_change_button_cancel">Отмена</string>
     
     <string name="error_31_title">Сервер не найден</string>
     <string name="error_31_message">Для работы приложения вы должны подключиться к сети ООО \"ТелИнТел\"</string>

@@ -58,6 +58,7 @@ import com.ivanov.tech.session.R;
 import com.ivanov.tech.session.Session;
 import com.ivanov.tech.session.Session.CheckInternetListener;
 import com.ivanov.tech.session.Session.CloseListener;
+import com.ivanov.tech.session.Session.DialogRequestListener;
 import com.ivanov.tech.session.Session.RequestListener;
 import com.ivanov.tech.session.adapter.ItemHolderText;
 
@@ -93,7 +94,29 @@ public class FragmentAgreement extends DialogFragment implements OnClickListener
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
         Log.d(TAG, "onStart");  
         
-        showList();
+        Connection.protocolConnection(getActivity(), getFragmentManager(), R.id.main_container, new Connection.ProtocolListener(){
+        				
+			@Override
+			public void onCanceled() {}
+			
+			@Override
+			public void isCompleted() {
+				Session.doChangeRegDataInitRequest(getActivity(), getFragmentManager(), R.id.main_container, new DialogRequestListener(){
+
+					@Override
+					public void onResponsed() {
+						showList();
+					}
+
+					@Override
+					public boolean enableDialogs() {
+						// TODO Auto-generated method stub
+						return false;
+					}
+					
+				});
+			}
+		});
     }
     
     @Override
@@ -127,6 +150,8 @@ public class FragmentAgreement extends DialogFragment implements OnClickListener
         
         recyclerview.setAdapter(adapter);
         
+        showList();
+        
         return view;
     }
     
@@ -136,7 +161,7 @@ public class FragmentAgreement extends DialogFragment implements OnClickListener
     	Log.d(TAG, "onClick");
     	
     	if(v.getId()==button_edit.getId()){
-    		
+    		Session.createAgreementEditFragment(getActivity(), getFragmentManager(), R.id.main_container);
     		return;
     	}
     	
