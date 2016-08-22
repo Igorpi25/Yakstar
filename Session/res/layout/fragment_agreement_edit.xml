@@ -144,7 +144,7 @@
 		        android:ems="10"
 		        android:gravity="center"
 		        android:hint="@string/fragment_agreement_edit_edittext_hint"
-		        android:inputType="numberDecimal"
+		        android:inputType="textPassword"
 		        android:maxLength="10" >
 		        
 		    </EditText>

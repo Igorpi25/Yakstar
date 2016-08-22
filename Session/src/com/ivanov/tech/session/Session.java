@@ -724,6 +724,27 @@ public class Session {
         }
     }
   	
+  	public static FragmentPasswordChange createPasswordChangeFragment(final Context context,final FragmentManager fragmentManager, final int container){
+
+        try{
+            if(fragmentManager.findFragmentByTag("PasswordChange").isVisible()){
+                return (FragmentPasswordChange)fragmentManager.findFragmentByTag("PasswordChange");
+            }else{
+                throw (new NullPointerException());
+            }
+        }catch(NullPointerException e) {
+
+        	FragmentPasswordChange fragment = FragmentPasswordChange.newInstance();
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(container, fragment, "PasswordChange");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack("PasswordChange");
+            fragmentTransaction.commit();
+            
+            return fragment;
+        }
+    }
   	//------------------Cookies-------------------------------------
   	
   	public static boolean parseCookies(Map<String, String> headers) {

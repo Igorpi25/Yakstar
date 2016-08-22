@@ -116,11 +116,11 @@
     <string name="fragment_agreement_edit_button_cancel">Отмена</string>
     
     <string name="fragment_tarif_change_textview_message">Внимание! Смена тарифа может происходить только 1 раз в месяц, первого числа календарного месяца</string>
-    <string name="fragment_tarif_change_button_send">Отправить</string>
+    <string name="fragment_tarif_change_button_send">Сменить тариф</string>
     <string name="fragment_tarif_change_button_cancel">Отмена</string>
-    <string name="fragment_tarif_change_textview_cancel_link"><u>Отменить изменение тарифа</u></string>
+    <string name="fragment_tarif_change_textview_cancel_link"><u>Отменить смену тарифа</u></string>
     
-    <string name="fragment_password_change_edittext_newpassword_hint">Новый пароль</string>
+    <string name="fragment_password_change_edittext_newpassword_hint">Введите новый пароль</string>
     <string name="fragment_password_change_edittext_passwordrepeat_hint">Повторить</string>
     <string name="fragment_password_change_edittext_currentpassword_hint">Пароль</string>
     <string name="fragment_password_change_button_send">Отправить</string>

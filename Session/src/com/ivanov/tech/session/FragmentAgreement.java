@@ -73,7 +73,7 @@ public class FragmentAgreement extends DialogFragment implements OnClickListener
     protected static final int TYPE_TEXT = 0;
     protected static final int TYPE_HEADER = 1;
     
-    Button button_edit, button_back;
+    Button button_edit,button_password_change, button_back;
     
     RecyclerView recyclerview;
     CursorMultipleTypesAdapter adapter;
@@ -138,6 +138,9 @@ public class FragmentAgreement extends DialogFragment implements OnClickListener
 		button_edit=(Button)view.findViewById(R.id.fragment_agreement_button_edit);
 		button_edit.setOnClickListener(this);
 		
+		button_password_change=(Button)view.findViewById(R.id.fragment_agreement_button_password_change);
+		button_password_change.setOnClickListener(this);
+		
 		button_back=(Button)view.findViewById(R.id.fragment_agreement_button_back);
 		button_back.setOnClickListener(this);
 		
@@ -162,6 +165,11 @@ public class FragmentAgreement extends DialogFragment implements OnClickListener
     	
     	if(v.getId()==button_edit.getId()){
     		Session.createAgreementEditFragment(getActivity(), getFragmentManager(), R.id.main_container);
+    		return;
+    	}
+    	
+    	if(v.getId()==button_password_change.getId()){
+    		Session.createPasswordChangeFragment(getActivity(), getFragmentManager(), R.id.main_container);
     		return;
     	}
     	
