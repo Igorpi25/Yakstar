@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">ТелИнТел</string>
+    <string name="app_name">ЯкСтар</string>
     <string name="logo">com.ivanov.tech.session</string>
     <string name="subs">(demo activity)</string>
 
@@ -127,7 +127,7 @@
     <string name="fragment_register_info_button_close">Закрыть</string>
     
     <string name="error_31_title">Сервер не найден</string>
-    <string name="error_31_message">Для работы приложения вы должны подключиться к сети ООО \"ТелИнТел\"</string>
+    <string name="error_31_message">Для работы приложения вы должны подключиться к сети \"ЯкСтар\"</string>
     
     <string name="error_32_title">Ошибка обращения к серверу</string>
     <string name="error_32_message">Не могу получить идентификатор сессии</string>

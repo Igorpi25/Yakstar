@@ -17,9 +17,9 @@
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="200dp"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:layout_marginBottom="20dp"
-            android:src="@drawable/ic_logo" />
+            android:src="@drawable/ic_logo_yakstar" />
 
     </LinearLayout>
 
