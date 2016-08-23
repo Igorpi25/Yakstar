@@ -51,8 +51,7 @@ public class ActivityDemo extends AppCompatActivity {
         setContentView(R.layout.activity_demo);
         
         getSupportActionBar().hide();
-        
-        
+                
 		getSupportActionBar().setHomeButtonEnabled(false);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 		getSupportActionBar().setTitle(R.string.app_logo); 
