@@ -83,13 +83,13 @@ private static String TAG = FragmentRegisterFirst.class.getSimpleName();
         button_cancel = (Button) view.findViewById(R.id.fragment_register_button_cancel);
         button_cancel.setOnClickListener(this);
         
-        //Заранее загружаем(и кэшируем) в фоне Rules и Agreements, которые понадобятся на FargmentRegisterLast
-        if(Session.getRulesJson()==null){
-        	Session.doRulesRequest(getActivity(), getFragmentManager(), R.id.main_container, null);
-        }        
-        if(Session.getAgreementJson()==null){
-        	Session.doAgreementRequest(getActivity(), getFragmentManager(), R.id.main_container, null);
-        }
+//        //Заранее загружаем(и кэшируем) в фоне Rules и Agreements, которые понадобятся на FargmentRegisterLast
+//        if(Session.getRulesJson()==null){
+//        	Session.doRulesRequest(getActivity(), getFragmentManager(), R.id.main_container, null);
+//        }        
+//        if(Session.getAgreementJson()==null){
+//        	Session.doAgreementRequest(getActivity(), getFragmentManager(), R.id.main_container, null);
+//        }
         
         this.container=container;
         
