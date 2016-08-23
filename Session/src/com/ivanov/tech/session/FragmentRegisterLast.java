@@ -14,8 +14,13 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.Layout;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -44,6 +49,7 @@ import com.ivanov.tech.connection.Connection;
 import com.ivanov.tech.connection.Connection.ProtocolListener;
 import com.ivanov.tech.session.Session.CheckAuthorizationListener;
 import com.ivanov.tech.session.Session.CloseListener;
+import com.ivanov.tech.session.Session.DialogRequestListener;
 import com.ivanov.tech.session.Session.RequestListener;
 
 public class FragmentRegisterLast extends DialogFragment implements OnClickListener {
@@ -89,7 +95,14 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
         button_back.setOnClickListener(this);
         
         checkbox_one = (CheckBox)view.findViewById(R.id.fragment_register_checkbox_one);
+        checkbox_one.setClickable(true);
+        //checkbox_one.setText((Html.fromHtml(getString(R.string.session_register_confirm_one_text))));
+        checkbox_one.setMovementMethod(LinkMovementMethod.getInstance());
+                        
         checkbox_two = (CheckBox)view.findViewById(R.id.fragment_register_checkbox_two);
+        checkbox_two.setClickable(true);
+        //checkbox_two.setText((Html.fromHtml(getString(R.string.session_register_confirm_two_text))));
+        checkbox_two.setMovementMethod(LinkMovementMethod.getInstance());
         
         imageview_captcha=(ImageView)view.findViewById(R.id.fragment_register_imageview_captcha);
         button_captcha_update = (Button)view.findViewById(R.id.fragment_register_button_captcha_update);
@@ -425,4 +438,117 @@ private static String TAG = FragmentRegisterLast.class.getSimpleName();
 		
 	}
 	
+	void showRules(){
+		try{
+			JSONObject json=new JSONObject(Session.getRulesJson());
+			String title="Правила оказания услуг";
+			String body=json.getString("body");
+			Session.createRegisterInfoFragment(getActivity(), getFragmentManager(), R.id.main_container, title, body);
+		}catch(JSONException e){
+			Log.e(TAG,"showRules JSONException e="+e);
+			Session.createErrorFragment(getActivity(), getFragmentManager(), R.id.main_container, 612, R.string.error_612_title, R.string.error_612_message, null);
+		}	
+				
+	}
+	
+	void showAgreement(){
+		
+		try{
+			JSONObject json=new JSONObject(Session.getAgreementJson());
+			String title="Условия договора-оферты";
+			String body=json.getString("body");
+			Session.createRegisterInfoFragment(getActivity(), getFragmentManager(), R.id.main_container, title, body);
+		}catch(JSONException e){
+			Session.createErrorFragment(getActivity(), getFragmentManager(), R.id.main_container, 622, R.string.error_622_title, R.string.error_622_message, null);
+			Log.e(TAG,"showAgreement JSONException e="+e);
+		}	
+		
+	}
+	
+	public class CustomLinkMovementMethod extends LinkMovementMethod{
+	
+		private Context movementContext;
+		
+		public CustomLinkMovementMethod(Context c){
+		    movementContext = c;
+		}
+		
+		public boolean onTouchEvent(android.widget.TextView widget, android.text.Spannable buffer, android.view.MotionEvent event)
+		{
+		    int action = event.getAction();
+		
+		    if (action == MotionEvent.ACTION_UP)
+		    {
+		        int x = (int) event.getX();
+		        int y = (int) event.getY();
+		
+		        x -= widget.getTotalPaddingLeft();
+		        y -= widget.getTotalPaddingTop();
+		
+		        x += widget.getScrollX();
+		        y += widget.getScrollY();
+		
+		        Layout layout = widget.getLayout();
+		        int line = layout.getLineForVertical(y);
+		        int off = layout.getOffsetForHorizontal(line, x);
+		
+		        URLSpan[] link = buffer.getSpans(off, off, URLSpan.class);
+		        if (link.length != 0)
+		        {
+		            String url = link[0].getURL();
+		            if (url.startsWith("https"))
+		            {
+		                Log.d(TAG, "CustomLinkMovementMethod");
+		                Toast.makeText(movementContext, "Link was clicked", Toast.LENGTH_LONG).show();
+		                
+		                if(url.endsWith("rules")){
+		                	if(Session.getAgreementJson()!=null){
+		                		showRules();
+		                	} else {
+		                		Session.doRulesRequest(getActivity(), getFragmentManager(), R.id.main_container, new DialogRequestListener(){
+
+									@Override
+									public void onResponsed() {
+										showRules();
+									}
+
+									@Override
+									public boolean enableDialogs() {										
+										return true;
+									}
+		                			
+		                		});
+		                	}
+		                }
+		                
+		                if(url.endsWith("agreement")){
+		                	if(Session.getAgreementJson()!=null){
+		                		showAgreement();
+		                	} else {
+		                		Session.doAgreementRequest(getActivity(), getFragmentManager(), R.id.main_container, new DialogRequestListener(){
+
+									@Override
+									public void onResponsed() {
+										showAgreement();
+									}
+
+									@Override
+									public boolean enableDialogs() {										
+										return true;
+									}
+		                			
+		                		});
+		                	}
+		                }
+		            } 
+		            
+		            return true;
+		        }
+		    }
+		
+		    return super.onTouchEvent(widget, buffer, event);
+		}
+		
+	};
+		
 }

@@ -65,9 +65,9 @@ import com.ivanov.tech.session.adapter.ItemHolderText;
 /**
  * Created by Igor on 09.05.15.
  */
-public class FragmentAgreementEdit extends DialogFragment implements OnClickListener {
+public class FragmentRegdataEdit extends DialogFragment implements OnClickListener {
 
-    public static final String TAG = FragmentAgreementEdit.class
+    public static final String TAG = FragmentRegdataEdit.class
             .getSimpleName();    
 	
     Button button_send, button_cancel;
@@ -78,8 +78,8 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
     
     JSONObject json_data;
     
-    public static FragmentAgreementEdit newInstance() {
-    	FragmentAgreementEdit f = new FragmentAgreementEdit();
+    public static FragmentRegdataEdit newInstance() {
+    	FragmentRegdataEdit f = new FragmentRegdataEdit();
         return f;
     }
 
@@ -96,7 +96,7 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = null;
-        view = inflater.inflate(R.layout.fragment_agreement_edit, container, false);
+        view = inflater.inflate(R.layout.fragment_regdata_edit, container, false);
         
         Log.d(TAG, "onCreateView");
         
@@ -110,19 +110,19 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
 		button_send=(Button)view.findViewById(R.id.fragment_agreement_edit_button_send);
 		button_send.setOnClickListener(this);
 		
-		button_cancel=(Button)view.findViewById(R.id.fragment_agreement_edit_button_cancel);
+		button_cancel=(Button)view.findViewById(R.id.fragment_regdata_edit_button_cancel);
 		button_cancel.setOnClickListener(this);
 		
-		edittext_surname=(EditText)view.findViewById(R.id.fragment_agreement_edit_edittext_surname);
-		edittext_name=(EditText)view.findViewById(R.id.fragment_agreement_edit_edittext_name);
-		edittext_patronim=(EditText)view.findViewById(R.id.fragment_agreement_edit_edittext_patr);
+		edittext_surname=(EditText)view.findViewById(R.id.fragment_regdata_edit_edittext_surname);
+		edittext_name=(EditText)view.findViewById(R.id.fragment_regdata_edit_edittext_name);
+		edittext_patronim=(EditText)view.findViewById(R.id.fragment_regdata_edit_edittext_patr);
 		
-		edittext_email=(EditText)view.findViewById(R.id.fragment_agreement_edit_edittext_email);
-		edittext_phone=(EditText)view.findViewById(R.id.fragment_agreement_edit_edittext_phone);
+		edittext_email=(EditText)view.findViewById(R.id.fragment_regdata_edit_edittext_email);
+		edittext_phone=(EditText)view.findViewById(R.id.fragment_regdata_edit_edittext_phone);
 		
-		layout_phone = view.findViewById(R.id.fragment_agreement_edit_layout_phone);
+		layout_phone = view.findViewById(R.id.fragment_regdata_edit_layout_phone);
 		
-		edittext_password=(EditText)view.findViewById(R.id.fragment_agreement_edit_edittext_password);
+		edittext_password=(EditText)view.findViewById(R.id.fragment_regdata_edit_edittext_password);
 		
         return view;
     }
@@ -211,13 +211,13 @@ public class FragmentAgreementEdit extends DialogFragment implements OnClickList
     }
 
     void refreshData(){
-    	if(Session.getDataJson()==null){
+    	if(Session.getRegDataJson()==null){
         	Session.popFullBackStack(getFragmentManager());
         	return;
         }
         
         try {
-			json_data=new JSONObject(Session.getDataJson());
+			json_data=new JSONObject(Session.getRegDataJson());
 			
 			bindData("surname",edittext_surname,json_data);
 			bindData("name",edittext_name,json_data);

@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
 	<LinearLayout
-	    android:id="@+id/fragment_agreement_layout"
+	    android:id="@+id/fragment_regdata_layout"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_weight="1.0"
@@ -22,33 +22,33 @@
 		    android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 		<android.support.v7.widget.RecyclerView
-		    android:id="@+id/fragment_agreement_recyclerview"
+		    android:id="@+id/fragment_regdata_recyclerview"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="20dp" />
 
 		<Button
-	        android:id="@+id/fragment_agreement_button_edit"
+	        android:id="@+id/fragment_regdata_button_edit"
 	        style="@style/style_button_dialog"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="@dimen/window_pading"
-	        android:text="@string/fragment_agreement_button_edit" />
+	        android:text="@string/fragment_regdata_button_edit" />
 		
 		<Button
-		    android:id="@+id/fragment_agreement_button_password_change"
+		    android:id="@+id/fragment_regdata_button_password_change"
 		    style="@style/style_button_dialog"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="@string/fragment_agreement_button_password_change" />
+		    android:text="@string/fragment_regdata_button_password_change" />
 	
 	    <Button
-	        android:id="@+id/fragment_agreement_button_back"
+	        android:id="@+id/fragment_regdata_button_back"
 	        style="@style/style_button_dialog_alter"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dp"
-	        android:text="@string/fragment_agreement_button_back" />
+	        android:text="@string/fragment_regdata_button_back" />
 	
 	</LinearLayout>
 

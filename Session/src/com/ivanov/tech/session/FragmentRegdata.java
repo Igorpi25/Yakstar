@@ -65,9 +65,9 @@ import com.ivanov.tech.session.adapter.ItemHolderText;
 /**
  * Created by Igor on 09.05.15.
  */
-public class FragmentAgreement extends DialogFragment implements OnClickListener {
+public class FragmentRegdata extends DialogFragment implements OnClickListener {
 
-    public static final String TAG = FragmentAgreement.class
+    public static final String TAG = FragmentRegdata.class
             .getSimpleName();    
 	
     protected static final int TYPE_TEXT = 0;
@@ -82,8 +82,8 @@ public class FragmentAgreement extends DialogFragment implements OnClickListener
     
     String response_data=null;
     
-    public static FragmentAgreement newInstance() {
-    	FragmentAgreement f = new FragmentAgreement();
+    public static FragmentRegdata newInstance() {
+    	FragmentRegdata f = new FragmentRegdata();
         return f;
     }
 
@@ -122,7 +122,7 @@ public class FragmentAgreement extends DialogFragment implements OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = null;
-        view = inflater.inflate(R.layout.fragment_agreement, container, false);
+        view = inflater.inflate(R.layout.fragment_regdata, container, false);
         
         Log.d(TAG, "onCreateView");
         
@@ -133,18 +133,18 @@ public class FragmentAgreement extends DialogFragment implements OnClickListener
 		((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name); 
 		
-		layout=view.findViewById(R.id.fragment_agreement_layout);
+		layout=view.findViewById(R.id.fragment_regdata_layout);
 		
-		button_edit=(Button)view.findViewById(R.id.fragment_agreement_button_edit);
+		button_edit=(Button)view.findViewById(R.id.fragment_regdata_button_edit);
 		button_edit.setOnClickListener(this);
 		
-		button_password_change=(Button)view.findViewById(R.id.fragment_agreement_button_password_change);
+		button_password_change=(Button)view.findViewById(R.id.fragment_regdata_button_password_change);
 		button_password_change.setOnClickListener(this);
 		
-		button_back=(Button)view.findViewById(R.id.fragment_agreement_button_back);
+		button_back=(Button)view.findViewById(R.id.fragment_regdata_button_back);
 		button_back.setOnClickListener(this);
 		
-        recyclerview=(RecyclerView)view.findViewById(R.id.fragment_agreement_recyclerview);
+        recyclerview=(RecyclerView)view.findViewById(R.id.fragment_regdata_recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(recyclerview.getContext()));
         
         adapter=new CursorMultipleTypesAdapter(getActivity(),null);        
@@ -200,8 +200,8 @@ public class FragmentAgreement extends DialogFragment implements OnClickListener
 		
 		//Prepare json_data
 		try {
-			if(Session.getDataJson()==null)throw new JSONException("getDataJson is empty");
-			json_data = new JSONObject(Session.getDataJson());		
+			if(Session.getRegDataJson()==null)throw new JSONException("getDataJson is empty");
+			json_data = new JSONObject(Session.getRegDataJson());		
 		}catch (JSONException e) {
 			Log.e(TAG, "getAdapterInfo JSONException e="+e);
 			Session.createErrorFragment(getActivity(), getFragmentManager(), R.id.main_container, 472, R.string.error_472_title, R.string.error_472_message, new CloseListener(){

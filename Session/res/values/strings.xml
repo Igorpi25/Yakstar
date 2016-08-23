@@ -19,11 +19,9 @@
     <string name="session_register_edittext_passport_who_hint">Кем и когда выдан</string>
     <string name="session_register_textview_tarif_text">Выберите свой тариф</string>
     
-    <string name="session_register_confirm_one_text_1">Я ознакомлен с правилами оказания услуг ООО \"ТелИнТел\"</string>
-    <string name="session_register_confirm_one_text_2">(Читать правила)</string>
+    <string name="session_register_confirm_one_text">Я ознакомлен с <a href='https://lk.amtelcom.ru/b-/b-documents/__content/b-documents__content_type_rules.html'>правилами</a> оказания услуг ООО \"ТелИнТел\"</string>
+    <string name="session_register_confirm_two_text">Я принимаю условия <a href='https://lk.amtelcom.ru/b-/b-documents/__content/b-documents__content_type_agriment.html'>договора-оферты</a></string>
     
-    <string name="session_register_confirm_two_text_1">Я принимаю условия договора-оферты</string>
-    <string name="session_register_confirm_two_text_2">(Читать договор оферты)</string>
     
     <string name="session_register_captcha_text_1">Введите код указанный на картинке</string>
     <string name="session_register_captcha_text_2">Обновить картинку</string>
@@ -104,16 +102,16 @@
     
     <string name="fragment_error_button_close">Закрыть</string>
     
-    <string name="fragment_agreement_header_accaunt">Аккаунт</string>
-    <string name="fragment_agreement_header_person">Личные данные</string>
-    <string name="fragment_agreement_header_contact">Контакты</string>
-    <string name="fragment_agreement_button_edit">Изменить данные</string>
-    <string name="fragment_agreement_button_password_change">Сменить пароль</string>
-    <string name="fragment_agreement_button_back">Назад</string>
+    <string name="fragment_regdata_header_accaunt">Аккаунт</string>
+    <string name="fragment_regdata_header_person">Личные данные</string>
+    <string name="fragment_regdata_header_contact">Контакты</string>
+    <string name="fragment_regdata_button_edit">Изменить данные</string>
+    <string name="fragment_regdata_button_password_change">Сменить пароль</string>
+    <string name="fragment_regdata_button_back">Назад</string>
     
-    <string name="fragment_agreement_edit_edittext_hint">Пароль</string>
-    <string name="fragment_agreement_edit_button_send">Отправить</string>
-    <string name="fragment_agreement_edit_button_cancel">Отмена</string>
+    <string name="fragment_regdata_edit_edittext_hint">Пароль</string>
+    <string name="fragment_regdata_edit_button_send">Отправить</string>
+    <string name="fragment_regdata_edit_button_cancel">Отмена</string>
     
     <string name="fragment_tarif_change_textview_message">Внимание! Смена тарифа может происходить только 1 раз в месяц, первого числа календарного месяца</string>
     <string name="fragment_tarif_change_button_send">Сменить тариф</string>
@@ -125,6 +123,8 @@
     <string name="fragment_password_change_edittext_currentpassword_hint">Пароль</string>
     <string name="fragment_password_change_button_send">Отправить</string>
     <string name="fragment_password_change_button_cancel">Отмена</string>
+    
+    <string name="fragment_register_info_button_close">Закрыть</string>
     
     <string name="error_31_title">Сервер не найден</string>
     <string name="error_31_message">Для работы приложения вы должны подключиться к сети ООО \"ТелИнТел\"</string>
@@ -218,6 +218,18 @@
     <string name="error_492_title">Ошибка чтения данных</string>
     <string name="error_492_message">Запрос на статус изменения тарифа привел к JSON-ошибке</string>
         
+    <!-- doRulesRequest -->
+    <string name="error_611_title">Ошибка чтения данных</string>
+    <string name="error_611_message">Не могу получить запрос с правилами регистрации, сервер вернул пустой результат</string>
     
+    <string name="error_612_title">Ошибка чтения данных</string>
+    <string name="error_612_message">Не могу парсить правила регистрации, произошла JSON-ошибка</string>
+      
+    <!-- doAgreementRequest -->
+    <string name="error_621_title">Ошибка чтения данных</string>
+    <string name="error_621_message">Не могу получить договор оферты, сервер вернул пустой результат</string>
+    
+    <string name="error_622_title">Ошибка чтения данных</string>
+    <string name="error_622_message">Не могу парсить договор оферты, произошла JSON-ошибка</string>
     
 </resources>

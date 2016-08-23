@@ -77,11 +77,17 @@ public class Session {
     public static final String PREF_INTERNET_STATE="PREF_INTERNET_STATE";
     public static final boolean PREF_INTERNET_STATE_DEFAULT=false;
     
-    public static final String PREF_DATA_JSON="PREF_DATA_JSON";
-    public static final String PREF_DATA_JSON_DEFAULT=null;
+    public static final String PREF_REGDATA_JSON="PREF_REGDATA_JSON";
+    public static final String PREF_REGDATA_JSON_DEFAULT=null;
     
     public static final String PREF_CHANGE_TARIF_STATUS_JSON="PREF_CHANGE_TARIF_STATUS_JSON";
     public static final String PREF_CHANGE_TARIF_STATUS_JSON_DEFAULT=null;
+    
+    public static final String PREF_RULES_JSON="PREF_RULES_JSON";
+    public static final String PREF_RULES_JSON_DEFAULT=null;
+    
+    public static final String PREF_AGREEMENT_JSON="PREF_AGREEMENT_JSON";
+    public static final String PREF_AGREEMENT_JSON_DEFAULT=null;
     
     //----------------URLs--------------------------------
     
@@ -94,8 +100,10 @@ public class Session {
     
     public static final String PREF_TARIF_URL="PREF_TARIFURL";
     public static final String PREF_CAPTCHA_URL="PREF_CAPTCHA_URL";
-    public static final String PREF_RULES_URL="PREF_RULESURL";
-    public static final String PREF_AGRIMENT_URL="PREF_AGRIMENTURL";
+    
+    public static final String PREF_RULES_URL="PREF_RULES_URL";
+    public static final String PREF_AGREEMENT_URL="PREF_AGREEMENT_URL";
+    
     public static final String PREF_REGISTER_URL="PREF_REGISTERURL";
     public static final String PREF_INFO_URL="PREF_INFOURL";
     public static final String PREF_PAYMENT_CARDACT_URL="PREF_PAYMENT_CARDACT_URL";
@@ -144,8 +152,8 @@ public class Session {
     	return preferences.getString(Session.PREF_RULES_URL, null);    	
     }
     
-    public static final String getAgrimentUrl(){
-    	return preferences.getString(Session.PREF_AGRIMENT_URL, null);    	
+    public static final String getAgreementUrl(){
+    	return preferences.getString(Session.PREF_AGREEMENT_URL, null);    	
     }
 
     public static final String getRegisterUrl(){
@@ -179,7 +187,7 @@ public class Session {
     public static final String getChangeTarifStatusUrl(){
     	return preferences.getString(Session.PREF_CHANGE_TARIF_STATUS_URL, null);    	
     }
-    
+
     //--------------Set-Get Prefs-----------------
         
     public static String getUserLogin(){		
@@ -282,12 +290,12 @@ public class Session {
   		preferences.edit().putBoolean(Session.PREF_INTERNET_STATE,value).commit();
   	}
   	
-  	public static String getDataJson(){		
-  		return preferences.getString(Session.PREF_DATA_JSON, Session.PREF_DATA_JSON_DEFAULT);
+  	public static String getRegDataJson(){		
+  		return preferences.getString(Session.PREF_REGDATA_JSON, Session.PREF_REGDATA_JSON_DEFAULT);
   	}
     
-    public static void setDataJson(String value){
-  		preferences.edit().putString(Session.PREF_DATA_JSON, value).commit();  		
+    public static void setRegDataJson(String value){
+  		preferences.edit().putString(Session.PREF_REGDATA_JSON, value).commit();  		
   	}
     
     public static String getChangeTarifStatusJson(){		
@@ -296,6 +304,22 @@ public class Session {
     
     public static void setChangeTarifStatusJson(String value){
   		preferences.edit().putString(Session.PREF_CHANGE_TARIF_STATUS_JSON, value).commit();  		
+  	}
+
+    public static String getRulesJson(){		
+  		return preferences.getString(Session.PREF_RULES_JSON, Session.PREF_RULES_JSON_DEFAULT);
+  	}
+    
+    public static void setRulesJson(String value){
+  		preferences.edit().putString(Session.PREF_RULES_JSON, value).commit();  		
+  	}
+
+    public static String getAgreementJson(){		
+  		return preferences.getString(Session.PREF_AGREEMENT_JSON, Session.PREF_AGREEMENT_JSON_DEFAULT);
+  	}
+    
+    public static void setAgreementJson(String value){
+  		preferences.edit().putString(Session.PREF_AGREEMENT_JSON, value).commit();  		
   	}
     
   	//--------Message that reciedved after registration-------------
@@ -352,7 +376,7 @@ public class Session {
     	preferences.edit().putString(Session.PREF_TARIF_URL, url_tarif).commit();
     	preferences.edit().putString(Session.PREF_CAPTCHA_URL, url_captcha).commit();
     	preferences.edit().putString(Session.PREF_RULES_URL, url_rules).commit();
-    	preferences.edit().putString(Session.PREF_AGRIMENT_URL, url_agriment).commit();
+    	preferences.edit().putString(Session.PREF_AGREEMENT_URL, url_agriment).commit();
     	preferences.edit().putString(Session.PREF_REGISTER_URL, url_register).commit();
     	
     	preferences.edit().putString(Session.PREF_INFO_URL, url_info).commit();
@@ -658,17 +682,17 @@ public class Session {
         }
     }
   	
-  	public static FragmentAgreement createAgreementFragment(final Context context,final FragmentManager fragmentManager, final int container){
+  	public static FragmentRegdata createAgreementFragment(final Context context,final FragmentManager fragmentManager, final int container){
 
         try{
             if(fragmentManager.findFragmentByTag("Agreement").isVisible()){
-                return (FragmentAgreement)fragmentManager.findFragmentByTag("Agreement");
+                return (FragmentRegdata)fragmentManager.findFragmentByTag("Agreement");
             }else{
                 throw (new NullPointerException());
             }
         }catch(NullPointerException e) {
 
-        	FragmentAgreement fragment = FragmentAgreement.newInstance();
+        	FragmentRegdata fragment = FragmentRegdata.newInstance();
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(container, fragment, "Agreement");
@@ -680,17 +704,17 @@ public class Session {
         }
     }
   	
-  	public static FragmentAgreementEdit createAgreementEditFragment(final Context context,final FragmentManager fragmentManager, final int container){
+  	public static FragmentRegdataEdit createAgreementEditFragment(final Context context,final FragmentManager fragmentManager, final int container){
 
         try{
             if(fragmentManager.findFragmentByTag("AgreementEdit").isVisible()){
-                return (FragmentAgreementEdit)fragmentManager.findFragmentByTag("AgreementEdit");
+                return (FragmentRegdataEdit)fragmentManager.findFragmentByTag("AgreementEdit");
             }else{
                 throw (new NullPointerException());
             }
         }catch(NullPointerException e) {
 
-        	FragmentAgreementEdit fragment = FragmentAgreementEdit.newInstance();
+        	FragmentRegdataEdit fragment = FragmentRegdataEdit.newInstance();
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(container, fragment, "AgreementEdit");
@@ -740,6 +764,28 @@ public class Session {
             fragmentTransaction.replace(container, fragment, "PasswordChange");
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             fragmentTransaction.addToBackStack("PasswordChange");
+            fragmentTransaction.commit();
+            
+            return fragment;
+        }
+    }
+  	
+  	public static FragmentRegisterInfo createRegisterInfoFragment(final Context context,final FragmentManager fragmentManager, final int container, final String title, final String body){
+
+        try{
+            if(fragmentManager.findFragmentByTag("RegisterInfo").isVisible()){
+                return (FragmentRegisterInfo)fragmentManager.findFragmentByTag("RegisterInfo");
+            }else{
+                throw (new NullPointerException());
+            }
+        }catch(NullPointerException e) {
+
+        	FragmentRegisterInfo fragment = FragmentRegisterInfo.newInstance(title,body);
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(container, fragment, "RegisterInfo");
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragmentTransaction.addToBackStack("RegisterInfo");
             fragmentTransaction.commit();
             
             return fragment;
@@ -821,7 +867,137 @@ public class Session {
 		  return xpp;
 	}
 
-    //------------------Requests--------------------------
+    //------------------Agreement and Rules Requests--------------------------
+    
+    public static void doRulesRequest(final Context context, final FragmentManager fragmentManager, final int container, final DialogRequestListener listener) {
+
+      	final String tag = TAG+" doRulesRequest"; 
+      	        
+      	Log.e(TAG,tag);
+      	
+      	final ProgressDialog pDialog = new ProgressDialog(context);
+    	pDialog.setMessage("Загрузка документа...");
+    	pDialog.setCancelable(false);    	
+    	if( (listener!=null)&&(listener.enableDialogs()) )pDialog.show();
+    	
+      	StringRequest request = new StringRequest(Method.GET,
+      			Session.getRulesUrl(),
+      	                new Response.Listener<String>() {
+      	 
+      	                    @Override
+      	                    public void onResponse(String response) {
+      	                        Log.d(TAG, tag+" onResponse " + response);
+      	                        pDialog.hide();
+      	                        
+      	                        if( (response==null)||(response.isEmpty()) ){
+      	                        	
+      	                        	if( (listener!=null)&&(listener.enableDialogs()) ){
+      	                        		Session.createErrorFragment(context, fragmentManager, container, 61, R.string.error_611_title, R.string.error_611_message, null);
+      	                        	}
+      	                        	return;
+      	                        }
+      	                        
+      	                        Session.setRulesJson(response);
+      	                        
+      	                        if(listener!=null)listener.onResponsed();
+      	                    }
+      	                    
+      	                }, new Response.ErrorListener() {
+      	 
+      	                    @Override
+      	                    public void onErrorResponse(VolleyError error) {
+      	                        Log.e(TAG, tag+"Volley.onErrorResponser: " + error.getMessage());
+      	                        pDialog.hide();
+      	                        
+      	                        if( (listener!=null)&&(listener.enableDialogs()) ){
+	                        		Session.createErrorFragment(context, fragmentManager, container, 61, R.string.error_612_title, R.string.error_612_message, null);
+	                        	}
+      	                        
+      	                    }
+      	                }){
+      		
+      		
+      		@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                  HashMap<String, String> headers = new HashMap<String, String>();
+                  
+                  headers.put("Content-Type", "application/x-www-form-urlencoded");
+                  Session.addCookiesToHeader(headers);
+                  
+                  return headers;
+            }
+      		
+      	};
+      	 
+      	request.setTag(tag);
+      	Volley.newRequestQueue(context.getApplicationContext()).add(request);
+
+    }
+    
+    public static void doAgreementRequest(final Context context, final FragmentManager fragmentManager, final int container, final DialogRequestListener listener) {
+
+      	final String tag = TAG+" doAgreementRequest"; 
+      	        
+      	Log.e(TAG,tag);
+      	
+      	final ProgressDialog pDialog = new ProgressDialog(context);
+    	pDialog.setMessage("Загрузка документа...");
+    	pDialog.setCancelable(false);    	
+    	if( (listener!=null)&&(listener.enableDialogs()) )pDialog.show();
+    	
+      	StringRequest request = new StringRequest(Method.GET,
+      			Session.getAgreementUrl(),
+      	                new Response.Listener<String>() {
+      	 
+      	                    @Override
+      	                    public void onResponse(String response) {
+      	                        Log.d(TAG, tag+" onResponse " + response);
+      	                        pDialog.hide();
+      	                        
+      	                        if( (response==null)||(response.isEmpty()) ){
+      	                        	
+      	                        	if( (listener!=null)&&(listener.enableDialogs()) ){
+      	                        		Session.createErrorFragment(context, fragmentManager, container, 62, R.string.error_621_title, R.string.error_621_message, null);
+      	                        	}
+      	                        	return;
+      	                        }
+      	                        
+      	                        Session.setAgreementJson(response);
+      	                        
+      	                        if(listener!=null)listener.onResponsed();
+      	                    }
+      	                    
+      	                }, new Response.ErrorListener() {
+      	 
+      	                    @Override
+      	                    public void onErrorResponse(VolleyError error) {
+      	                        Log.e(TAG, tag+"Volley.onErrorResponser: " + error.getMessage());
+      	                        pDialog.hide();
+      	                        
+      	                        if( (listener!=null)&&(listener.enableDialogs()) ){
+	                        		Session.createErrorFragment(context, fragmentManager, container, 62, R.string.error_622_title, R.string.error_622_message, null);
+	                        	}
+      	                        
+      	                    }
+      	                }){
+      		
+      		
+      		@Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                  HashMap<String, String> headers = new HashMap<String, String>();
+                  
+                  headers.put("Content-Type", "application/x-www-form-urlencoded");
+                  Session.addCookiesToHeader(headers);
+                  
+                  return headers;
+            }
+      		
+      	};
+      	 
+      	request.setTag(tag);
+      	Volley.newRequestQueue(context.getApplicationContext()).add(request);
+
+    }
     
     //---------------------------Authorization Requests-------------------------
     
@@ -1290,7 +1466,7 @@ public class Session {
     }
   	  	
   	//-----------------------Operation Requests------------------------
-  	  	
+  	
   	public static void doTarifRequest(final Context context, final FragmentManager fragmentManager, final int container, final RequestListener listener) {
 
       	final String tag = TAG+" doTarifRequest"; 
@@ -1435,7 +1611,7 @@ public class Session {
       	                        	return;
       	                        }
       	                              	                        
-      	                        Session.setDataJson(response);
+      	                        Session.setRegDataJson(response);
       	                        
       	                        listener.onResponsed();
     	                    }
@@ -1746,4 +1922,5 @@ public class Session {
   	public interface CloseListener{
         public void onClosed();
     }
+
 }

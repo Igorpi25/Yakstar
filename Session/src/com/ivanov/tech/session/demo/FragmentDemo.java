@@ -214,7 +214,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
 					@Override
 					public void isCompleted() {
 						
-						if(Session.getDataJson()!=null){
+						if(Session.getRegDataJson()!=null){
 							//If cached in prefs
 							Session.createAgreementFragment(getActivity(), getFragmentManager(), R.id.main_container);
 						}else{

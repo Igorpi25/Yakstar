@@ -29,7 +29,7 @@ public class ActivityDemo extends AppCompatActivity {
 	static final String url_tarif=host+"p-/b-registration/b-registration__get-tarifs.php";
 	static final String url_captcha=host+"p-/b-registration/b-registration__capcha.php";
 	static final String url_rules=host+"b-/b-documents/__content/b-documents__content_type_rules.html";
-	static final String url_agriment=host+"b-/b-documents/__content/b-documents__content_type_agriment.html";;
+	static final String url_agriment=host+"b-/b-documents/__content/b-documents__content_type_agriment.html";
 	static final String url_register=host+"p-/b-registration/b-registration.php";
 	
 	static final String url_info=host+"p-/b-welcom/b-welcom.php";
