@@ -65,9 +65,6 @@ public class FragmentPasswordChange extends DialogFragment implements OnClickLis
         setHasOptionsMenu(true);
 		((AppCompatActivity)getActivity()).getSupportActionBar().show();
 				
-		((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
-		((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name); 
 		
 		button_send=(Button)view.findViewById(R.id.fragment_password_change_button_send);
 		button_send.setOnClickListener(this);

@@ -103,9 +103,6 @@ public class FragmentRegdataEdit extends DialogFragment implements OnClickListen
         setHasOptionsMenu(true);
 		((AppCompatActivity)getActivity()).getSupportActionBar().show();
 				
-		((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
-		((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name); 
 		
 		button_send=(Button)view.findViewById(R.id.fragment_agreement_edit_button_send);
 		button_send.setOnClickListener(this);

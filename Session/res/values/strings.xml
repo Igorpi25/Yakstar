@@ -1,6 +1,7 @@
 <resources>
 
-    <string name="app_name">ЯкСтар</string>
+    <string name="app_name">Личный кабинет</string>
+    <string name="app_logo">ЯкСтар</string>
     <string name="logo">com.ivanov.tech.session</string>
     <string name="subs">(demo activity)</string>
 

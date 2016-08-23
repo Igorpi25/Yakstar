@@ -50,7 +50,7 @@ public class Session {
     private static final String PREF = "Session";
 
     static private SharedPreferences preferences=null;
-    
+        
     //------------Prefs----------------
         
     public static final String PREF_USER_LOGIN="PREF_USER_LOGIN";

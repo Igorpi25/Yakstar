@@ -118,11 +118,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
         
         setHasOptionsMenu(true);
 		((AppCompatActivity)getActivity()).getSupportActionBar().show();
-				
-		((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
-		((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name); 
-		
+						
 		textview_gov_link = (TextView)view.findViewById(R.id.fragment_demo_textview_gov_link);
 		textview_gov_link.setClickable(true);
 		textview_gov_link.setMovementMethod(LinkMovementMethod.getInstance());
