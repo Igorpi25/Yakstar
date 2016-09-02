@@ -1,52 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_tarif_change_scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-	<LinearLayout
+    android:fillViewport="true" >
+        
+	<LinearLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_weight="1.0"
-	    android:background="@color/color_white"
-	    android:gravity="center_horizontal"
-	    android:orientation="vertical"
-	    android:padding="10dp" >
-
-		<LinearLayout
-		    android:id="@+id/fragment_demo_layout_refresh"
-		    android:layout_width="wrap_content"
-		    android:layout_height="20dp"
-		    android:layout_gravity="right"
-		    android:layout_marginRight="10dp"
-		    android:orientation="horizontal"
-		    android:visibility="gone" >
-
-		    <ProgressBar
-		        android:id="@+id/fragment_demo_progressbar_refresh"
-		        style="?android:attr/progressBarStyleSmall"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:visibility="gone" />
-
-		    <ImageView
-		        android:id="@+id/fragment_demo_imageview_refresh"
-		        android:layout_width="20dp"
-		        android:layout_height="20dp"
-		        android:src="@drawable/ic_refresh" />
-
-		    <TextView
-		        android:id="@+id/fragment_demo_textview_refresh"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="5dp"
-		        android:gravity="center_vertical"
-		        android:text="@string/fragment_demo_textview_refresh_1"
-		        android:textAppearance="?android:attr/textAppearanceSmall"
-		        android:textColor="@color/color_text_black"
-		        android:visibility="gone" />
-		</LinearLayout>
+	    android:orientation="vertical">
 	
 	    <LinearLayout
 	        android:id="@+id/fragment_demo_layout_info"
@@ -55,7 +18,8 @@
 	        android:layout_marginTop="10dp"
 	        android:background="@color/color_white"
 	        android:gravity="center_horizontal"
-	        android:orientation="vertical" >
+	        android:orientation="vertical"
+	        android:padding="10dp" >
 	        
 	        <android.support.v7.widget.RecyclerView
 	            android:id="@+id/fragment_demo_recyclerview_info"
@@ -72,6 +36,7 @@
 	        android:background="@color/color_white"
 	        android:gravity="center"
 	        android:orientation="vertical"
+	        android:paddingBottom="10dp"
 	        android:visibility="visible" >
 
 	        <LinearLayout
@@ -109,31 +74,31 @@
 	            app:switchTextAppearance="@style/SwitchInternetTheme"
 	            app:track="@drawable/switcher_track" />
 	    </LinearLayout>
-	    
-	</LinearLayout>
+		    
+		
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@color/color_mat"
+	        android:gravity="center"
+	        android:orientation="vertical"
+	        android:padding="10dp" >
 	
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_mat"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="10dp" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fragment_demo_textview_gov_summary"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            android:id="@+id/fragment_demo_textview_gov_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fragment_demo_textview_gov_link"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    </LinearLayout>
-
-</LinearLayout>
+	        <TextView
+	            android:id="@+id/textView1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/fragment_demo_textview_gov_summary"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+	        <TextView
+	            android:id="@+id/fragment_demo_textview_gov_link"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/fragment_demo_textview_gov_link"
+	            android:textAppearance="?android:attr/textAppearanceSmall" />
+	
+	    </LinearLayout>
+	
+	</LinearLayout>
+</ScrollView>

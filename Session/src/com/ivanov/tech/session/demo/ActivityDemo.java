@@ -22,7 +22,7 @@ public class ActivityDemo extends AppCompatActivity {
 	static final String url_check_autorisation=host+"b-/b-autorisation/b-autorisation_check-user.php";	
 	static final String url_login=host;
 	static final String url_logout=host+"/?action=logout";
-	
+		
 	static final String url_check_internet=host+"b-/b-switch-inet/b-switch-inet_status.php";
 	static final String url_switch_internet=host+"b-/b-switch-inet/b-switch-inet.php";
 	

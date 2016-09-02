@@ -79,9 +79,9 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     protected SubMenu menuSession;
 	protected MenuItem menuLogout;
     
-    TextView textview_gov_link,textview_internet_value,textview_refresh;
+    TextView textview_gov_link,textview_internet_value;
     SwitchCompat switch_internet;
-    View layout_internet,layout_info,layout_refresh,progressbar_refresh,imageview_refresh;
+    View layout_internet,layout_info;
     
     RecyclerView recyclerview_info;
     CursorMultipleTypesAdapter adapter_info;
@@ -96,7 +96,7 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+                
     }
 
     @Override
@@ -125,13 +125,6 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
 		
         layout_internet = view.findViewById(R.id.fragment_demo_layout_internet);        
         layout_info = view.findViewById(R.id.fragment_demo_layout_info);
-        
-        layout_refresh = view.findViewById(R.id.fragment_demo_layout_refresh);
-        textview_refresh=(TextView)view.findViewById(R.id.fragment_demo_textview_refresh);
-        imageview_refresh=view.findViewById(R.id.fragment_demo_imageview_refresh);
-        progressbar_refresh=view.findViewById(R.id.fragment_demo_progressbar_refresh);
-        
-        
         
         switch_internet = (SwitchCompat)view.findViewById(R.id.fragment_demo_switch_internet);
         switch_internet.setSwitchTextAppearance(getActivity(), R.style.SwitchInternetTheme);
@@ -186,12 +179,8 @@ public class FragmentDemo extends DialogFragment implements OnClickListener ,Che
     	
     	Log.d(TAG, "onClick");
     	
-    	if(v.getId()==layout_refresh.getId()){
-    		refresh();
-    	}
-    	
 		if(v.getTag(R.layout.itemholder_text_clickable)!=null){
-			
+						
 			if( ((Integer)v.getTag(R.layout.itemholder_text_clickable))==BUTTON_KEY_BALANCE_CHARGE ){
 				
 				Log.d(TAG, "onClick TYPE_TEXT_BALANCE");

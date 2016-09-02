@@ -10,45 +10,6 @@
         android:layout_height="match_parent"
         android:id="@+id/main_container">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-	        android:layout_marginBottom="17dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-            
-            <TextView
-	            android:id="@+id/fragment_demo_textview_login"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="@string/logo"
-	            android:textAppearance="?android:attr/textAppearanceLarge"
-	            android:textColor="#330054a6"
-	            android:textSize="20sp"
-	            android:gravity="center"
-	            android:textStyle="bold"
-	            android:typeface="sans" />
-            
-	        <TextView
-	            android:id="@+id/fragment_demo_textview_service_status"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="@string/subs"
-	            android:textAppearance="?android:attr/textAppearanceLarge"
-	            android:textColor="#330054a6"
-	            android:textSize="15sp"
-	            android:gravity="center"
-	            android:textStyle="bold"
-	            android:typeface="sans" />
-	
-	        
-        
-        </LinearLayout>
-
-        
-
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

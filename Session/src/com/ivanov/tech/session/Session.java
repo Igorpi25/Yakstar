@@ -15,6 +15,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -50,6 +51,8 @@ public class Session {
     private static final String PREF = "Session";
 
     static private SharedPreferences preferences=null;
+    
+    public static final int VOLLEY_TIMEOUT=30*1000; 
         
     //------------Prefs----------------
         
@@ -1114,6 +1117,13 @@ public class Session {
     		
     	};
     	 
+
+    	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+    	
+    	
     	request.setTag(tag);
     	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
@@ -1188,6 +1198,11 @@ public class Session {
     		
     	};
     	 
+    	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+    	
     	request.setTag(tag);
     	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
@@ -1225,6 +1240,7 @@ public class Session {
     	                    public void onErrorResponse(VolleyError error) {
     	                        Log.e(TAG, "1 Volley.onErrorResponser: " + error.getMessage());
     	                        pDialog.hide();
+    	                        Session.checkAutorisation(context, fragmentManager, R.id.main_container, listener);
     	                    }
     	                    
     	                }){
@@ -1257,6 +1273,11 @@ public class Session {
     		
     	};
     	 
+    	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+    	
     	request.setTag(tag);
     	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
@@ -1305,6 +1326,11 @@ public class Session {
       		
       	};
       	 
+      	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+      	
       	request.setTag(tag);
       	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
@@ -1383,6 +1409,11 @@ public class Session {
       		
       	};
       	 
+      	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+      	
       	request.setTag(tag);
       	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
@@ -1460,6 +1491,11 @@ public class Session {
       		
       	};
       	 
+      	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+      	
       	request.setTag(tag);
       	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
@@ -1515,6 +1551,11 @@ public class Session {
       		
       	};
       	 
+      	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+      	
       	request.setTag(tag);
       	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
@@ -1573,6 +1614,11 @@ public class Session {
       		
       	};
       	 
+      	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+      	
       	request.setTag(tag);
       	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
@@ -1647,6 +1693,11 @@ public class Session {
     		
     	};
     	 
+    	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+    	
     	request.setTag(tag);
     	Volley.newRequestQueue(context.getApplicationContext()).add(request);
     	
@@ -1752,6 +1803,11 @@ public class Session {
     		    		
     	};
     	
+    	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+    	
     	request.setTag(tag);
     	Volley.newRequestQueue(context.getApplicationContext()).add(request);
     	
@@ -1834,6 +1890,11 @@ public class Session {
     		
     	};
     	
+    	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+    	
     	request.setTag(tag);
     	Volley.newRequestQueue(context.getApplicationContext()).add(request);
     	
@@ -1892,6 +1953,11 @@ public class Session {
       		
       	};
       	 
+      	request.setRetryPolicy( new DefaultRetryPolicy(
+    			VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+      	
       	request.setTag(tag);
       	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 

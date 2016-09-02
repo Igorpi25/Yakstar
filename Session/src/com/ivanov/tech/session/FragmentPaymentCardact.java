@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -223,6 +224,11 @@ public class FragmentPaymentCardact extends DialogFragment implements OnClickLis
     		
     	};
     	 
+    	request.setRetryPolicy( new DefaultRetryPolicy(
+    			Session.VOLLEY_TIMEOUT,
+    			DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    			DefaultRetryPolicy.DEFAULT_BACKOFF_MULT) );
+    	
     	request.setTag(tag);
     	Volley.newRequestQueue(context.getApplicationContext()).add(request);
 
