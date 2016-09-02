@@ -94,7 +94,7 @@ public class ActivityDemo extends AppCompatActivity {
 			public boolean enableDialogs() {
 				return false;
 			}
-				
+			
 		});
         
     }

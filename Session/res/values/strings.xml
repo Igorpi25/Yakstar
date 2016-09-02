@@ -127,6 +127,9 @@
     
     <string name="fragment_register_info_button_close">Закрыть</string>
     
+    <string name="fragment_warning_ssl_button_confirm">Разрешить</string>
+    <string name="fragment_warning_ssl_button_dismiss">Отклонить</string>
+    
     <string name="error_31_title">Сервер не найден</string>
     <string name="error_31_message">Для работы приложения вы должны подключиться к сети \"ЯкСтар\"</string>
     
@@ -232,5 +235,9 @@
     
     <string name="error_622_title">Ошибка чтения данных</string>
     <string name="error_622_message">Не могу парсить договор оферты, произошла JSON-ошибка</string>
+    
+    <!-- SSL warning on Webview -->
+    <string name="warning_1_title">Предупреждение</string>
+    <string name="warning_1_message">Внимание! Для совершения платежа приложение будет обращаться к внешнему сервису PayOnline.ru. Вы разрешаете выполнение операции?</string>
     
 </resources>

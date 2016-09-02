@@ -21,6 +21,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -56,7 +57,6 @@ import com.ivanov.tech.connection.Connection.ProtocolListener;
 import com.ivanov.tech.session.Session.RequestListener;
 
 public class FragmentPaymentVisa extends DialogFragment implements OnClickListener {
-
 
     private static String TAG = FragmentPaymentVisa.class.getSimpleName();
     
@@ -302,7 +302,7 @@ public class FragmentPaymentVisa extends DialogFragment implements OnClickListen
 		            @Override
 		            public void onReceivedSslError (WebView view, SslErrorHandler handler, SslError error) {
 		            	Log.d(TAG, "onCreateView webview.onReceivedSslError"); 
-		            	handler.proceed() ;
+		            	showWarningDialog(handler,error);
 		            }
 		            
 		            @Override
@@ -439,4 +439,45 @@ public class FragmentPaymentVisa extends DialogFragment implements OnClickListen
 		}, 6000);
 		
 	}
+	
+	public void showWarningDialog(final SslErrorHandler handler, final SslError sslerror){
+		
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		final View dialogView = inflater.inflate(R.layout.fragment_warning_ssl, null);
+		dialogBuilder.setView(dialogView);
+		
+		final AlertDialog alertdialog = dialogBuilder.create();
+		alertdialog.setCanceledOnTouchOutside(false);
+		alertdialog.show();
+				
+		final Button button_confirm=(Button)dialogView.findViewById(R.id.fragment_warning_ssl_button_confirm);
+		button_confirm.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				handler.proceed();
+				alertdialog.hide();
+			}
+			
+		});
+				
+		final Button button_dismiss=(Button)dialogView.findViewById(R.id.fragment_warning_ssl_button_dismiss);
+		button_dismiss.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				handler.cancel();
+				alertdialog.hide();
+				getFragmentManager().popBackStack();
+			}
+			
+		});
+		
+		final TextView textview_error=(TextView)dialogView.findViewById(R.id.fragment_warning_ssl_textview_error);
+		textview_error.setText(sslerror.toString());
+		
+		
+  	}
+	
 }
