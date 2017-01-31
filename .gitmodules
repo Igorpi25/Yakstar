@@ -1,4 +1,4 @@
 [submodule "Connection"]
 	path = Connection
-	url = https://github.com/Igorpi25/Connection.git
+	url = https://github.com/Igorpi25/YakstarConnection.git
 	branch = library_in_session
